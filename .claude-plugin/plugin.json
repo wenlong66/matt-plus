@@ -1,0 +1,24 @@
+{
+  "name": "matt-plus",
+  "version": "0.3.0",
+  "description": "精选并适配的 Matt Pocock 扩展：生产设计、安全、发布与文档维护。",
+  "author": {
+    "name": "Long"
+  },
+  "homepage": "https://github.com/wenlong66/matt-plus",
+  "repository": "https://github.com/wenlong66/matt-plus",
+  "license": "MIT",
+  "skills": [
+    "./skills/design-consultation",
+    "./skills/frontend-ui-engineering",
+    "./skills/web-qa",
+    "./skills/design-review",
+    "./skills/security-and-hardening",
+    "./skills/security-audit",
+    "./skills/shipping-and-launch",
+    "./skills/setup-deploy",
+    "./skills/land-and-deploy",
+    "./skills/document-generate",
+    "./skills/document-update"
+  ]
+}

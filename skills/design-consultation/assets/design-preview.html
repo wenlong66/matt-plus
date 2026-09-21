@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Design preview</title>
+  <style>
+    :root { --surface: #ffffff; --canvas: #f4f6f8; --ink: #17212b; --muted: #5d6975; --accent: #0b6bcb; --danger: #b42318; --success: #067647; --radius: 10px; --space: 16px; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--canvas); color: var(--ink); font: 16px/1.5 system-ui, sans-serif; }
+    main { max-width: 1120px; margin: 0 auto; padding: var(--space); }
+    section { background: var(--surface); border: 1px solid #d8e0e8; border-radius: var(--radius); padding: calc(var(--space) * 1.5); }
+    .stack { display: grid; gap: var(--space); } .row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space); }
+    .preview-grid, .status-grid { display: grid; gap: var(--space); }
+    button { border: 0; border-radius: 6px; background: var(--accent); color: white; font: inherit; padding: 10px 14px; }
+    button:focus-visible, input:focus-visible { outline: 3px solid #73b5f5; outline-offset: 2px; }
+    input { border: 1px solid #82909d; border-radius: 6px; font: inherit; padding: 9px; }
+    .muted { color: var(--muted); } .status { border-inline-start: 4px solid var(--accent); padding-inline-start: var(--space); }
+    .error { border-color: var(--danger); } .success { border-color: var(--success); } .loading { border-color: #7b61ff; }
+    @media (max-width: 600px) { .row > * { flex: 1 1 100%; } }
+    @media (min-width: 601px) and (max-width: 900px) { main { padding: calc(var(--space) * 2); } .status-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    @media (min-width: 901px) { main { padding: calc(var(--space) * 3); } .preview-grid { grid-template-columns: minmax(0, 1.5fr) minmax(280px, 1fr); } .status-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  </style>
+</head>
+<body>
+  <main class="stack">
+    <header><p class="muted">Replace tokens and representative content after the design direction is approved.</p><h1>Product title</h1><p>Explain the product value in the vocabulary of its real users.</p></header>
+    <div class="preview-grid">
+      <section class="stack"><h2>Primary action</h2><label>Email <input type="email" placeholder="name@example.com"></label><div class="row"><button type="button">Continue</button><span class="muted">Helpful supporting context</span></div></section>
+      <section><h2>Content area</h2><p>Show representative information density, hierarchy and a useful next action.</p><p class="muted">Use real content whenever it is available.</p></section>
+    </div>
+    <section class="status-grid" aria-label="State treatments">
+      <div class="status loading" aria-busy="true"><h2>Loading</h2><p>Explain what is loading and keep the layout stable.</p></div>
+      <div class="status"><h2>Empty state</h2><p>There is nothing here yet. Explain what the user can do next.</p></div>
+      <div class="status error" role="alert"><h2>Recoverable error</h2><p>Use a specific message and a clear recovery action.</p></div>
+      <div class="status success"><h2>Success</h2><p>Confirm what changed and what can happen next.</p></div>
+    </section>
+  </main>
+</body>
+</html>

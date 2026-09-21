@@ -1,0 +1,16 @@
+{
+  "name": "matt-plus",
+  "description": "精选并适配的 Matt Pocock 生产工程扩展。",
+  "owner": {
+    "name": "Long"
+  },
+  "plugins": [
+    {
+      "name": "matt-plus",
+      "source": "./",
+      "description": "生产设计、安全、发布与文档维护的自包含 Matt Pocock 扩展。",
+      "version": "0.3.0",
+      "license": "MIT"
+    }
+  ]
+}
