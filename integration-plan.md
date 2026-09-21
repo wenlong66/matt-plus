@@ -1,6 +1,6 @@
 # matt-plus：四域能力补齐规划
 
-> 定位：Matt Pocock Skills 保持需求澄清、规格、TDD、实现、诊断、领域建模和通用 code review 主流程。matt-plus 将生产设计、安全、发布和文档维护中 Matt 没有完整工作流、产物与完成条件的能力，连同必要资源适配为可独立分发的 Claude Code 插件。
+> 定位：Matt Pocock Skills 保持需求澄清、规格、TDD、实现、诊断、领域建模和通用 code review 主流程。matt-plus 将生产设计、安全、发布和文档维护中 Matt 没有完整工作流、产物与完成条件的能力，连同必要资源适配为可独立分发的 Claude Code 与 Codex 插件；两者共用包内唯一的 `skills/` 目录。
 
 ## 目标与收录标准
 
@@ -67,6 +67,7 @@ Matt 的 `domain-modeling` 保留 `CONTEXT.md` 和 ADR；`to-spec` 处理 spec/i
 ```text
 matt-plus/
   .claude-plugin/{plugin.json,marketplace.json}
+  .codex-plugin/plugin.json → ./skills/
   skills/
     design-consultation/assets/design-preview.html
     frontend-ui-engineering/
@@ -139,11 +140,12 @@ matt-plus/
 
 ## 当前验证与下一步
 
-当前包已具备十一个本地 skill、关联模板/参考资料、manifest、22 个行为用例和确定性扫描器测试。以下本地结构验证已实际完成：
+当前包已具备十一个本地 skill、关联模板/参考资料、Claude Code 与 Codex manifest、22 个行为用例和确定性扫描器测试。以下本地结构验证已实际完成：
 
-- `node --test tests/package.test.mjs tests/masked-secret-scan.test.mjs`：13 项通过，覆盖十一技能矩阵、资源链接、来源、禁止的宿主耦合、QA CLI/逐项授权边界、掩码、排序、去重、输入上限、stdin、文件路径与读取错误。
-- `claude plugin validate . --strict`：通过。
-- `git diff --check` 及父仓库的 `git diff --check -- matt-plus`：无空白错误；matt-plus 内未跟踪文件仍应在纳入版本控制后再进行完整 diff 复核。
+- `node --test matt-plus/tests/package.test.mjs matt-plus/tests/masked-secret-scan.test.mjs tests/codex-marketplace.test.mjs`：14 项通过，覆盖十一技能矩阵、两端 manifest 对同一 `skills/` 的引用、Codex marketplace、资源链接、来源、禁止的宿主耦合、QA CLI/逐项授权边界、掩码、排序、去重、输入上限、stdin、文件路径与读取错误。
+- `claude plugin validate matt-plus --strict`：通过。
+- `codex plugin list --marketplace plugins`：发现 `matt-plus@plugins`；未安装插件，因安装会修改用户的 Codex 配置。
+- `git diff --check -- matt-plus .agents tests`：无空白错误；matt-plus 内未跟踪文件仍应在纳入版本控制后再进行完整 diff 复核。
 
 尚未完成的工作流验证如下；完成前所有外部结果仍为 `UNVERIFIED`：
 
@@ -157,7 +159,7 @@ matt-plus/
 
 ## 验收标准
 
-- manifest 恰好声明这十一个目录，前置 metadata 与目录名一致；所有本地 Markdown 链接和资源在包内可解析。
+- Claude Code manifest 恰好声明这十一个目录；Codex manifest 直接指向同一 `./skills/`，前置 metadata 与目录名一致；所有本地 Markdown 链接和资源在包内可解析。
 - 不含未展开模板、上游全局路径、专用运行时、遥测/自动更新或隐式外部审查依赖。
 - 每个技能有来源归属和至少一个正常、一个边界行为用例；扫描器绝不输出 raw candidate value。
 - 设计、审计、发布、文档技能的权限边界与本文一致；缺工具/授权时明确 `UNVERIFIED`。

@@ -1,0 +1,12 @@
+{
+  "name": "matt-plus",
+  "version": "0.3.0",
+  "description": "精选并适配的 Matt Pocock 扩展：生产设计、安全、发布与文档维护。",
+  "author": {
+    "name": "Long"
+  },
+  "homepage": "https://github.com/wenlong66/matt-plus",
+  "repository": "https://github.com/wenlong66/matt-plus",
+  "license": "MIT",
+  "skills": "./skills/"
+}

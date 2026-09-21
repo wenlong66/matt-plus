@@ -1,6 +1,6 @@
 # 第三方来源与适配说明
 
-matt-plus 收录以下 MIT 许可内容的适配版本，不是 `agent-skills` 或 `gstack` 的官方发行版。完整 MIT 文字及原作者版权声明保留在 [LICENSE](LICENSE)。所有技能正文、模板、检查表和脚本均随插件分发，运行时不读取来源仓库或其全局目录。
+matt-plus 收录以下 MIT 许可内容的适配版本，不是 `agent-skills` 或 `gstack` 的官方发行版。完整 MIT 文字及原作者版权声明保留在 [LICENSE](LICENSE)。所有技能正文、模板、检查表和脚本均随插件分发，运行时不读取来源仓库或其全局目录。Claude Code 与 Codex 均加载这同一份本地适配材料；Codex 的 [plugin manifest](.codex-plugin/plugin.json) 仅指向 `./skills/`，不会引入新的第三方内容或许可证。
 
 | 来源 | 作者与许可证 | 本次读取快照 |
 | --- | --- | --- |

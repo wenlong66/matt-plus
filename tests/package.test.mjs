@@ -23,6 +23,7 @@ const TEXT_EXTENSIONS = new Set(['.html', '.json', '.md', '.mjs']);
 const readJson = (path) => JSON.parse(readFileSync(join(root, path), 'utf8'));
 const plugin = readJson('.claude-plugin/plugin.json');
 const marketplace = readJson('.claude-plugin/marketplace.json');
+const codexPlugin = readJson('.codex-plugin/plugin.json');
 
 function packageFiles(directory) {
   return readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
@@ -56,6 +57,14 @@ test('marketplace resolves to this plugin with matching metadata', () => {
   assert.equal(entry.version, plugin.version);
   assert.equal(entry.source, './');
   assert.ok(plugin.author.name);
+});
+
+test('Codex plugin shares the canonical skill tree and metadata', () => {
+  for (const field of ['name', 'version', 'description', 'author', 'homepage', 'repository', 'license']) {
+    assert.deepEqual(codexPlugin[field], plugin[field], `Codex plugin ${field} differs from Claude plugin`);
+  }
+  assert.equal(codexPlugin.skills, './skills/');
+  assert.equal(realpathSync(join(root, codexPlugin.skills)), realpathSync(join(root, 'skills')));
 });
 
 test('manifest declares exactly the four-domain skill matrix', () => {

@@ -39,6 +39,24 @@ claude --plugin-dir /absolute/path/to/matt-plus
 
 这是使用说明，不会由本仓库的开发流程自动安装或更新插件。避免同时以临时目录和 marketplace 重复加载同一插件。
 
+## 使用 Codex 插件
+
+Codex 与 Claude Code 共用本包唯一的规范技能目录 [`skills/`](skills/)；[`.codex-plugin/plugin.json`](.codex-plugin/plugin.json) 直接声明 `"skills": "./skills/"`，不含第二份技能副本。
+
+本仓库根目录的 Codex marketplace 已包含 `matt-plus`。查看它实际暴露的插件标识：
+
+```bash
+codex plugin list
+```
+
+当前 marketplace manifest 名为 `plugins`，因此由用户主动安装时使用：
+
+```bash
+codex plugin add matt-plus@plugins
+```
+
+安装会修改 Codex 用户配置，本仓库不会自动执行。Claude Code 的 marketplace manifest 不配置 Codex；同一会话只选择一个插件来源，避免混用版本。
+
 ## 权限与验证边界
 
 - 缺少工具、凭据、URL、环境、权限或实际执行信号时，技能必须报告 `UNVERIFIED`，不能将推测写成通过。
