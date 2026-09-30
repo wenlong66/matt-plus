@@ -11,7 +11,7 @@ This adapts missing runtime/resource links only. Follow the shared external-acti
 
 ## Browser operations (semantic labels, not fictional executable commands)
 
-Inspect installed help and use only the approved already-installed playwright-cli or existing project Playwright runner. The shared adapter contains the checked CLI associations. No gstack browse executable is assumed.
+Follow the shared browser adapter: prefer the approved installed `playwright-cli`; if absent, use the host's default browser tool after checking its actual interface. The shared adapter contains the checked CLI associations. No gstack browse executable or standalone project browser runner is assumed.
 
 | Original operation | Association |
 |---|---|
@@ -19,14 +19,14 @@ Inspect installed help and use only the approved already-installed playwright-cl
 | Interactive/accessibility snapshot | Current supported snapshot/find/DOM inspection; never reuse stale element refs. |
 | Annotated snapshot | Supported highlight, annotated screenshot, then hide highlight; preserve a plain baseline too. If unavailable, record annotations `UNVERIFIED`. |
 | Responsive capture | Resize and capture the original required viewports: 375 mobile, 768 tablet, 1024 desktop, 1440 wide where audited. Preserve exact viewport/state for retest. |
-| CSS/computed style/text/HTML | Reviewed observation-only browser eval function or existing runner's `page.evaluate` callback; the original expressions in scripts/design-observations.js are browser-context code, not page-provided code or a raw runner script. |
-| Clickable-div inspection | Reviewed DOM inspection of roles/attributes/styles or the installed runner's supported equivalent. Do not invoke handlers to discover clickability. Unsupported discovery is `UNVERIFIED`. |
-| Snapshot diff | Capture before/after DOM snapshots at the same state and compare actual saved output. If no supported diff, record `UNVERIFIED`; do not promise a native `snapshot -D`. |
-| Screenshot/pixel diff | Use an already-installed approved comparator or runner visual comparison; record comparator/settings and actual evidence. Screenshot capture alone is not a pixel diff. Unsupported comparison is `UNVERIFIED`. |
-| Console/network | Actual supported console and request metadata observations; sanitize under the shared guard. No absent-log claim implies complete coverage. |
-| Performance baseline | Installed runner/tool measurements or reviewed browser performance observations. No fictitious `perf` command; LCP/CLS/loading metrics remain `UNVERIFIED` without actual capture, timing/method and evidence. |
+| CSS/computed style/text/HTML | Reviewed observation-only `playwright-cli eval` function or `playwright-cli run-code` wrapper using `page.evaluate`; the original expressions in scripts/design-observations.js are browser-context code, not page-provided code or a raw runner script. |
+| Clickable-div inspection | Reviewed DOM inspection of roles/attributes/styles through `playwright-cli eval`. Do not invoke handlers to discover clickability. Unsupported discovery is `UNVERIFIED`. |
+| Snapshot diff | Capture before/after DOM snapshots through `playwright-cli` at the same state and compare actual saved output. If no supported diff, record `UNVERIFIED`; do not promise a native `snapshot -D`. |
+| Screenshot/pixel diff | Capture through `playwright-cli` and use an already-installed approved local comparator on the saved files; record comparator/settings and actual evidence. Screenshot capture alone is not a pixel diff. Unsupported comparison is `UNVERIFIED`. |
+| Console/network | Actual supported CLI console and request metadata observations; sanitize under the shared guard. No absent-log claim implies complete coverage. |
+| Performance baseline | Reviewed browser performance observations through `playwright-cli eval` or `playwright-cli run-code`. No fictitious `perf` command; LCP/CLS/loading metrics remain `UNVERIFIED` without actual capture, timing/method and evidence. |
 
-The DOM resource is a browser-context IIFE. Read/review it and embed its unchanged expression as the returned value inside a browser eval function, or inside an approved wrapper's `page.evaluate` callback. In the inspected CLI, `eval --filename` saves the **result**, not code-file input. Do not pass the raw DOM resource to `run-code --filename`; that interface expects a reviewed runner function accepting `page`.
+The DOM resource is a browser-context IIFE. Read/review it and embed its unchanged expression as the returned value inside `playwright-cli eval`, or inside a reviewed `playwright-cli run-code` wrapper's `page.evaluate` callback. If the CLI is absent, use the default browser tool's verified browser-eval equivalent. In the inspected CLI, `eval --filename` saves the **result**, not code-file input. Do not pass the raw DOM resource to `run-code --filename`; that interface expects a reviewed runner function accepting `page`.
 
 Every screenshot must be shown with Read/the available viewer as the original requires. Before/after pairs must have comparable page/state/content, viewport, fonts, device scale and timing. Unsupported browser access prevents a completed live audit; static/source observations remain separate. Read source for Phase 8 fixes, diff-to-route association and approved outside source audits, not to substitute for the rendered baseline's evidence.
 

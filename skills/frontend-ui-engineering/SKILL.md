@@ -305,9 +305,9 @@ function useToggleTask() {
 
 ## See Also
 
-For detailed accessibility requirements and testing tools, see `../../references/accessibility-checklist.md`.
+For detailed accessibility requirements and testing tools, see `references/accessibility-checklist.md`.
 
-For package-local tool and workflow associations, see [Compatibility Notes](../security-and-hardening/references/compatibility-notes.md).
+For package-local tool and workflow associations, see [Compatibility Notes](../../references/compatibility-notes.md). Run webpage verification through [Browser Testing](../../references/browser-tools.md); retained DevTools and accessibility-tool examples describe the checks, not alternate browser backends.
 
 ## Common Rationalizations
 

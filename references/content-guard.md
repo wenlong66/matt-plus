@@ -47,7 +47,7 @@ Remote reads and uploads still need [action authorization](external-actions.md).
 
 ### Commit and push
 
-Before an approved commit, inspect exact staged files/hunks and commit message, including untracked files being added. Do not rely on the unstaged diff or print a raw secret-bearing diff.
+Before an approved commit, inspect exact staged files/hunks and commit message, including untracked files being added. Scan the index blob bytes for each staged text file, not the `git diff --cached` rendering: diff prefixes can hide line-anchored assignments. Use `git show ":<approved-staged-text-path>"` from the repository root, with pipeline error checking (Bash/Git Bash: `set -o pipefail`), and repeat for every approved staged text path. A failed extraction is not a clean scan; deleted files have no new index blob, and binary artifacts need separate review. Do not rely on the unstaged diff or print a raw secret-bearing diff.
 
 Before an approved push, resolve the exact remote/ref, outgoing tip and commits not already reachable at the destination. Inspect **all outgoing commit messages and introduced/changed blob contents**, including earlier commits whose files were subsequently deleted. A clean current worktree does not prove a clean outbound history. Extract immutable Git object contents locally without echoing them; run the guard on those exact textual bytes and keep the approved tip/ref unchanged until push. Do not silently fetch or assume a remote tracking ref is current.
 

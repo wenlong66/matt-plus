@@ -1,8 +1,8 @@
 // Original design-system extraction DOM expressions, bundled for the browser adapter.
 // Observation only: no storage/cookies, network calls, handlers, or application mutation.
 // Browser-context IIFE, not a Playwright runner script. Inspect it, then embed its
-// expression as the return value of a reviewed browser eval function or inside an
-// approved runner's page.evaluate callback. eval --filename saves the result; it
+// expression as the return value of a reviewed playwright-cli eval function or inside
+// a playwright-cli run-code wrapper's page.evaluate callback. eval --filename saves the result; it
 // does not read this as a code file. Do not pass this raw file to run-code --filename
 // (that interface expects a reviewed runner function accepting page).
 (() => ({

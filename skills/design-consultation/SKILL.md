@@ -5,7 +5,7 @@ description: |
   Design consultation: understands your product, researches the landscape, proposes a
   complete design system (aesthetic, typography, color, layout, spacing, motion), and
   generates font+color preview pages. Creates DESIGN.md as your project's design source
-  of truth. For existing sites, use /design-review to infer the system instead.
+  of truth. For existing sites, use /plan-design-review to infer the system instead.
   Use when asked to "design system", "brand guidelines", or "create DESIGN.md".
   Proactively suggest when starting a new project's UI with no existing
   design system or DESIGN.md.
@@ -22,7 +22,7 @@ triggers:
   - design system
   - create a brand
   - design from scratch
-compatibility: Local project files; optional approved search, already-installed playwright-cli or existing project Playwright runner, and approved available image generator. Read the tool/path mapping before using source command examples.
+compatibility: Local project files; optional approved search, playwright-cli preferred for browser checks with the host default browser tool as fallback, and approved available image generator. Read the tool/path mapping before using source command examples.
 ---
 
 ## Local associations (read first)
@@ -183,4 +183,4 @@ Read [Design Outside Voices](references/outside-voices.md) for the optional inde
 7. **Accept the user's final choice.** Nudge on coherence issues, but never block or refuse to write a DESIGN.md because you disagree with a choice.
 8. **No AI slop in your own output.** Your recommendations, your preview page, your DESIGN.md — all should demonstrate the taste you're asking the user to adopt.
 
-Source and removed host associations: [port mapping](references/port-mapping.md).
+Source and adaptation scope: [third-party notices](../../THIRD_PARTY_NOTICES.md). Unbundled and local [upstream skill calls](../../integration-plan.md#上游技能调用) are listed separately.

@@ -41,6 +41,10 @@ Use the recorded root and revisions for each tool call; shell variables do not p
 between calls. The original discovery blocks can be resolved through installed file/search
 tools. `AskUserQuestion` means the host question tool, or a normal chat question and wait if
 that tool is unavailable. Missing required checks are UNVERIFIED, not a passed smoke test.
+For webpage, URL-navigation or rendered-result verification, read [Browser Testing](../../../references/browser-tools.md):
+prefer installed `playwright-cli`, or the host's default browser tool if the CLI is absent.
+Non-browser examples and contributor smoke tests retain their native commands.
+Upstream skill associations and local namespaced entries are listed in [Upstream Skill Calls](../../../integration-plan.md#上游技能调用).
 
 ## Former Host Associations
 
@@ -60,7 +64,10 @@ that tool is unavailable. Missing required checks are UNVERIFIED, not a passed s
   once along with the decoded body/title bytes. Do not rebuild checked content in a heredoc
   or strip bytes through shell substitution. No supported exact-byte transport is BLOCKED.
 - Title rewriting resolves to `../scripts/pr-title-rewrite.sh`, a local copy of the original
-  pure helper. Compute first, then check final title bytes and send those unchanged; the
-  helper is not authorization to edit a title. An unsupported convention requires a question.
+  pure helper. It requires Bash, `grep` with `-qE` and `sed` with `-E` (available in Git Bash
+  on Windows); invoke it with `bash`, not generic `sh`. Missing prerequisites are UNVERIFIED.
+  Compute first, then check final title bytes and send those unchanged; the helper is not
+  authorization to edit a title. An unsupported convention requires a question.
 - Independent review resolves to `cross-model-review.md` and the shared installed-tool/model
-  adapter. Optional absence is reported; a required unavailable review stays UNVERIFIED.
+  adapter. Preserve the default-on phase, the Codex-host skip and the labeled read-only Agent
+  fallback; authorization or capability missing for both paths is UNVERIFIED, not a clean review.

@@ -25,9 +25,12 @@ unrelated user changes and read existing files in full before editing.
 - `AskUserQuestion` resolves to the host's question tool; if unavailable, ask in chat and wait
   for the same decision. Use installed local file/search tools for the discovery queries;
   shell examples describe the same queries, not permission to install or bootstrap tools.
-- Example/link/smoke-test execution follows the approved command/network scope. A required
-  check that cannot run is `UNVERIFIED`, not PASS. Source inspection is not execution evidence.
-  Instruction files and navigation changes need their own approved scope.
+- Example/link/smoke-test execution follows the approved command/network scope. For webpage,
+  URL-navigation or rendered-result verification, read [Browser Testing](../../../references/browser-tools.md)
+  and prefer installed `playwright-cli`, falling back to the host's default browser tool if absent.
+  Non-browser examples retain their native commands.
+  A required check that cannot run is `UNVERIFIED`, not PASS. Source inspection is not execution
+  evidence. Instruction files and navigation changes need their own approved scope.
 
 ## Publication Associations
 

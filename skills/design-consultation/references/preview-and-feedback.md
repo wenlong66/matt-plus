@@ -77,7 +77,7 @@ the approved variant.
 2. If `regenerateAction` is `"remix"`, read `remixSpec` (e.g. `{"layout":"A","colors":"B"}`)
 3. Generate new variants using the mapped `iterate` or `variants` capability with updated brief
 4. Create new board with the returned images
-5. Reload the local board in the user's browser (or use the approved runner's supported reload)
+5. Reload the local board through the selected approved browser session (`playwright-cli` preferred, host default browser tool if absent)
 6. **AskUserQuestion again** with the same board path/URL to wait for the next round of feedback. Repeat until `feedback.json` appears.
 
 **If `NO_FEEDBACK_FILE`:** The user typed their preferences directly in the

@@ -5,7 +5,8 @@ description: |
   Designer's eye QA: finds visual inconsistency, spacing issues, hierarchy problems,
   AI slop patterns, and slow interactions — then fixes them. Iteratively fixes issues
   in source code, committing each fix atomically and re-verifying with before/after
-  screenshots. Use when asked to "audit the design", "visual QA", "check if it looks good", or "design polish".
+  screenshots. For plan-mode design review (before implementation), use /plan-design-review.
+  Use when asked to "audit the design", "visual QA", "check if it looks good", or "design polish".
   Proactively suggest when the user mentions visual inconsistencies or
   wants to polish the look of a live site.
 allowed-tools:
@@ -21,7 +22,7 @@ triggers:
   - visual design audit
   - design qa
   - fix design issues
-compatibility: Approved already-installed playwright-cli or existing project Playwright runner for live audit; local project files and git for authorized fixes/atomic commits. Optional approved image generator/outside model. Read the association mapping first.
+compatibility: Approved playwright-cli preferred for live audit with the host default browser tool as fallback; local project files and git for authorized fixes/atomic commits. Optional approved image generator/outside model. Read the association mapping first.
 ---
 
 ## Local associations (read first)
@@ -73,7 +74,7 @@ After the user chooses, execute their choice (commit or stash), then continue wi
 
 **Find the browser tool:**
 
-Read the shared browser adapter and inspect the installed tool's help/capabilities. Use an approved already-installed playwright-cli or existing project Playwright runner.
+Read the shared browser adapter and inspect actual help/capabilities. Prefer the approved installed `playwright-cli`; if absent, use the host's default browser tool.
 
 **Check test framework (bootstrap if needed):**
 
@@ -291,4 +292,4 @@ If the repo has a `TODOS.md`:
 16. **CSS-first.** Prefer CSS/styling changes over structural component changes. CSS-only changes are safer and more reversible.
 17. **DESIGN.md export.** You MAY write a DESIGN.md file if the user accepts the offer from Phase 2.
 
-Source and removed host associations: [port mapping](references/port-mapping.md).
+Source and adaptation scope: [third-party notices](../../THIRD_PARTY_NOTICES.md). Unbundled and local [upstream skill calls](../../integration-plan.md#上游技能调用) are listed separately.

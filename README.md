@@ -23,12 +23,14 @@
 
 - 所有必要正文、模板、检查表和本地脚本随包分发；来源链接仅用于追溯。
 - gstack 模板的必要领域段落在包内展开或关联，宿主的推广、遥测、更新检查和全局记忆/状态关联不迁入。
-- 浏览器能力关联到已安装的 `playwright-cli`，或目标项目已有 Playwright runner。先检查实际 help；不自动安装、下载浏览器、导入个人 cookie 或启动服务器。
+- 网页测试优先调用已安装的 `playwright-cli`，可用时先加载同名技能并检查实际 help；未安装时使用当前宿主默认浏览器工具。缺失能力标记 `UNVERIFIED`，不自动安装、下载浏览器、导入个人 cookie 或启动服务器。
 - 可选 designer/外部模型关联到获授权且可用的工具。缺少 designer 时使用原版允许的 HTML 字体/颜色预览路径，不把静态预览当作实际 UI 验证。
 - 必需能力、权限或证据缺失时标记 `UNVERIFIED`，不宣称原版工具已经被完整等价验证。
 - 原版的修复、提交、推送、PR/MR 更新和恢复能力仍保留；实际执行需要相应的范围与动作授权。调用技能不是所有副作用的一揽子授权。
 
-关联适配说明：[动作授权](references/external-actions.md)、[浏览器](references/browser-tools.md)、[图像与外部模型](references/image-tools.md)、[本地内容检查](references/content-guard.md)。各技能的局部关联说明见对应资源。
+资源规则：技能独有的 references、scripts、assets 放在各自技能目录；多个技能共用的资源放在根 references、scripts，不交叉借用其他技能的私有参考。
+
+关联适配说明：[动作授权](references/external-actions.md)、[浏览器](references/browser-tools.md)、[图像与外部模型](references/image-tools.md)、[本地内容检查](references/content-guard.md)、[共用兼容说明](references/compatibility-notes.md)。[上游技能调用清单](integration-plan.md#上游技能调用)区分包内技能、未迁入调用和已展开的必要资源。
 
 ## Claude Code
 

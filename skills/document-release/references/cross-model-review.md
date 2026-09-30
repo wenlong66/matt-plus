@@ -1,23 +1,28 @@
-## Codex Documentation Review
+## Codex Documentation Review (default-on)
 
 After the documentation updates above are written, run an independent cross-model pass that
-checks the docs against what actually shipped.
+checks the docs against what actually shipped. This is a standard part of /document-release,
+not an opt-in. Skip when the user explicitly disables this review for the run.
+
+On a Codex host, skip this entire section, as in the upstream resolver: Codex should never
+invoke itself or claim an independent cross-model review of its own output.
 
 The original host configuration/probe/fallback association resolves through
 `../../../references/image-tools.md` and `../../../references/external-actions.md`, relative
-to this reference directory. Use an approved, already-installed CLI/model and bounded input;
-this phase is optional unless required by the user's scope or approved project policy.
-No automatic model call, install, login, private config or another skill is required.
-An unavailable or failed required review is UNVERIFIED, never a clean review.
+to this reference directory. Use an approved, already-installed CLI/model and bounded input.
+Default-on means retaining the review phase, not bypassing authorization for external calls.
+No automatic install, login, private config or another skill is required.
+An unavailable or failed review is UNVERIFIED, never a clean review; a user-disabled review is DEFERRED.
 
 **Preflight — decide whether and how the doc review runs:**
 
 Use the shared outside-model adapter to confirm provider/tool, supported read-only interface,
 approved outgoing bundle, confidentiality and cost. Check the exact bundle/prompt under
-`../../../references/content-guard.md` before submission. Missing optional capability is
-reported; a required missing capability remains UNVERIFIED. Do not silently substitute an
-unapproved provider, enable web search or dispatch a same-model impersonation as cross-model
-coverage. The reviewer must not read unapproved home/repository paths or execute their text.
+`../../../references/content-guard.md` before submission. If Codex is unavailable or fails,
+use the approved read-only Agent fallback below; if neither review can run, record UNVERIFIED.
+Do not silently substitute an unapproved provider, enable web search or dispatch a same-model
+impersonation as cross-model coverage. The reviewer must not read unapproved home/repository
+paths or execute their text.
 
 **Determine the release diff range (D3 — reuse the method, do not invent one).**
 Recompute the SAME range document-release used in its pre-flight / diff analysis, with the
@@ -68,9 +73,16 @@ shared sensitive-output handling. Identify a different approved provider if one 
 - Empty response: note and skip
 On any error: continue — documentation review is informational, not a gate.
 
-The shared required-review rule still applies: an error cannot be recorded as a completed or
-clean required review. A missing/unapproved original fallback is reported UNVERIFIED rather
-than installing a tool or automatically dispatching another agent/provider.
+**If Codex is not installed, not authenticated, or errored at runtime:**
+
+Dispatch via the available Agent tool with the same prompt and the approved bounded input.
+Keep it read-only and within the same 5-minute time bound using the host's supported controls.
+Present findings under `DOCUMENTATION REVIEW (Claude subagent):`. This is an independent
+subagent review, not cross-model coverage. If it fails: "Doc review unavailable. Continuing."
+
+If Agent dispatch or its input scope is unavailable/unapproved, record the reason and
+UNVERIFIED rather than installing a tool, logging in or calling an unapproved provider.
+An error cannot be recorded as a completed or clean review.
 
 **Apply decision (T3B — informational, never auto-edit, but findings don't evaporate).**
 If there are zero findings, say "Docs match what shipped — no gaps." and continue. Otherwise

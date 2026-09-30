@@ -12,14 +12,14 @@ matt-plus 分发下列 MIT 内容的独立适配版本，不是上游官方发�
 ### frontend-ui-engineering
 
 - 源：[skills/frontend-ui-engineering/SKILL.md](https://github.com/wenlong66/agent-skills/blob/14873a11dfc2ac7ed5be19069e0d0828ef7f2fec/skills/frontend-ui-engineering/SKILL.md)。
-- 本地：[技能](skills/frontend-ui-engineering/SKILL.md)、[无障碍检查表](references/accessibility-checklist.md)。
+- 本地：[技能](skills/frontend-ui-engineering/SKILL.md)、[无障碍检查表](skills/frontend-ui-engineering/references/accessibility-checklist.md)。
 - 原版名称、description、正文、架构/状态/JSX/乐观更新示例、参考驱动设计和验证要求保留；仅增加独立执行关联说明。
 
 ### security-and-hardening
 
 - 源：[skills/security-and-hardening/SKILL.md](https://github.com/wenlong66/agent-skills/blob/14873a11dfc2ac7ed5be19069e0d0828ef7f2fec/skills/security-and-hardening/SKILL.md)、同目录 hardening-patterns 和原版安全检查表。
-- 本地：[技能](skills/security-and-hardening/SKILL.md)、[原版 hardening patterns](skills/security-and-hardening/references/hardening-patterns.md)、[安全检查表](references/security-checklist.md)、[关联兼容说明](skills/security-and-hardening/references/compatibility-notes.md)。
-- 保留原版威胁模型、全部控制与例子。只替换原始值 grep 为共享掩码工具，删除未迁入 observability 技能关联，替换未迁入 debugging 技能关联。原版例子的适用限制单独说明，不重写正文。
+- 本地：[技能](skills/security-and-hardening/SKILL.md)、[原版 hardening patterns](skills/security-and-hardening/references/hardening-patterns.md)、[安全检查表](skills/security-and-hardening/references/security-checklist.md)、[共用兼容说明](references/compatibility-notes.md)。
+- 保留原版威胁模型、全部控制与例子，以及 observability/debugging 原版关联；未迁入的条件与可选调用见[上游技能调用清单](integration-plan.md#上游技能调用)。只替换原始值 grep 为共享掩码工具，并扫描确切 index blob 而非 diff 文本。原版例子的适用限制单独说明，不重写正文。
 
 ## gstack
 
@@ -33,13 +33,13 @@ matt-plus 分发下列 MIT 内容的独立适配版本，不是上游官方发�
 
 - 源：[design-review/SKILL.md.tmpl](https://github.com/wenlong66/gstack/blob/e7b2ef21e20e6f359ccdc1cf0394dacbe339ad09/design-review/SKILL.md.tmpl)、原版 design resolver 的方法、规则、报告及相关模板。
 - 本地：[技能](skills/design-review/SKILL.md)、[必要方法与关联资源](skills/design-review/references/)、[报告资源](skills/design-review/assets/)。
-- 保留原版实际设计审计、修复、原子提交、复测、回归和失败处理；权限、浏览器、比较工具、报告路径与外部模型作为关联适配，不减为只读审计。
+- 保留原版实际设计审计、修复、原子提交、复测、回归和失败处理；[测试 bootstrap](skills/design-review/references/test-framework.md) 随包保留安装/配置、首批真实测试、suite 验证与失败恢复，以及原版授权范围内的 CI/测试文档/提交步骤，来源为[testing resolver](https://github.com/wenlong66/gstack/blob/e7b2ef21e20e6f359ccdc1cf0394dacbe339ad09/scripts/resolvers/testing.ts#L3-L157)。权限、浏览器、比较工具、报告路径与外部模型作为关联适配，不减为只读审计。
 
 ### document-release
 
 - 源：[document-release/SKILL.md.tmpl](https://github.com/wenlong66/gstack/blob/e7b2ef21e20e6f359ccdc1cf0394dacbe339ad09/document-release/SKILL.md.tmpl)、release-body section、doc coverage/health 和原版审查/发布关联。
 - 本地：[技能](skills/document-release/SKILL.md)、[必要段落与关联资源](skills/document-release/references/)。
-- 保留原名及文档审计/更新、覆盖地图、图表、CHANGELOG、可选 TODO/VERSION、提交/推送/PR-MR 同步；仅适配缺失的 `/ship`、分支、平台工具和全局 helper 关联。
+- 保留原名及文档审计/更新、覆盖地图、图表、CHANGELOG、可选 TODO/VERSION、提交/推送/PR-MR 同步；[独立文档复核](skills/document-release/references/cross-model-review.md) 保留[原版](https://github.com/wenlong66/gstack/blob/e7b2ef21e20e6f359ccdc1cf0394dacbe339ad09/scripts/resolvers/review.ts#L743-L808)默认开启、Codex 宿主不自调用、失败/不可用时准确标注的只读子代理回退。仅适配缺失的 `/ship`、分支、平台工具和全局 helper 关联。
 
 ### document-generate
 

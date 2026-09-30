@@ -2,7 +2,7 @@
 
 Quick reference for web application security. Use alongside the `security-and-hardening` skill.
 
-For package-local tool and workflow associations, see [Compatibility Notes](../skills/security-and-hardening/references/compatibility-notes.md).
+For package-local tool and workflow associations, see [Compatibility Notes](../../../references/compatibility-notes.md).
 
 ## Table of Contents
 
@@ -31,7 +31,7 @@ Before reaching for controls, spend five minutes thinking like an attacker:
 
 ## Pre-Commit Checks
 
-- [ ] No secrets in code (use the shared [Content Guard](content-guard.md) on approved staged content; its reports are masked)
+- [ ] No secrets in code (use the shared [Content Guard](../../../references/content-guard.md) on approved staged content; its reports are masked)
 - [ ] `.gitignore` covers: `.env`, `.env.local`, `*.pem`, `*.key`
 - [ ] `.env.example` uses placeholder values (not real secrets)
 
