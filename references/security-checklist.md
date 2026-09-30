@@ -2,6 +2,8 @@
 
 Quick reference for web application security. Use alongside the `security-and-hardening` skill.
 
+For package-local tool and workflow associations, see [Compatibility Notes](../skills/security-and-hardening/references/compatibility-notes.md).
+
 ## Table of Contents
 
 - [Threat Modeling (Start Here)](#threat-modeling-start-here)
@@ -29,7 +31,7 @@ Before reaching for controls, spend five minutes thinking like an attacker:
 
 ## Pre-Commit Checks
 
-- [ ] No secrets in code (use the [masked local scanner](../skills/security-audit/scripts/masked-secret-scan.mjs): `git diff --cached | node skills/security-audit/scripts/masked-secret-scan.mjs --stdin`; it reports candidates without printing their raw values)
+- [ ] No secrets in code (use the shared [Content Guard](content-guard.md) on approved staged content; its reports are masked)
 - [ ] `.gitignore` covers: `.env`, `.env.local`, `*.pem`, `*.key`
 - [ ] `.env.example` uses placeholder values (not real secrets)
 
@@ -138,6 +140,9 @@ cors({ origin: '*' })  // Allows any origin
 - [ ] PII encrypted at rest (if required by regulation)
 - [ ] HTTPS for all external communication
 - [ ] Database backups encrypted
+- [ ] Personal data is classified, collected against a stated purpose, and minimized
+- [ ] Personal data has a retention limit and a working deletion path (incl. backups, caches, indexes)
+- [ ] Export/delete (data-subject) requests are supported where required; third-party sharing has consent and a data-processing agreement
 
 ## Dependency Security
 

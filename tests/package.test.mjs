@@ -9,18 +9,17 @@ const rootRealPath = realpathSync(root);
 const EXPECTED_SKILLS = [
   'design-consultation',
   'frontend-ui-engineering',
-  'web-qa',
   'design-review',
-  'security-and-hardening',
-  'security-audit',
-  'shipping-and-launch',
-  'setup-deploy',
-  'land-and-deploy',
+  'document-release',
   'document-generate',
-  'document-update',
+  'security-and-hardening',
 ];
-const TEXT_EXTENSIONS = new Set(['.html', '.json', '.md', '.mjs']);
+const TEXT_EXTENSIONS = new Set(['.html', '.js', '.json', '.md', '.mjs', '.sh']);
+const HOST_MACROS = /\{\{[A-Z][A-Z0-9_:.-]*\}\}/;
+const HOST_RUNTIME = /\$B\b|\$GSTACK_[A-Z_]+/;
+const HOST_EXECUTABLE = /~\/\.gstack|~\/\.claude\/skills\/gstack|\bbun\s+(?:run|install|exec)\b/;
 const readJson = (path) => JSON.parse(readFileSync(join(root, path), 'utf8'));
+const readText = (path) => readFileSync(join(root, path), 'utf8');
 const plugin = readJson('.claude-plugin/plugin.json');
 const marketplace = readJson('.claude-plugin/marketplace.json');
 const codexPlugin = readJson('.codex-plugin/plugin.json');
@@ -35,8 +34,7 @@ function packageFiles(directory) {
 function distributableFiles() {
   return [
     ...['README.md', 'integration-plan.md', 'THIRD_PARTY_NOTICES.md'].map((name) => join(root, name)),
-    ...packageFiles(join(root, 'references')),
-    ...packageFiles(join(root, 'skills')),
+    ...['references', 'skills', 'scripts'].flatMap((name) => packageFiles(join(root, name))),
   ];
 }
 
@@ -49,58 +47,88 @@ function assertInsidePackage(file, link) {
   assert.ok(localPath !== '..' && !localPath.startsWith(`..${sep}`) && !isAbsolute(localPath), `${relative(root, file)}: external dependency ${link}`);
 }
 
+function skillResources(name) {
+  return packageFiles(join(root, 'skills', name))
+    .filter((path) => path.endsWith('.md'))
+    .map((path) => readFileSync(path, 'utf8')).join('\n');
+}
+
+function withoutCodeExamples(text) {
+  return text.replace(/^(`{3,}|~{3,})[^\n]*\n[\s\S]*?^\1[ \t]*$/gm, '');
+}
+
+function codeExamples(text) {
+  return Array.from(text.matchAll(/^(`{3,}|~{3,})[^\n]*\n[\s\S]*?^\1[ \t]*$/gm), (match) => match[0]).join('\n');
+}
+
 test('marketplace resolves to this plugin with matching metadata', () => {
   assert.equal(plugin.name, 'matt-plus');
   assert.equal(marketplace.plugins.length, 1);
   const entry = marketplace.plugins[0];
-  assert.equal(entry.name, plugin.name);
-  assert.equal(entry.version, plugin.version);
+  for (const field of ['name', 'version', 'description', 'license']) {
+    assert.equal(entry[field], plugin[field], `${field} differs`);
+  }
   assert.equal(entry.source, './');
   assert.ok(plugin.author.name);
 });
 
 test('Codex plugin shares the canonical skill tree and metadata', () => {
   for (const field of ['name', 'version', 'description', 'author', 'homepage', 'repository', 'license']) {
-    assert.deepEqual(codexPlugin[field], plugin[field], `Codex plugin ${field} differs from Claude plugin`);
+    assert.deepEqual(codexPlugin[field], plugin[field], `Codex plugin ${field} differs`);
   }
   assert.equal(codexPlugin.skills, './skills/');
   assert.equal(realpathSync(join(root, codexPlugin.skills)), realpathSync(join(root, 'skills')));
 });
 
-test('manifest declares exactly the four-domain skill matrix', () => {
+test('manifest and shipped directories contain exactly the six original names', () => {
   assert.deepEqual(plugin.skills.map((path) => basename(path)), EXPECTED_SKILLS);
   const shipped = readdirSync(join(root, 'skills'), { withFileTypes: true })
-    .filter((entry) => entry.isDirectory())
-    .map((entry) => entry.name)
-    .sort();
-  assert.deepEqual(shipped, [...EXPECTED_SKILLS].sort());
+    .filter((entry) => entry.isDirectory()).map((entry) => entry.name);
+  assert.deepEqual([...shipped].sort(), [...EXPECTED_SKILLS].sort());
 });
 
-test('every declared skill contains a self-contained local body', () => {
+test('every declared skill includes its original-name workflow, not a pointer stub', () => {
   for (const skill of plugin.skills) {
-    const body = readFileSync(join(root, skill, 'SKILL.md'), 'utf8');
+    const body = readText(`${skill}/SKILL.md`);
     assert.equal(body.match(/^name:\s*(.+)$/m)?.[1], basename(skill));
     assert.match(body, /^description:\s*\S/m);
-    assert.ok(body.split('\n').length > 20, `${skill}: missing the actual workflow`);
-    assert.doesNotMatch(body, /\{\{[^}]+\}\}|~\/\.gstack|~\/\.claude\/skills\/gstack|\$B\b|\bBun\b/);
+    assert.ok(body.split('\n').length > 20, `${skill}: missing workflow`);
+    assert.doesNotMatch(body, HOST_MACROS, `${skill}: unexpanded host macro`);
+    assert.doesNotMatch(body, HOST_RUNTIME, `${skill}: unresolved runtime handle`);
+    assert.doesNotMatch(codeExamples(body), HOST_EXECUTABLE, `${skill}: host executable dependency`);
   }
 });
 
-test('web-qa requires a CLI, evidence, and finding-level repair approval', () => {
-  const body = readFileSync(join(root, 'skills', 'web-qa', 'SKILL.md'), 'utf8');
-  assert.match(body, /\bplaywright-cli\b/i);
-  assert.match(body, /\bUNVERIFIED\b/);
-  assert.match(body, /每个 finding 的源码或测试修改都要单独获得用户批准/);
-  assert.match(body, /只有用户.*明确同意后，才能执行 `npm install -g @playwright\/cli@latest`/);
-  assert.match(body, /导入个人 cookie/);
-  assert.match(body, /不要.*启动任意开发服务器/);
-  assert.match(body, /不要使用 `attach`.*`state-load`.*`playwright-cli install`/);
-  assert.doesNotMatch(body, /\bMCP\b|~\/\.gstack|\$B\b|\bBun\b/);
+test('original frontend tutorials and security domain controls are retained', () => {
+  const frontend = skillResources('frontend-ui-engineering');
+  for (const marker of [/Component Architecture/i, /State Management/i, /Optimistic/i, /Reference-Led/i, /Common Rationalizations/i]) {
+    assert.match(frontend, marker);
+  }
+  const security = skillResources('security-and-hardening');
+  for (const marker of [/Threat Model First/i, /STRIDE/, /abuse cases/i, /Dependencies and supply chain/i, /Personal data and privacy/i, /LLM output/i]) {
+    assert.match(security, marker);
+  }
+  assert.ok(existsSync(join(root, 'skills/security-and-hardening/references/hardening-patterns.md')));
 });
 
-test('all distributable Markdown links resolve within the package', () => {
+test('design workflows retain proposals, visual evidence, fixes and recovery', () => {
+  const consultation = skillResources('design-consultation');
+  for (const marker of [/DESIGN\.md/, /preview/i, /Comparison Board \+ Feedback Loop/i, /typography/i, /color/i]) assert.match(consultation, marker);
+  const review = skillResources('design-review');
+  for (const marker of [/audit/i, /fix/i, /atomic/i, /before/i, /after/i, /regression/i, /revert/i]) assert.match(review, marker);
+  assert.ok(existsSync(join(root, 'skills/design-consultation/assets/design-preview.html')));
+});
+
+test('both original documentation workflows retain their distinct phases', () => {
+  const release = skillResources('document-release');
+  for (const marker of [/coverage/i, /diagram/i, /CHANGELOG/, /TODOS\.md/, /VERSION/, /commit/i, /push/i, /(?:PR|MR)/]) assert.match(release, marker);
+  const generate = skillResources('document-generate');
+  for (const marker of [/archaeology/i, /concept map/i, /Di[aá]taxis/i, /tutorial/i, /how-to/i, /reference/i, /explanation/i, /commit/i]) assert.match(generate, marker);
+});
+
+test('all instruction/document Markdown links resolve inside the package', () => {
   for (const file of distributableFiles().filter((path) => path.endsWith('.md'))) {
-    const text = readFileSync(file, 'utf8');
+    const text = withoutCodeExamples(readFileSync(file, 'utf8'));
     for (const match of text.matchAll(/!?\[[^\]]*\]\(([^)]+)\)/g)) {
       const link = match[1].trim();
       if (/^(?:https?:|mailto:|#)/.test(link)) continue;
@@ -109,26 +137,36 @@ test('all distributable Markdown links resolve within the package', () => {
   }
 });
 
-test('package excludes rejected drafts and upstream runtime coupling', () => {
-  const text = distributableFiles().map((file) => readFileSync(file, 'utf8')).join('\n');
-  assert.doesNotMatch(text, /qa-only|constraint-driven-development/);
-  assert.doesNotMatch(text, /\{\{[^}]+\}\}|~\/\.gstack|~\/\.claude\/skills\/gstack|\$B\b|\bBun\b/);
-  assert.doesNotMatch(text, /gstack\s+(?:telemetry|updater)|(?:telemetry|updater)\s+gstack/i);
+test('skill resources have no unresolved host macro or private runtime association', () => {
+  for (const file of packageFiles(join(root, 'skills'))) {
+    const text = readFileSync(file, 'utf8');
+    assert.doesNotMatch(text, HOST_MACROS, relative(root, file));
+    assert.doesNotMatch(text, HOST_RUNTIME, relative(root, file));
+    assert.doesNotMatch(codeExamples(text), HOST_EXECUTABLE, relative(root, file));
+  }
 });
 
-test('each shipped skill has source attribution and positive plus boundary evals', () => {
-  const evals = readJson('evals/evals.json');
-  const notices = readFileSync(join(root, 'THIRD_PARTY_NOTICES.md'), 'utf8');
-  assert.ok(existsSync(join(root, 'LICENSE')));
-  assert.ok(Array.isArray(evals.evals));
+test('shared adapters declare prerequisites, permission gates and exact-byte checking', () => {
+  const actions = readText('references/external-actions.md');
+  for (const marker of [/approval/i, /unrelated/i, /UNVERIFIED/, /denied/i, /atomic/i]) assert.match(actions, marker);
+  const browser = readText('references/browser-tools.md');
+  for (const marker of [/playwright-cli/, /help/, /UNVERIFIED/, /pixel.diff/i, /before\/after/i]) assert.match(browser, marker);
+  const image = readText('references/image-tools.md');
+  for (const marker of [/HTML/, /fallback/i, /approved/i, /UNVERIFIED/]) assert.match(image, marker);
+  const guard = readText('references/content-guard.md');
+  for (const marker of [/exact final/i, /outgoing commit/i, /subsequently deleted/i, /--from-file/, /semantic/i]) assert.match(guard, marker);
+});
+
+test('each original skill has pinned source attribution and preserved licensing', () => {
+  const notices = readText('THIRD_PARTY_NOTICES.md');
+  const license = readText('LICENSE');
+  assert.match(notices, /14873a11dfc2ac7ed5be19069e0d0828ef7f2fec/);
+  assert.match(notices, /e7b2ef21e20e6f359ccdc1cf0394dacbe339ad09/);
+  assert.match(license, /MIT License/);
+  assert.match(license, /Addy Osmani/);
+  assert.match(license, /Garry Tan/);
   for (const name of EXPECTED_SKILLS) {
-    const cases = evals.evals.filter((entry) => entry.skill_name === name);
-    assert.equal(cases.length, 2, `${name}: expected positive and boundary cases`);
-    assert.ok(cases.some((entry) => entry.kind === 'positive'), `${name}: missing positive case`);
-    assert.ok(cases.some((entry) => entry.kind === 'boundary'), `${name}: missing boundary case`);
-    for (const entry of cases) {
-      assert.ok(entry.id && entry.prompt && entry.expected_output, `${name}: incomplete eval case`);
-    }
-    assert.ok(notices.includes(`### ${name}`), `${name}: no attribution`);
+    assert.ok(notices.includes(`### ${name}`), `${name}: missing attribution`);
   }
+  assert.equal(existsSync(join(root, 'evals')), false, 'effectiveness evaluations are outside this adaptation');
 });

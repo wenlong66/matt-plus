@@ -2,6 +2,8 @@
 
 Quick reference for WCAG 2.1 AA compliance. Use alongside the `frontend-ui-engineering` skill.
 
+For package-local tool and workflow associations, see [Compatibility Notes](../skills/security-and-hardening/references/compatibility-notes.md).
+
 ## Table of Contents
 
 - [Essential Checks](#essential-checks)

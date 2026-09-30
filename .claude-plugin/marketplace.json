@@ -1,6 +1,6 @@
 {
   "name": "matt-plus",
-  "description": "精选并适配的 Matt Pocock 生产工程扩展。",
+  "description": "保留原版技能的 Matt Pocock 专项扩展。",
   "owner": {
     "name": "Long"
   },
@@ -8,7 +8,7 @@
     {
       "name": "matt-plus",
       "source": "./",
-      "description": "生产设计、安全、发布与文档维护的自包含 Matt Pocock 扩展。",
+      "description": "原版技能的独立适配：UI 设计与实现、文档生成与同步、安全加固。",
       "version": "0.3.0",
       "license": "MIT"
     }

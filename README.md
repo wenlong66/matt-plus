@@ -1,88 +1,77 @@
 # matt-plus
 
-**面向 Matt Pocock Skills 的自包含 Claude Code 扩展：生产设计、安全、发布与文档维护。**
+**面向 Matt Pocock Skills 的六个原版技能移植：UI 设计、文档生成与同步、安全加固。**
 
-本插件实际分发本地 `SKILL.md`、模板、检查表和脚本；运行时不需要安装完整的 `agent-skills` 或 `gstack`。Matt 仍负责需求澄清、规格、TDD、实现、诊断、领域建模与通用代码审查；matt-plus 只补这四条专项能力链。
+从 `agent-skills` 和 `gstack` 重新选取，不沿用旧版 matt-plus 的技能组合。保留原名、原版正文、必要功能与工作流；只适配缺失的工具、资源和路径关联，删除无用的宿主关联。不改写、合并或精简原版领域内容。
 
-## 技能
+本包分发实际技能及其必要资源，运行时不需要安装完整上游插件。与 Matt 的通用需求、规格、TDD、实现和 code review 流程配合使用，不强制安装 Matt，也不把专项技能的原有修复/验证阶段转交给它。
 
-| 领域 | 入口 | 作用 |
+## 六个入口
+
+| 来源 | 技能 | 原版职责 |
 | --- | --- | --- |
-| 设计 | `/matt-plus:design-consultation` | 建立或更新有依据的设计方向、token、组件原则、`DESIGN.md` 与本地预览。 |
-| 设计 | `/matt-plus:frontend-ui-engineering` | 实现可上线的 UI：真实状态、响应式、键盘和焦点可访问性。 |
-| 设计 | `/matt-plus:web-qa` | 使用 Playwright 对已授权页面做功能与回归 QA，交付可复现证据与逐项授权修复建议。 |
-| 设计 | `/matt-plus:design-review` | 审计运行中页面的视觉与交互质量；仅在获授权时最小修复并复测。 |
-| 安全 | `/matt-plus:security-and-hardening` | 对明确 feature、端点、集成或 finding 做威胁建模、安全实现与负向验证。 |
-| 安全 | `/matt-plus:security-audit` | 对指定仓库、diff 或领域进行默认本地、只读、非联网的安全态势审计。 |
-| 发布 | `/matt-plus:shipping-and-launch` | 汇总发布就绪证据，制定 flag、灰度、监测与恢复策略。 |
-| 发布 | `/matt-plus:setup-deploy` | 发现并经确认记录项目的 deploy profile；不创建基础设施。 |
-| 发布 | `/matt-plus:land-and-deploy` | 先生成只读 dry-run；逐项授权后才可编排 merge、deploy、验证或 revert。 |
-| 文档 | `/matt-plus:document-generate` | 通过代码考古与 Diataxis 生成或重构指定项目/用户文档。 |
-| 文档 | `/matt-plus:document-update` | 依据确认的 base diff 发现并保守修正现有文档的事实漂移。 |
+| gstack | `/matt-plus:design-consultation` | 理解产品、研究设计方向、提出设计系统、预览与迭代，产出 `DESIGN.md`。 |
+| agent-skills | `/matt-plus:frontend-ui-engineering` | 将设计实现为具体 UI，保留组件/状态示例、参考驱动设计、响应式、可访问性与完成检查。 |
+| gstack | `/matt-plus:design-review` | 实际页面的设计审计 → 修复 → 原子提交 → 前后复测与回归处理。 |
+| gstack | `/matt-plus:document-release` | 基于变更同步已有文档、覆盖地图、图表、CHANGELOG，以及原版可选 TODO、版本和 PR/MR 同步。 |
+| gstack | `/matt-plus:document-generate` | 代码考古、概念地图、按需要选择 Diataxis 象限，生成文档并校验实例、链接与事实。 |
+| agent-skills | `/matt-plus:security-and-hardening` | 威胁建模、abuse case、安全实现、依赖审计及负向验证。 |
 
-完整能力边界、来源适配和验收状态见 [integration-plan.md](integration-plan.md)。
+不收录通用功能 QA、全仓安全态势审计或部署技能。文档的 `document-release` 不等于生产部署。
 
-## 使用本地插件
+## 独立适配与工具要求
 
-在目标项目中以 matt-plus 的绝对路径启动 Claude Code：
+- 所有必要正文、模板、检查表和本地脚本随包分发；来源链接仅用于追溯。
+- gstack 模板的必要领域段落在包内展开或关联，宿主的推广、遥测、更新检查和全局记忆/状态关联不迁入。
+- 浏览器能力关联到已安装的 `playwright-cli`，或目标项目已有 Playwright runner。先检查实际 help；不自动安装、下载浏览器、导入个人 cookie 或启动服务器。
+- 可选 designer/外部模型关联到获授权且可用的工具。缺少 designer 时使用原版允许的 HTML 字体/颜色预览路径，不把静态预览当作实际 UI 验证。
+- 必需能力、权限或证据缺失时标记 `UNVERIFIED`，不宣称原版工具已经被完整等价验证。
+- 原版的修复、提交、推送、PR/MR 更新和恢复能力仍保留；实际执行需要相应的范围与动作授权。调用技能不是所有副作用的一揽子授权。
+
+关联适配说明：[动作授权](references/external-actions.md)、[浏览器](references/browser-tools.md)、[图像与外部模型](references/image-tools.md)、[本地内容检查](references/content-guard.md)。各技能的局部关联说明见对应资源。
+
+## Claude Code
+
+在目标项目中由用户选择加载方式，避免重复加载同一插件：
 
 ```bash
 claude --plugin-dir /absolute/path/to/matt-plus
 ```
 
-也可以通过本地 marketplace 安装：
+或通过本地 marketplace：
 
 ```text
 /plugin marketplace add /absolute/path/to/matt-plus
 /plugin install matt-plus@matt-plus
 ```
 
-这是使用说明，不会由本仓库的开发流程自动安装或更新插件。避免同时以临时目录和 marketplace 重复加载同一插件。
+上述命令是使用说明，不会在本次适配中自动执行安装。
 
-## 使用 Codex 插件
+## Codex
 
-Codex 与 Claude Code 共用本包唯一的规范技能目录 [`skills/`](skills/)；[`.codex-plugin/plugin.json`](.codex-plugin/plugin.json) 直接声明 `"skills": "./skills/"`，不含第二份技能副本。
-
-本仓库根目录的 Codex marketplace 已包含 `matt-plus`。查看它实际暴露的插件标识：
+Codex 与 Claude Code 共用唯一的 [skills/](skills/)；[Codex manifest](.codex-plugin/plugin.json) 直接指向 `./skills/`，不复制第二套正文。本仓库现有 Codex marketplace 已关联 matt-plus，可由用户主动选择安装：
 
 ```bash
 codex plugin list
-```
-
-当前 marketplace manifest 名为 `plugins`，因此由用户主动安装时使用：
-
-```bash
 codex plugin add matt-plus@plugins
 ```
 
-安装会修改 Codex 用户配置，本仓库不会自动执行。Claude Code 的 marketplace manifest 不配置 Codex；同一会话只选择一个插件来源，避免混用版本。
+安装会修改用户配置；本包适配不自动执行。
 
-## 权限与验证边界
+## 本地验证
 
-- 缺少工具、凭据、URL、环境、权限或实际执行信号时，技能必须报告 `UNVERIFIED`，不能将推测写成通过。
-- 不会自动安装依赖、读取 home directory/全局设置、导入浏览器 cookie、访问外部账户、提交、推送、创建或编辑 PR。
-- `security-audit` 默认不联网、不写报告、不做主动请求；网络扫描、全局扫描、保存报告或任何服务测试都需要单独授权。
-- `land-and-deploy` 的 merge、staging/production deploy、canary、revert 和生产访问均须针对当前 repo、revision、环境、账户、影响与恢复方式重新确认。调用技能本身不是一揽子授权。
-- `web-qa` 优先使用已安装的全局 `playwright-cli`，不可用时才使用项目已有的 Playwright runner；不使用浏览器 MCP、不会自动安装依赖或下载浏览器。若需要执行 `npm install -g @playwright/cli@latest`，会先单独确认全局机器改动。
-- 浏览器检查只使用获授权的 URL、测试账户和测试数据；付款、删除、发消息等真实业务写入必须另行明确授权。QA 先报告 finding，每个源码或测试修复均须逐项明确批准并在同条件下复测。
-
-本插件没有声明或验证任何真实浏览器、云平台、CI、生产系统或部署行为；这些结果只能在已授权的隔离环境中取得。
-
-## 验证与开发
-
-无需安装 npm 依赖。Node.js 18+ 用于确定性包检查和脱敏扫描器测试；Claude Code CLI 用于官方插件格式检查：
+Node.js 18+，无需安装 npm 依赖：
 
 ```bash
-node --test tests/package.test.mjs tests/masked-secret-scan.test.mjs
+node --test tests/package.test.mjs tests/content-guard.test.mjs
 claude plugin validate . --strict
 ```
 
-[evals/evals.json](evals/evals.json) 为每个技能提供正常触发与权限/缺失条件行为用例。结构测试证明目录、链接、许可、来源和安全约束的闭包，不证明模型产物质量或外部流程已经执行；后者仍需按 [integration-plan.md](integration-plan.md) 中的 with-skill/baseline 评估完成。
+验收只检查原版保真与适配正确性：六技能清单、两端 manifest、源正文差异、包内引用、来源和模板关联。内容检查工具用合成数据验证移植后的脚本接口与错误处理，不验证真实凭据。
 
-## 来源与维护
+本轮 11 项包结构检查与 100 项工具适配检查通过，Claude Code 插件和 marketplace manifest 均通过严格格式检查。不做技能有效性、审美提升或模型增益评估，也不运行真实浏览器、外部审查或发布流程。检查范围见 [integration-plan.md](integration-plan.md)。
 
-- [集成规划与当前验证状态](integration-plan.md)
-- [第三方来源、快照与适配说明](THIRD_PARTY_NOTICES.md)
-- [MIT 许可与版权声明](LICENSE)
+## 来源
 
-matt-plus 维护自己的适配版本，不会自动同步上游。上游更新只在复核许可、资源闭包、权限模型和行为验收后选择性迁入。
+- [第三方来源、精确快照与适配范围](THIRD_PARTY_NOTICES.md)
+- [MIT 许可与原作者版权声明](LICENSE)

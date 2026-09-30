@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Design directions — comparison board</title>
+  <!-- Copy beside the generated variants. Replace labels/relative image paths with actual outputs.
+       This board does not upload, fetch, serve, persist globally, or call a model. -->
+  <style>
+    :root { color-scheme: light; --paper: #f4f1e8; --surface: #fffdf7; --ink: #22352c; --muted: #59655b; --accent: #1b4a3d; --line: #b9bdb0; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--paper); color: var(--ink); font: 16px/1.5 "DM Sans", "Trebuchet MS", sans-serif; }
+    main { max-width: 1500px; margin: auto; padding: 32px; }
+    h1 { font: 48px/1.1 "Instrument Serif", Georgia, serif; margin: 16px 0; }
+    h2 { margin: 0; font-size: 20px; }
+    p { max-width: 75ch; }
+    .muted { color: var(--muted); }
+    .variants { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; margin: 32px 0; }
+    .variant { padding: 20px; background: var(--surface); border: 1px solid var(--line); }
+    img { display: block; width: 100%; height: 320px; object-fit: contain; background: var(--paper); margin: 16px 0; border: 1px solid var(--line); }
+    fieldset { margin: 0 0 24px; padding: 24px; border: 1px solid var(--line); }
+    legend { font-weight: 700; }
+    label { display: block; margin: 16px 0; font-weight: 700; }
+    input, textarea, select, button { font: inherit; }
+    textarea, select { width: 100%; padding: 10px; min-height: 44px; margin-top: 8px; background: var(--surface); color: var(--ink); border: 1px solid var(--line); border-radius: 4px; }
+    textarea { min-height: 90px; resize: vertical; }
+    .choice { display: flex; align-items: center; min-height: 44px; gap: 12px; }
+    input[type="radio"] { width: 20px; height: 20px; accent-color: var(--accent); }
+    button { min-height: 44px; padding: 12px 20px; color: var(--surface); background: var(--accent); border: 1px solid var(--accent); border-radius: 4px; cursor: pointer; }
+    .secondary { background: var(--surface); color: var(--accent); }
+    :focus-visible { outline: 3px solid #315b83; outline-offset: 4px; }
+    .row { display: flex; flex-wrap: wrap; gap: 16px; }
+    .remix { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    @media (max-width: 1000px) { .variants { grid-template-columns: 1fr; } img { height: auto; min-height: 160px; max-height: 70vh; } }
+    @media (max-width: 600px) { main { padding: 16px; } .remix { grid-template-columns: 1fr; } h1 { font-size: 36px; } }
+  </style>
+</head>
+<body>
+  <main>
+    <p class="muted">Approved product brief / visual directions</p>
+    <h1>Which direction feels like your product?</h1>
+    <p>Compare the whole composition, not just the colors. Rate each variant, note what works, then choose a direction or ask for a remix. This local board only downloads feedback for you to share.</p>
+    <form id="feedback-form">
+      <div class="variants">
+        <section class="variant" aria-labelledby="variant-a"><h2 id="variant-a">Variant A</h2><img src="variant-A.png" alt="Generated product screen, variant A"><label class="choice"><input type="radio" name="preferred" value="A" required> Prefer A</label><label>Rating A<select name="rating-A"><option value="">Not rated</option><option value="1">1 — Not right</option><option value="2">2 — Needs work</option><option value="3">3 — Promising</option><option value="4">4 — Strong</option><option value="5">5 — Love it</option></select></label><label>Notes for A<textarea name="comment-A" placeholder="What should stay? What should change?"></textarea></label></section>
+        <section class="variant" aria-labelledby="variant-b"><h2 id="variant-b">Variant B</h2><img src="variant-B.png" alt="Generated product screen, variant B"><label class="choice"><input type="radio" name="preferred" value="B" required> Prefer B</label><label>Rating B<select name="rating-B"><option value="">Not rated</option><option value="1">1 — Not right</option><option value="2">2 — Needs work</option><option value="3">3 — Promising</option><option value="4">4 — Strong</option><option value="5">5 — Love it</option></select></label><label>Notes for B<textarea name="comment-B" placeholder="What should stay? What should change?"></textarea></label></section>
+        <section class="variant" aria-labelledby="variant-c"><h2 id="variant-c">Variant C</h2><img src="variant-C.png" alt="Generated product screen, variant C"><label class="choice"><input type="radio" name="preferred" value="C" required> Prefer C</label><label>Rating C<select name="rating-C"><option value="">Not rated</option><option value="1">1 — Not right</option><option value="2">2 — Needs work</option><option value="3">3 — Promising</option><option value="4">4 — Strong</option><option value="5">5 — Love it</option></select></label><label>Notes for C<textarea name="comment-C" placeholder="What should stay? What should change?"></textarea></label></section>
+      </div>
+      <label>Overall direction<textarea name="overall" placeholder="For example: A’s layout, B’s colors, and a quieter headline."></textarea></label>
+      <fieldset><legend>Request another round (optional)</legend><label>What should change?<select name="regenerateAction"><option value="different">Different — show fresh directions</option><option value="match">Match the brief more closely</option><option value="more_like_selected">More like my selected variant</option><option value="remix">Remix elements from the variants</option></select></label><div class="remix"><label>Layout from<select name="remix-layout"><option value="A">A</option><option value="B">B</option><option value="C">C</option></select></label><label>Colors from<select name="remix-colors"><option value="A">A</option><option value="B">B</option><option value="C">C</option></select></label><label>Typography from<select name="remix-typography"><option value="A">A</option><option value="B">B</option><option value="C">C</option></select></label></div><button class="secondary" id="request-round" type="button">Download regeneration / remix request</button></fieldset>
+      <div class="row"><button type="submit">Submit final choice — download feedback</button></div>
+      <p id="status" role="status" class="muted">No feedback has been sent. Download, inspect, and attach the JSON to your design conversation. You can also paste your preferences there.</p>
+    </form>
+  </main>
+  <script>
+    const form = document.getElementById('feedback-form');
+    const variants = Object.freeze(['A', 'B', 'C']);
+    const valueOf = (data, key) => String(data.get(key) || '').trim();
+    const collectFeedback = data => ({
+      preferred: valueOf(data, 'preferred') || null,
+      ratings: Object.fromEntries(variants.map(id => [id, valueOf(data, `rating-${id}`) ? Number(data.get(`rating-${id}`)) : null])),
+      comments: Object.fromEntries(variants.map(id => [id, valueOf(data, `comment-${id}`)])),
+      overall: valueOf(data, 'overall'),
+      regenerated: false
+    });
+    const downloadFeedback = (filename, feedback) => {
+      const url = URL.createObjectURL(new Blob([JSON.stringify(feedback, null, 2)], { type: 'application/json' }));
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = filename;
+      link.click();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+      document.getElementById('status').textContent = `Downloaded ${filename}. Attach it or paste your preferences in the design conversation. Nothing was uploaded or generated.`;
+    };
+    form.addEventListener('submit', event => {
+      event.preventDefault();
+      if (!form.reportValidity()) return;
+      downloadFeedback('feedback.json', collectFeedback(new FormData(form)));
+    });
+    document.getElementById('request-round').addEventListener('click', () => {
+      const data = new FormData(form);
+      const selected = valueOf(data, 'preferred');
+      const action = valueOf(data, 'regenerateAction');
+      if (action === 'more_like_selected' && !selected) {
+        document.getElementById('status').textContent = 'Choose a preferred variant before requesting more like it.';
+        return;
+      }
+      const feedback = {
+        ...collectFeedback(data),
+        regenerateAction: action === 'more_like_selected' ? `more_like_${selected}` : action,
+        ...(action === 'remix' ? { remixSpec: Object.fromEntries(['layout', 'colors', 'typography'].map(part => [part, valueOf(data, `remix-${part}`)])) } : {})
+      };
+      downloadFeedback('feedback-pending.json', feedback);
+    });
+  </script>
+</body>
+</html>

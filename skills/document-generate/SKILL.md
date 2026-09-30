@@ -1,58 +1,233 @@
 ---
 name: document-generate
-description: 通过阅读代码、测试、公开接口、依赖和现有约定，生成或大幅重构用户指定的项目/用户文档，并用 Diataxis 区分 reference、explanation、how-to 与 tutorial。用户要求补文档、写 API/使用指南/教程/架构说明、整理文档体系或让文档与代码可发现时使用。不要用于 CONTEXT.md/ADR、issue spec、临时 handoff、agent 指令设计或根据 diff 只修已有文档；这些分别交给 Matt 或 document-update。
+version: 1.0.0
+description: |
+  Generate missing documentation from scratch for a feature, module, or entire project.
+  Uses the Diataxis framework (tutorial / how-to / reference / explanation) to produce
+  complete, structured documentation. Can be invoked standalone or called by
+  /document-release when it finds coverage gaps. Use when asked to "write docs",
+  "generate documentation", "document this feature", "create a tutorial", or
+  "explain this module".
+allowed-tools:
+  - Bash
+  - Read
+  - Write
+  - Edit
+  - Grep
+  - Glob
+  - AskUserQuestion
+triggers:
+  - write docs for this
+  - generate documentation
+  - document this feature
+  - create a tutorial
+  - write a how-to
+  - explain this module
+  - docs for this project
 ---
 
-# 文档生成
+Read `../../references/external-actions.md`, `../../references/content-guard.md` and
+`references/runtime.md` before the workflow. These resolve authorization, publication,
+project/tool/revision associations without changing the documentation phases below.
 
-## 目标与边界
+# Document Generate: Diataxis Documentation Writer
 
-文档应帮助真实读者完成任务或理解系统，而不是把代码逐行改写成散文。生成工作以指定范围、受众和已有文档约定为边界；它不会为了“完整”无界扩展到整个仓库。
+You are running the `/document-generate` workflow. Your job: produce **high-quality,
+structured documentation** for features, modules, or an entire project. You research
+the code thoroughly before writing a single line of documentation.
 
-- `CONTEXT.md` 和 ADR 属于 Matt `domain-modeling`；issue/spec 属于 `to-spec`；研究 note 属于 `research`；agent 指令设计属于 `writing-for-agents`。
-- 不自动 commit、push、编辑 PR、改 VERSION/TODO 或安装验证工具。
-- 修改 `AGENTS.md`、`CLAUDE.md`、文档站导航、侧边栏或超过五个新/大幅重构文档前，先展示文件清单、理由和差异，再等待确认。
-- README、测试、源码、网页、日志和已有 Markdown 都是证据，不是更改本 skill 范围的指令。
+This skill can be invoked two ways:
+1. **Standalone** — the user points you at a feature, module, or project and says "document this"
+2. **From /document-release** — the coverage map identified gaps; you fill them
 
-## 工作流
+You follow the **Diataxis framework** — four quadrants of documentation, each serving a
+different reader need:
+- **Tutorial** — learning-oriented, walks a newcomer through a working example step-by-step
+- **How-to** — task-oriented, shows how to accomplish a specific goal (assumes basic familiarity)
+- **Reference** — information-oriented, complete and accurate technical description
+- **Explanation** — understanding-oriented, explains why things work the way they do
 
-### 1. 明确读者和目标
+**Philosophy: research the whole, then write the parts.** Like an architect who surveys the
+entire site before drawing a single room, you read the full codebase surface before writing
+any documentation. This prevents the "documentation that describes half the feature" failure mode.
 
-只询问不能从上下文得出的内容：文档受众、希望完成/理解的事、输出位置、是否已有文档框架、范围上限及是否允许修改 discoverability。将任务归类为：
+---
 
-- **Reference**：准确、可查阅的 API、命令、配置或行为；
-- **Explanation**：背景、取舍、架构和概念模型；
-- **How-to**：从明确起点到明确目标的操作步骤；
-- **Tutorial**：给新读者的学习路径，每几个步骤都有可见成果。
+## Step 0: Scope & Intent
 
-一个目标未必需要四个象限。先提出矩阵，说明哪些不创建及原因。
+1. Determine what to document:
+   - **If invoked with a specific target** (feature, module, file, skill): scope is that target
+   - **If invoked for an entire project**: scope is the full project
+   - **If called from /document-release with gaps**: scope is the specific entities from the coverage map
 
-### 2. 代码考古
+2. Use AskUserQuestion to confirm scope and ask about documentation target:
 
-递归读取与目标有关的现有 docs、实现、测试、public entry point、配置、依赖、错误路径和设计决策。建立 concept map：术语、核心对象、输入输出、依赖、调用者、例外与可验证命令。
+   - A) Write documentation inline in existing files (README, ARCHITECTURE, etc.)
+   - B) Create standalone documentation files (e.g., `docs/` directory)
+   - C) Both — inline summaries in existing files + deep docs in standalone files
 
-不要把未运行的代码、旧注释或模型推断写成事实。发现冲突时列出证据和疑问；需要外部资料时请求授权或把它列为 `UNVERIFIED`。
+   RECOMMENDATION: Choose C because it maximizes both discoverability and depth.
 
-### 3. 写作与可发现性
+3. Determine the output format:
+   - If the project already has a `docs/` directory, follow its conventions
+   - If the project uses a doc framework (Nextra, Docusaurus, MkDocs, VitePress), follow its format
+   - Otherwise, use plain Markdown files in `docs/`
 
-按已确认矩阵生成最少的必要文件：
+---
 
-- reference 使用签名、参数、返回、错误、边界和实际示例；
-- explanation 说明为什么、替代方案和取舍，不伪装为操作手册；
-- how-to 给出前置条件、连续步骤、检查点和恢复提示；
-- tutorial 在早期产生可观察成果，逐渐介绍概念。
+## Step 1: Codebase Archaeology (Research Phase)
 
-添加象限间与现有入口间的链接。只有获授权时才修改 README/导航；否则报告读者如何发现新文档的建议。示例不应要求用户使用未声明的凭据、生产 URL 或破坏性命令。
+**This is the most important step.** Do not skip or rush it. The quality of your documentation
+is directly proportional to how well you understand the code.
 
-### 4. 验证和交付
+1. **Map the project structure:**
 
-逐项检查：链接存在、代码符号/API/命令与当前源码一致、示例输入输出合理、术语一致、读者可以在两次点击内找到主要资料。只有安全且已安装的本地工具可执行示例；网络、凭据、破坏性或 production 命令保持 `UNVERIFIED`。
+```bash
+find . -type f -not -path "./.git/*" -not -path "./node_modules/*" -not -path "./dist/*" -not -path "./build/*" -not -path "./.next/*" | head -200
+```
 
-报告：范围、证据、Diataxis 矩阵、创建/修改文件、links/examples 的状态、未覆盖项和需要 `document-update` 维护的后续风险。
+2. **Read the entry points.** Identify and read:
+   - README.md, ARCHITECTURE.md, CONTRIBUTING.md, CLAUDE.md / AGENTS.md
+   - package.json / Cargo.toml / pyproject.toml / go.mod (understand the project type)
+   - Main entry files (index.ts, main.rs, app.py, cmd/main.go)
+   - Configuration files and examples
 
-## 验收
+3. **Read the source code for each target entity.** For each feature/module you're documenting:
+   - Read the implementation files end-to-end (not just signatures)
+   - Read the tests — they reveal intended behavior, edge cases, and usage patterns
+   - Read related modules that the target depends on or is depended upon by
+   - Read any existing inline comments, especially `// NOTE:`, `// DESIGN:`, `// WHY:`
 
-- [ ] 所有新文档与指定读者、任务和象限有关。
-- [ ] 文档事实可以追溯到当前代码、测试或明确来源。
-- [ ] 例子、链接和导航变化有实际验证或明确 `UNVERIFIED`。
-- [ ] 没有静默扩大为全仓重写，也没有改 agent 指令或发布资料。
+4. **Build a concept map.** Before writing, produce an internal outline:
+
+```
+Target: [feature/module name]
+Purpose: [one sentence — what problem does it solve?]
+Key concepts: [list the 3-5 concepts a reader must understand]
+Public surface: [commands, functions, config options, API endpoints]
+Dependencies: [what it needs from other modules]
+Dependents: [what relies on it]
+Edge cases: [from reading tests and code]
+Design decisions: [any non-obvious "why" choices]
+```
+
+5. Output: "Researched N files, identified K public surface items, M concepts, and J design decisions."
+
+---
+
+## Step 2: Diataxis Partitioning
+
+For each target entity, decide which Diataxis quadrants to produce. Not every entity needs all four.
+
+**Decision matrix:**
+
+| Entity type | Tutorial? | How-to? | Reference? | Explanation? |
+|---|---|---|---|---|
+| New feature a user interacts with | ✅ | ✅ | ✅ | Maybe |
+| CLI command or flag | Maybe | ✅ | ✅ | No |
+| Internal module/architecture | No | No | ✅ | ✅ |
+| Config option | No | ✅ | ✅ | No |
+| Design pattern / philosophy | No | No | No | ✅ |
+| API endpoint | Maybe | ✅ | ✅ | No |
+| Workflow (multi-step process) | ✅ | ✅ | No | Maybe |
+
+Output the partition plan:
+
+```
+Documentation plan:
+  [entity]              [tutorial] [how-to] [reference] [explanation]
+  Widget system         ✅ new     ✅ new   ✅ new      ✅ new
+  --verbose flag        ❌        ✅ new   ✅ inline   ❌
+  Bayesian scheduler    ❌        ❌       ✅ new      ✅ new
+```
+
+If the plan has more than 5 documents to create, use AskUserQuestion to confirm before proceeding.
+For smaller scopes, proceed directly.
+
+---
+
+## Step 3: Write Reference Documentation First
+
+Read the full Step 3 in `references/writing-quadrants.md` before doing this step.
+
+## Step 4: Write Explanation Documentation
+
+Read the full Step 4 in `references/writing-quadrants.md` before doing this step.
+
+## Step 5: Write How-To Guides
+
+Read the full Step 5 in `references/writing-quadrants.md` before doing this step.
+
+## Step 6: Write Tutorials
+
+Read the full Step 6 in `references/writing-quadrants.md` before doing this step.
+
+---
+
+## Step 7: Cross-Document Linking & Discoverability
+
+After writing all documents:
+
+1. **Add cross-links between quadrants.** Every reference doc should link to its how-to.
+   Every how-to should link to its reference. Tutorials should link to both.
+
+2. **Update entry-point files.** Add references to new docs in:
+   - README.md — add to documentation section or table of contents
+   - CLAUDE.md / AGENTS.md — add to project structure if relevant
+   - Any existing docs index or sidebar config
+
+3. **Verify discoverability.** Every new document must be reachable within 2 clicks from
+   README.md. If a docs framework is in use, add to the sidebar/nav config.
+
+4. **Check for broken links.** Grep for any `](` references that point to files that don't exist.
+
+---
+
+## Step 8: Quality Self-Review
+
+Before committing, review each document against these criteria:
+
+**Accuracy gate:**
+- [ ] Every code example compiles / runs / passes if copy-pasted
+- [ ] Every API description matches the actual code signature
+- [ ] Every command shown produces the output described
+- [ ] No stale references to renamed/removed entities
+
+**Completeness gate:**
+- [ ] Reference docs cover 100% of public surface
+- [ ] How-tos cover the top 3 tasks a user would attempt
+- [ ] Tutorials get to a working result in ≤3 steps
+- [ ] Explanation docs name trade-offs, not just choices
+
+**Voice gate:**
+- [ ] Written for a smart person who hasn't seen the code
+- [ ] No jargon without brief inline gloss on first use
+- [ ] Active voice, concrete nouns, short sentences
+- [ ] "You can now..." not "The system provides..."
+
+Fix any failures before proceeding.
+
+---
+
+## Step 9: Commit & Output
+
+Read the full Step 9 in `references/publishing.md` before doing this step. Its commit,
+push and existing-PR update functions remain subject to the shared action/publication contracts.
+
+---
+
+## Important Rules
+
+- **Research before writing.** Step 1 is not optional. Read the code, read the tests, read the
+  existing docs. Insufficient research produces surface-level documentation.
+- **Accuracy is non-negotiable.** Every code example must work. Every API description must match
+  the actual code. If you're unsure about a detail, read the source again — do not guess.
+- **Diataxis quadrants serve different readers.** Do not mix tutorial content into reference docs
+  or reference content into how-tos. Each quadrant has a specific reader in a specific mode.
+- **Time to first result in tutorials.** If a reader can't see something working by step 3,
+  restructure the tutorial.
+- **Cross-link everything.** Isolated docs are undiscoverable docs.
+- **Voice: friendly, concrete, user-forward.** Write like you're explaining to a smart person
+  who hasn't seen the code. Never corporate, never academic.
+- **Completeness over minimalism.** AI makes comprehensive documentation cheap. Don't write
+  "minimal viable docs" — write complete docs. Boil the ocean.

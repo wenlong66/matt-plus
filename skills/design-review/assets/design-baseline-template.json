@@ -1,0 +1,18 @@
+{
+  "date": "YYYY-MM-DD",
+  "url": "<target>",
+  "designScore": "B",
+  "aiSlopScore": "C",
+  "categoryGrades": {
+    "hierarchy": "A",
+    "typography": "B"
+  },
+  "findings": [
+    {
+      "id": "FINDING-001",
+      "title": "...",
+      "impact": "high",
+      "category": "typography"
+    }
+  ]
+}
