@@ -2,8 +2,6 @@
 
 Quick reference for WCAG 2.1 AA compliance. Use alongside the `frontend-ui-engineering` skill.
 
-For package-local tool and workflow associations, see [Compatibility Notes](../../../references/compatibility-notes.md). Run automated webpage checks through [Browser Testing](../../../references/browser-tools.md); the original Testing Tools examples below are not alternate browser entry points. Screen-reader checks remain manual checks.
-
 ## Table of Contents
 
 - [Essential Checks](#essential-checks)
