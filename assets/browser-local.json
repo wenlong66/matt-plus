@@ -1,0 +1,12 @@
+{
+  "allowUnrestrictedFileAccess": true,
+  "browser": {
+    "isolated": true,
+    "launchOptions": {
+      "headless": true
+    },
+    "contextOptions": {
+      "offline": true
+    }
+  }
+}

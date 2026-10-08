@@ -1,5 +1,7 @@
 ## Design Outside Voices (parallel)
 
+**Host guard (original behavior):** If the current host is Codex, skip this entire outside-voices step and continue with the primary review; Codex must never invoke itself. Do not route a Codex self-call through a CLI alias, alternate tool association, or subagent wrapper as an outside voice. If the host identity is unknown, confirm it before dispatch.
+
 The original automatic Codex command association is replaced by the approved available outside-model/subagent associations in [tool/path mapping](tool-mapping.md). Read that mapping and the shared external-action/image-model adapters before calling either voice. Keep the original domain prompts below; no automatic installation, authentication, network/search flag, or global review-log write.
 
 ### 1. Codex design voice (approved available model association)

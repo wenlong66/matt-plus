@@ -1,5 +1,7 @@
 # Optional Outside Design Voices
 
+**Host guard (original behavior):** If the current host is Codex, skip this entire outside-voices step and continue with the primary design proposal; Codex must never invoke itself. Do not route a Codex self-call through a CLI alias, alternate tool association, or subagent wrapper as an outside voice. If the host identity is unknown, confirm it before dispatch.
+
 Load only when the user approves independent design-direction proposals. Follow the shared external-actions contract linked from SKILL.md, including the local content-guard scan before sending material outside the session. Confirm which installed external model/tool or available subagent may run, the exact product context it may receive, network/search permissions, and request budget. Tool availability is not consent. Do not install, authenticate, enable web search, or send the whole repository by default.
 
 Use the host's question tool or chat:

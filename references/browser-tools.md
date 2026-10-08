@@ -18,7 +18,27 @@ playwright-cli --help highlight
 
 This package's adapter was checked against installed CLI 0.1.21 help; the table below is a capability mapping, not a promise that every version supports every operation. A help check is not a browser run. Do not execute update notices, `install` or `install-browser` automatically.
 
+The checked CLI can probe for updates even on `--help`. For approved local-only discovery and smoke checks, prefix each CLI command with `NO_UPDATE_NOTIFIER=1 CI=1` to suppress that notifier. Keep these variables process-local; do not change user configuration or treat them as proof that every command is network-free.
+
 If the CLI is absent, use the current host's default browser tool instead. Inspect its actual schema/help and map the same required operations to supported capabilities; do not invent CLI-equivalent flags or results. The same origin, identity, action and evidence scope applies to either backend. If the selected backend lacks a required capability, mark that operation `UNVERIFIED`. Do not invoke `npx` to download a runner, bootstrap a framework or start a server automatically. Reviewed Playwright code may run through `playwright-cli run-code` when the CLI is available.
+
+## Opt-in local HTML testing
+
+For trusted, reviewed local HTML only, explicitly load the bundled [local HTML configuration](../assets/browser-local.json) when creating a dedicated named session. This is not a default browser configuration: do not copy it to `.playwright/cli.config.json`, user/global settings, or a personal browser profile. Keep normal web audits on the default restricted configuration. When running from another project directory, resolve this bundled file to its absolute installed package path; do not assume `assets/browser-local.json` exists in the target project.
+
+`allowUnrestrictedFileAccess` permits `file://` navigation but also relaxes filesystem access/upload restrictions outside workspace roots; it is not an allowlist for one HTML file. The configuration uses an isolated in-memory profile, headless mode and an offline browser context. Isolation/offline mode do not make untrusted HTML safe or constrain local-file access to the approved directory. Use only approved fixture files and outputs; do not open untrusted pages, import cookies/storage, or upload local files.
+
+Example from the matt-plus package root using an already-installed Chrome browser:
+
+```bash
+NO_UPDATE_NOTIFIER=1 CI=1 playwright-cli -s=matt-plus-local-html open --browser=chrome --config=assets/browser-local.json
+NO_UPDATE_NOTIFIER=1 CI=1 playwright-cli -s=matt-plus-local-html goto "file:///<absolute-path-to-approved-local-html>"
+NO_UPDATE_NOTIFIER=1 CI=1 playwright-cli -s=matt-plus-local-html close
+```
+
+Use a unique run-owned session name rather than reusing an active session. Replace the URL placeholder with a real file URL; on Windows, for example, `file:///F:/path/to/preview.html`. Create a fresh session so the explicit configuration takes effect, and close only that session when finished or when a check fails. Do not start a server, install a browser, disable Chrome web security, or broaden global permissions as a fallback. If the installed backend cannot honor the configuration, mark local-file navigation `UNVERIFIED`.
+
+The offline setting blocks normal network requests, so remote fonts, images and APIs are not covered. Referenced local images must exist beside the generated HTML at the paths it uses; allowing `file://` does not create missing assets. If connected resources or external review are required, use the normal browser adapter under separately approved scope, not this local-only configuration.
 
 ## Operation mapping
 

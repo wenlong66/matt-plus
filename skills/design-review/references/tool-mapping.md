@@ -32,11 +32,11 @@ Every screenshot must be shown with Read/the available viewer as the original re
 
 ## Fix/commit/recovery associations
 
-The workflow stays audit → fix → atomic commit → retest → regression → failure recovery. An audit-only request stops before scoped source edits. An approved fix does not automatically authorize stage/commit or stash/revert.
+The workflow stays audit → fix → atomic commit → retest → regression → failure recovery. The original Setup clean-working-tree gate applies before any audit, including audit-only requests; do not move it into the fix loop, delete it, or bypass the original setup checks. An audit-only request stops before scoped source edits, not before setup. An approved fix does not automatically authorize stage/commit or stash/revert.
 
-- Dirty-tree options require exact approved files/hunks and recovery details. Never stage or stash unrelated user work to force a clean tree. If not authorized, stop the fix branch and let the user preserve their work.
+- Dirty-tree options require exact approved files/hunks and recovery details. Never stage or stash unrelated user work to force a clean tree. If not authorized, stop the workflow before the audit and let the user preserve their work.
 - For each approved atomic commit, inspect the index and stage only the finding's approved changes. No unrelated staged work may enter it. Follow the shared working-branch rule and content guard.
-- If commit is withheld, keep each finding's scoped change/evidence separate and mark the commit stage deferred. Do not invent a SHA or represent an uncommitted change as committed.
+- If commit is withheld, keep each finding's scoped change/evidence separate and mark the commit stage deferred. Deferred commit does not waive the original clean-tree gate or other setup prerequisites. Do not invent a SHA or represent an uncommitted change as committed.
 - On regression, stop immediately. Execute the original `git revert HEAD` only if that exact fix commit is the actual safe target and recovery was approved. Otherwise request recovery approval; preserve user work and classify truthfully, not `reverted` before recovery happened.
 - Regression-test creation/removal/commit is scoped to the new test only. A failed test receives the original single retry, then deletion of that newly created file and deferral when authorized. No existing-test or CI weakening.
 - TODOS.md, DESIGN.md export, and instruction-file changes use their separate file/decision scope. Writing a report does not authorize TODO/source/instruction edits or PR publication.

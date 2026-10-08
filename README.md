@@ -1,14 +1,14 @@
 # matt-plus
 
-**面向 Matt Pocock Skills 的六个原版技能移植：UI 设计、文档生成与同步、安全加固。**
+**面向 Matt Pocock Skills 的七个原版技能移植：UI 设计、文档生成与同步、安全加固及代码简化。**
 
-从 `agent-skills` 和 `gstack` 重新选取，不沿用旧版 matt-plus 的技能组合。保留原名、原版正文、必要功能与工作流；只适配缺失的工具、资源和路径关联，删除无用的宿主关联。不改写、合并或精简原版领域内容。
+从 `agent-skills` 和 `gstack` 移植，不沿用旧版 matt-plus 的技能组合。保留原名、原版正文、必要功能与工作流；只适配缺失的工具、资源和路径关联，删除无用的宿主关联。不改写、合并或精简原版领域内容。
 
 本包分发实际技能及其必要资源，运行时不需要安装完整上游插件。与 Matt 的通用需求、规格、TDD、实现和 code review 流程配合使用，不强制安装 Matt，也不把专项技能的原有修复/验证阶段转交给它。
 
-## 六个入口
+## 七个入口
 
-| 来源 | 技能 | 原版职责 |
+| 来源 | 技能 | 职责 |
 | --- | --- | --- |
 | gstack | `/matt-plus:design-consultation` | 理解产品、研究设计方向、提出设计系统、预览与迭代，产出 `DESIGN.md`。 |
 | agent-skills | `/matt-plus:frontend-ui-engineering` | 将设计实现为具体 UI，保留组件/状态示例、参考驱动设计、响应式、可访问性与完成检查。 |
@@ -16,6 +16,7 @@
 | gstack | `/matt-plus:document-release` | 基于变更同步已有文档、覆盖地图、图表、CHANGELOG，以及原版可选 TODO、版本和 PR/MR 同步。 |
 | gstack | `/matt-plus:document-generate` | 代码考古、概念地图、按需要选择 Diataxis 象限，生成文档并校验实例、链接与事实。 |
 | agent-skills | `/matt-plus:security-and-hardening` | 威胁建模、abuse case、安全实现、依赖审计及负向验证。 |
+| agent-skills | `/matt-plus:code-simplification` | 保持行为不变，简化代码并提升清晰度。 |
 
 不收录通用功能 QA、全仓安全态势审计或部署技能。文档的 `document-release` 不等于生产部署。
 
@@ -65,13 +66,16 @@ codex plugin add matt-plus@plugins
 Node.js 18+，无需安装 npm 依赖：
 
 ```bash
-node --test tests/package.test.mjs tests/content-guard.test.mjs
-claude plugin validate . --strict
+node --test tests/package.test.mjs tests/content-guard.test.mjs tests/design-adaptation.test.mjs
+claude plugin validate .claude-plugin/plugin.json --strict
+claude plugin validate .claude-plugin/marketplace.json --strict
 ```
 
-验收只检查原版保真与适配正确性：六技能清单、两端 manifest、源正文差异、包内引用、来源和模板关联。内容检查工具用合成数据验证移植后的脚本接口与错误处理，不验证真实凭据。
+验收只检查原版保真与适配正确性：七技能清单、两端 manifest、源正文差异、包内引用、来源和模板关联。`code-simplification` 保持现有移植内容，不纳入本次修复的正文差异检查。内容检查工具用合成数据验证移植后的脚本接口与错误处理，不验证真实凭据。
 
-本轮 11 项包结构检查与 100 项工具适配检查通过，Claude Code 插件和 marketplace manifest 均通过严格格式检查。不做技能有效性、审美提升或模型增益评估，也不运行真实浏览器、外部审查或发布流程。检查范围见 [integration-plan.md](integration-plan.md)。
+回归测试覆盖包结构、内容检查工具和比较板反馈协议；浏览器验证只在隔离合成样例中进行，不等于真实业务页面的完整审查。不做技能有效性、审美提升或模型增益评估，不自动执行外部审查或发布流程。检查范围见 [integration-plan.md](integration-plan.md)。
+
+纯本地 HTML 测试可显式使用专用的隔离、离线浏览器配置，见[浏览器关联说明](references/browser-tools.md#opt-in-local-html-testing)。默认不启用 `file://` 访问，也不修改全局浏览器设置。
 
 ## 来源
 

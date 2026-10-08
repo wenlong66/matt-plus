@@ -2,7 +2,7 @@
 
 ## 收录范围
 
-只收录以下六个已移植技能，不增加通用 QA、部署或另一套计划审查入口。
+分发以下七个移植技能，`code-simplification` 保持现有内容，不纳入本次修复范围。不增加通用 QA、部署或另一套计划审查入口。
 
 | 技能 | 来源 | 必要领域资源 |
 | --- | --- | --- |
@@ -12,6 +12,7 @@
 | `document-release` | gstack | release-body、TODOS 格式、默认独立文档复核、PR 标题脚本 |
 | `document-generate` | gstack | 四象限写作模板、发布关联 |
 | `security-and-hardening` | agent-skills | hardening patterns、安全检查表 |
+| `code-simplification` | agent-skills | 保持现有移植内容 |
 
 保留原名、领域正文、例子、判断标准、阶段和输出。只适配资源、工具、路径、运行环境与上游关联；不把修复/提交/复测流程改成只读审计。精确源快照与版权见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。
 
@@ -28,6 +29,8 @@
 - [图像与外部模型](references/image-tools.md)
 - [内容检查](references/content-guard.md)
 - [原版例子的兼容说明](references/compatibility-notes.md)：由前端、安全技能及其检查表共用。
+- [无障碍检查表](references/accessibility-checklist.md)
+- [安全检查表](references/security-checklist.md)
 
 ## 上游技能调用
 

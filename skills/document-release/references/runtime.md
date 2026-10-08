@@ -28,8 +28,12 @@ separate approvals. Read files in full and preserve unrelated user work.
    record that SHA as `<diff-base>`. No merge base is an unavailable range, not a fallback.
 4. Record the same pinned `<diff-base>` and `<head>` for every audit/review. A base-branch
    checkout is valid for an explicit merged-release interval; do not require a feature
-   branch or another shipping skill. If the worktree/source differs from the selected head,
-   inspect the pinned revision or request an authorized checkout rather than claim parity.
+   branch or another shipping skill. Writing requires checkout HEAD to equal the pinned
+   `<head>` and relevant source to match that revision. If either differs, stay read-only:
+   inspect the pinned revision and obtain authorization for the correct checkout before
+   writing docs; never edit release docs in a different-version workspace. Preserve existing
+   user documentation work and recheck HEAD, relevant source and target docs immediately
+   before each write. Existing doc/unrelated changes do not require a wholly clean tree.
    Original "this branch" prose refers to this recorded release scope when used post-merge.
 5. Derive hosting platform, explicit PR/MR target, doc/verification conventions, TODO format,
    version file/scheme and title convention from local source of truth or authorized reads.
@@ -66,8 +70,9 @@ Upstream skill associations and local namespaced entries are listed in [Upstream
 - Title rewriting resolves to `../scripts/pr-title-rewrite.sh`, a local copy of the original
   pure helper. It requires Bash, `grep` with `-qE` and `sed` with `-E` (available in Git Bash
   on Windows); invoke it with `bash`, not generic `sh`. Missing prerequisites are UNVERIFIED.
-  Compute first, then check final title bytes and send those unchanged; the helper is not
-  authorization to edit a title. An unsupported convention requires a question.
+  Normalize VERSION and capture `NEW_TITLE` as specified in `release-body.md` before checking
+  final title bytes; send those unchanged. The helper is not authorization to edit a title.
+  An unsupported convention requires a question.
 - Independent review resolves to `cross-model-review.md` and the shared installed-tool/model
   adapter. Preserve the default-on phase, the Codex-host skip and the labeled read-only Agent
   fallback; authorization or capability missing for both paths is UNVERIFIED, not a clean review.

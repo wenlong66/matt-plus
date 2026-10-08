@@ -9,17 +9,23 @@ matt-plus 分发下列 MIT 内容的独立适配版本，不是上游官方发�
 
 ## agent-skills
 
+### code-simplification
+
+- 源：[skills/code-simplification/SKILL.md](https://github.com/wenlong66/agent-skills/blob/14873a11dfc2ac7ed5be19069e0d0828ef7f2fec/skills/code-simplification/SKILL.md)。
+- 本地：[技能](skills/code-simplification/SKILL.md)。
+- 保留现有移植正文；本次仅同步七技能分发清单及来源说明。
+
 ### frontend-ui-engineering
 
 - 源：[skills/frontend-ui-engineering/SKILL.md](https://github.com/wenlong66/agent-skills/blob/14873a11dfc2ac7ed5be19069e0d0828ef7f2fec/skills/frontend-ui-engineering/SKILL.md)。
-- 本地：[技能](skills/frontend-ui-engineering/SKILL.md)、[无障碍检查表](skills/frontend-ui-engineering/references/accessibility-checklist.md)。
+- 本地：[技能](skills/frontend-ui-engineering/SKILL.md)、[无障碍检查表](references/accessibility-checklist.md)。
 - 原版名称、description、正文、架构/状态/JSX/乐观更新示例、参考驱动设计和验证要求保留；仅增加独立执行关联说明。
 
 ### security-and-hardening
 
 - 源：[skills/security-and-hardening/SKILL.md](https://github.com/wenlong66/agent-skills/blob/14873a11dfc2ac7ed5be19069e0d0828ef7f2fec/skills/security-and-hardening/SKILL.md)、同目录 hardening-patterns 和原版安全检查表。
-- 本地：[技能](skills/security-and-hardening/SKILL.md)、[原版 hardening patterns](skills/security-and-hardening/references/hardening-patterns.md)、[安全检查表](skills/security-and-hardening/references/security-checklist.md)、[共用兼容说明](references/compatibility-notes.md)。
-- 保留原版威胁模型、全部控制与例子，以及 observability/debugging 原版关联；未迁入的条件与可选调用见[上游技能调用清单](integration-plan.md#上游技能调用)。只替换原始值 grep 为共享掩码工具，并扫描确切 index blob 而非 diff 文本。原版例子的适用限制单独说明，不重写正文。
+- 本地：[技能](skills/security-and-hardening/SKILL.md)、[原版 hardening patterns](skills/security-and-hardening/references/hardening-patterns.md)、[安全检查表](references/security-checklist.md)、[共用兼容说明](references/compatibility-notes.md)。
+- 保留原版威胁模型、全部控制与例子，以及 observability/debugging 原版关联；未迁入的条件与可选调用见[上游技能调用清单](integration-plan.md#上游技能调用)。原版 grep 示例保持不变；共享掩码工具及提交前确切 index blob 检查的执行关联见[内容检查](references/content-guard.md)，不把它当作原版安全审查的替代。原版例子的适用限制单独说明，不重写正文。
 
 ## gstack
 

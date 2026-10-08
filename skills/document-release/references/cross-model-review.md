@@ -54,15 +54,18 @@ THE DOCS AND DIFF: <list the touched doc paths>"
 **If the approved installed Codex association is available — run Codex:**
 
 Use its verified stdin/file-input interface for the exact checked prompt, in the approved
-read-only review workspace and isolation configuration. For a supporting installed CLI:
+read-only review workspace and isolation configuration. Allocate and record a unique stderr
+file for this run in the approved local temporary location; use that same recorded path for
+capture, reading and cleanup, not a shell variable from an earlier block. For a supporting
+installed CLI:
 
 ```bash
-codex exec - -C "<approved-review-workspace>" -s read-only -c 'model_reasoning_effort="high"' < "<checked-prompt-file>"
+codex exec - -C "<approved-review-workspace>" -s read-only -c 'model_reasoning_effort="high"' < "<checked-prompt-file>" 2> "<recorded-unique-stderr-file>"
 ```
 
-Use a 5-minute timeout (`timeout: 300000`). After the command completes, read captured stderr
-locally without displaying sensitive material. The shared adapter governs all supplied files,
-not just the prompt. A read-only flag is not proof of access isolation.
+Use a 5-minute timeout (`timeout: 300000`). After the command completes, read the recorded
+stderr file locally without displaying sensitive material. The shared adapter governs all
+supplied files, not just the prompt. A read-only flag is not proof of access isolation.
 
 Present the full output verbatim under `CODEX SAYS (documentation review):`, subject to the
 shared sensitive-output handling. Identify a different approved provider if one was used.
@@ -105,6 +108,7 @@ Record the actual review/result/input revision under the shared adapter, not a g
 review log. If approved findings change content after Step 9, the changed publication payload
 needs its applicable approval and fresh exact-byte checks before any further commit/push/update.
 
-**Cleanup:** Remove this run's recorded temporary stderr/input files after processing.
+**Cleanup:** Remove only this run's `<recorded-unique-stderr-file>` and recorded temporary
+input files after processing.
 
 ---

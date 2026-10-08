@@ -13,6 +13,7 @@ const EXPECTED_SKILLS = [
   'document-release',
   'document-generate',
   'security-and-hardening',
+  'code-simplification',
 ];
 const TEXT_EXTENSIONS = new Set(['.html', '.js', '.json', '.md', '.mjs', '.sh']);
 const HOST_MACROS = /\{\{[A-Z][A-Z0-9_:.-]*\}\}/;
@@ -80,7 +81,7 @@ test('Codex plugin shares the canonical skill tree and metadata', () => {
   assert.equal(realpathSync(join(root, codexPlugin.skills)), realpathSync(join(root, 'skills')));
 });
 
-test('manifest and shipped directories contain exactly the six original names', () => {
+test('manifest and shipped directories contain exactly the seven skills', () => {
   assert.deepEqual(plugin.skills.map((path) => basename(path)), EXPECTED_SKILLS);
   const shipped = readdirSync(join(root, 'skills'), { withFileTypes: true })
     .filter((entry) => entry.isDirectory()).map((entry) => entry.name);
@@ -155,6 +156,15 @@ test('shared adapters declare prerequisites, permission gates and exact-byte che
   for (const marker of [/HTML/, /fallback/i, /approved/i, /UNVERIFIED/]) assert.match(image, marker);
   const guard = readText('references/content-guard.md');
   for (const marker of [/exact final/i, /outgoing commit/i, /subsequently deleted/i, /--from-file/, /semantic/i]) assert.match(guard, marker);
+});
+
+test('local HTML browser configuration is opt-in, isolated and offline', () => {
+  const config = readJson('assets/browser-local.json');
+  assert.equal(config.allowUnrestrictedFileAccess, true);
+  assert.equal(config.browser.isolated, true);
+  assert.equal(config.browser.launchOptions.headless, true);
+  assert.equal(config.browser.contextOptions.offline, true);
+  assert.equal(config.browser.userDataDir, undefined);
 });
 
 test('each original skill has pinned source attribution and preserved licensing', () => {

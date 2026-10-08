@@ -283,9 +283,15 @@ glab api projects/<approved-project-id>/merge_requests/<approved-iid> --method P
 When the project's PR titles start with `v<VERSION>`, this sub-step fixes a title made stale
 by Step 8. Resolve that original title convention through `runtime.md`, not another skill.
 
-1. Read the current VERSION using the installed local file tool and record it.
+1. Read the current VERSION using the installed local file tool. Before helper use, remove
+all whitespace as in the original `tr -d '[:space:]'` (space, tab, LF, CR, vertical tab and
+form feed), not just leading/trailing whitespace. Record the normalized value locally as
+`<recorded-version>`; it must be a single-line numeric scalar matching `^[0-9]+(\.[0-9]+)*$`.
+Unsupported syntax follows the question rule in `runtime.md`, before invoking the helper.
 
-If `VERSION` does not exist or is empty, skip this sub-step entirely.
+If `VERSION` does not exist or is empty after normalization (including whitespace-only
+content), skip this sub-step entirely. Do not log raw VERSION/title content or helper
+stdout; use hashes or masked diagnostics for evidence.
 
 2. Read the current PR/MR title:
 
@@ -303,11 +309,17 @@ Read the `title` field and record the current title.
 
 If `CURRENT_TITLE` is empty (no open PR/MR), skip with message "No PR/MR found — skipping title sync."
 
-3. Compute the corrected title using the locally bundled original helper:
+3. Compute the corrected title using the locally bundled original helper, capturing stdout
+as `NEW_TITLE` with the original Bash command-substitution semantics:
 
 ```bash
-bash "<skill-dir>/scripts/pr-title-rewrite.sh" "<recorded-version>" "<recorded-current-title>"
+NEW_TITLE=$(bash "<skill-dir>/scripts/pr-title-rewrite.sh" "<recorded-version>" "<recorded-current-title>")
 ```
+
+Command substitution removes all trailing LF record terminators from helper stdout. If the
+host captures stdout directly, perform exactly that removal before recording `NEW_TITLE`
+locally and before the exact-byte guard; do not trim other whitespace or normalize title
+content. After checking, do not transform the title again.
 
 The helper handles three cases: title already correct (no-op), title has a different `v<X.Y.Z.W>` prefix (replace it), or title has no version prefix (prepend one).
 
