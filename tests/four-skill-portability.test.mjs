@@ -8,9 +8,9 @@ import test from 'node:test';
 import { load } from '../scripts/vendor/js-yaml/dist/js-yaml.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
-const skills = ['design-consultation', 'design-review', 'document-release', 'document-generate'];
+const skills = ['design-consultation', 'document-release', 'document-generate'];
 
-test('four skill instructions resolve their resources inside the package', () => {
+test('three skill instructions resolve their resources inside the package', () => {
   const files = directory => readdirSync(directory, { withFileTypes: true }).flatMap(entry => {
     const file = join(directory, entry.name);
     return entry.isDirectory() ? files(file) : file.endsWith('.md') ? [file] : [];
@@ -35,13 +35,13 @@ test('four skill instructions resolve their resources inside the package', () =>
   }
 });
 
-test('four skills retain their discovery text and source metadata in supported frontmatter', () => {
+test('three skills retain their discovery text and source metadata in supported frontmatter', () => {
   for (const skill of skills) {
     const body = readFileSync(join(root, 'skills', skill, 'SKILL.md'), 'utf8');
     const front = load(body.match(/^---\r?\n([\s\S]*?)\r?\n---/)[1]);
     assert.equal(front.name, skill);
     assert.ok(front.description.length > 0 && front.description.length <= 1024);
-    assert.equal(front.metadata.version, skill === 'design-review' ? '2.0.0' : '1.0.0');
+    assert.equal(front.metadata.version, '1.0.0');
     assert.ok(front.metadata.triggers.trim());
     for (const key of Object.keys(front)) {
       assert.ok(['name', 'description', 'allowed-tools', 'metadata'].includes(key), key);
@@ -49,8 +49,8 @@ test('four skills retain their discovery text and source metadata in supported f
   }
 });
 
-test('four-skill resources and helpers work after relocation without gstack, npm or another skill', t => {
-  const directory = mkdtempSync(join(tmpdir(), 'four skill portability '));
+test('three-skill resources and helpers work after relocation without gstack, npm or another skill', t => {
+  const directory = mkdtempSync(join(tmpdir(), 'three skill portability '));
   t.after(() => rmSync(directory, { recursive: true, force: true }));
   const bundle = join(directory, 'relocated plugin');
   const cwd = join(directory, 'unrelated project');
@@ -101,18 +101,4 @@ test('document-generate distributes the complete pinned upstream quadrant templa
   const expected = source.stdout.split('## Step 3:')[1].split('## Step 7:')[0];
   const bundled = readFileSync(join(root, 'skills/document-generate/references/writing-quadrants.md'), 'utf8').replace(/\r\n/g, '\n');
   assert.equal(bundled.trim(), `## Step 3:${expected}`.replace(/\n---\s*$/, '').trim());
-});
-
-test('design-review keeps the complete pinned post-fix regression stage with only its resource call mapped', {
-  skip: !existsSync(join(root, '..', 'gstack')) && 'Pinned source is optional, not a runtime dependency',
-}, () => {
-  const source = spawnSync('git', ['-C', join(root, '..', 'gstack'), 'show',
-    '54efba6dd5a6dc7f04e62106b97079279ed53b41:design-review/SKILL.md.tmpl'], {
-    encoding: 'utf8', env: { ...process.env, GIT_NO_LAZY_FETCH: '1', GIT_TERMINAL_PROMPT: '0' },
-  });
-  assert.equal(source.status, 0, source.stderr);
-  const block = text => text.match(/### 8e\.5\. Regression Test \(design-review variant\)[\s\S]*?(?=### 8f\.)/)[0];
-  const bundled = readFileSync(join(root, 'skills/design-review/SKILL.md'), 'utf8').replace(/\r\n/g, '\n');
-  assert.equal(block(bundled), block(source.stdout).replace('follow the same procedure as /qa Phase 8e.5',
-    'follow [the bundled regression procedure](references/regression-tests.md)'));
 });

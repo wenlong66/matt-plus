@@ -1,3 +1,7 @@
+# 历史记录（移除 design-review 前）
+
+本记录描述原四技能快照；当前仅保留其中三个技能，现有分发与验证命令见 README。
+
 # 四个 gstack 技能移植验证
 
 验证日期：2026-10-09。范围仅为 `design-consultation`、`design-review`、`document-release`、`document-generate`，以及它们使用的共享资源；未验证另外三个技能。

@@ -1,3 +1,8 @@
 skills/document-release/scripts/pr-title-rewrite.sh text eol=lf
 scripts/vendor/js-yaml/** text eol=lf
 licenses/Apache-2.0.txt text eol=lf
+skills/security-audit/** -text
+skills/react-native-skills/** -text
+licenses/security-audit-MIT.txt -text
+skills/observability-and-instrumentation/** -text
+references/observability-checklist.md -text

@@ -1,7 +1,7 @@
 {
   "name": "matt-plus",
   "version": "0.3.0",
-  "description": "原版技能的独立适配：UI 设计与实现、文档生成与同步、安全加固。",
+  "description": "原版技能移植：设计咨询、文档生成与同步、安全审计、React Native、可观测性与代码简化。",
   "author": {
     "name": "Long"
   },
@@ -10,11 +10,11 @@
   "license": "MIT",
   "skills": [
     "./skills/design-consultation",
-    "./skills/frontend-ui-engineering",
-    "./skills/design-review",
     "./skills/document-release",
     "./skills/document-generate",
-    "./skills/security-and-hardening",
+    "./skills/security-audit",
+    "./skills/react-native-skills",
+    "./skills/observability-and-instrumentation",
     "./skills/code-simplification"
   ]
 }

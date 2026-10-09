@@ -1,6 +1,6 @@
 # Action authorization and evidence
 
-Shared execution boundary for the six original-name skills. This keeps their editing, verification, commit and publication capabilities; it does not turn those workflows into report-only skills.
+Shared execution boundary for the adapted gstack workflows. This keeps their editing, verification, commit and publication capabilities; it does not turn those workflows into report-only skills.
 
 ## Establish the scope
 
@@ -31,9 +31,7 @@ Browser read access can still send data and trigger analytics. Payments, deletio
 
 ## Preserve the original workflows
 
-- In `design-review`, retain audit → fix → atomic commit → retest → regression → failure recovery. When the user approved only an audit, deliver findings and ask before entering the fix branch. When fixes are approved, carry them out; commit/revert remain separate authorized actions.
 - In documentation workflows, retain scoped writing, release consistency, optional version/TODO work, commit, push and PR/MR maintenance. Run the authorized stages and record stages that were deferred.
-- In `security-and-hardening`, retain threat modeling, implementation, negative tests and native dependency audit. Audit networking, installation scripts and policy changes require the corresponding approval.
 
 The shared [browser adapter](browser-tools.md), [image/model adapter](image-tools.md) and [publication guard](content-guard.md) describe execution prerequisites rather than replacing these domain phases.
 

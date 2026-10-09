@@ -4,8 +4,8 @@ matt-plus 分发下列内容的独立适配版本，不是上游官方发行版�
 
 | 实际来源仓库 | 原作者 | 适用范围与源快照 |
 | --- | --- | --- |
-| [wenlong66/agent-skills](https://github.com/wenlong66/agent-skills)，源自 Addy Osmani 的 agent-skills | Copyright (c) 2025 Addy Osmani | 三个 agent-skills 技能保持 `14873a11dfc2ac7ed5be19069e0d0828ef7f2fec` |
-| [wenlong66/gstack](https://github.com/wenlong66/gstack)，源自 Garry Tan 的 gstack | Copyright (c) 2026 Garry Tan | `design-review` 的设计系统捕获/目标图约束及共享 outside completion 同步至 `54efba6dd5a6dc7f04e62106b97079279ed53b41`（1.91.67.0）；其余三个技能与未变资源保持 `92cfd07a79ed0f27fbcc57f2d61d00ec700eadb4`（1.91.45.0）；共享内容检查保持旧 `e7b2ef21e20e6f359ccdc1cf0394dacbe339ad09`（1.58.5.0） |
+| [wenlong66/agent-skills](https://github.com/wenlong66/agent-skills)，源自 Addy Osmani 的 agent-skills | Copyright (c) 2025 Addy Osmani | `code-simplification` 保持 `14873a11dfc2ac7ed5be19069e0d0828ef7f2fec`；`observability-and-instrumentation` 与配套检查表来自 `4ff2791a8bb39787e35c659cba04a4ec5216e1fe` |
+| [wenlong66/gstack](https://github.com/wenlong66/gstack)，源自 Garry Tan 的 gstack | Copyright (c) 2026 Garry Tan | 共享 outside completion 同步至 `54efba6dd5a6dc7f04e62106b97079279ed53b41`（1.91.67.0）；三个技能与未变资源保持 `92cfd07a79ed0f27fbcc57f2d61d00ec700eadb4`（1.91.45.0）；共享内容检查保持旧 `e7b2ef21e20e6f359ccdc1cf0394dacbe339ad09`（1.58.5.0） |
 
 ## agent-skills
 
@@ -15,17 +15,11 @@ matt-plus 分发下列内容的独立适配版本，不是上游官方发行版�
 - 本地：[技能](skills/code-simplification/SKILL.md)。
 - 保留现有移植正文；本次仅同步七技能分发清单及来源说明。
 
-### frontend-ui-engineering
+### observability-and-instrumentation
 
-- 源：[skills/frontend-ui-engineering/SKILL.md](https://github.com/wenlong66/agent-skills/blob/14873a11dfc2ac7ed5be19069e0d0828ef7f2fec/skills/frontend-ui-engineering/SKILL.md)。
-- 本地：[技能](skills/frontend-ui-engineering/SKILL.md)、[无障碍检查表](references/accessibility-checklist.md)。
-- 原版名称、description、正文、架构/状态/JSX/乐观更新示例、参考驱动设计和验证要求保留；仅增加独立执行关联说明。
-
-### security-and-hardening
-
-- 源：[skills/security-and-hardening/SKILL.md](https://github.com/wenlong66/agent-skills/blob/14873a11dfc2ac7ed5be19069e0d0828ef7f2fec/skills/security-and-hardening/SKILL.md)、同目录 hardening-patterns 和原版安全检查表。
-- 本地：[技能](skills/security-and-hardening/SKILL.md)、[原版 hardening patterns](skills/security-and-hardening/references/hardening-patterns.md)、[安全检查表](references/security-checklist.md)、[共用兼容说明](references/compatibility-notes.md)。
-- 保留原版威胁模型、全部控制与例子，以及 observability/debugging 原版关联；未迁入的条件与可选调用见[上游技能调用清单](integration-plan.md#上游技能调用)。原版 grep 示例保持不变；共享掩码工具及提交前确切 index blob 检查的执行关联见[内容检查](references/content-guard.md)，不把它当作原版安全审查的替代。原版例子的适用限制单独说明，不重写正文。
+- 源：本地 `agent-skills/skills/observability-and-instrumentation` 和 `agent-skills/references/observability-checklist.md`，快照 `4ff2791a8bb39787e35c659cba04a4ec5216e1fe`。
+- 本地：[完整技能目录](skills/observability-and-instrumentation/)、[原版检查表](references/observability-checklist.md)。正文、frontmatter、示例、验证阶段与检查表逐字节原样复制，无逻辑修改；保留原版相对引用及其他技能的说明性关联。
+- 原作者 Copyright (c) 2025 Addy Osmani，MIT 许可与版权声明已保留在 [LICENSE](LICENSE)。
 
 ## gstack
 
@@ -34,13 +28,6 @@ matt-plus 分发下列内容的独立适配版本，不是上游官方发行版�
 - 源：[design-consultation/SKILL.md.tmpl](https://github.com/wenlong66/gstack/blob/92cfd07a79ed0f27fbcc57f2d61d00ec700eadb4/design-consultation/SKILL.md.tmpl)、[proposal-and-preview section](https://github.com/wenlong66/gstack/blob/92cfd07a79ed0f27fbcc57f2d61d00ec700eadb4/design-consultation/sections/proposal-and-preview.md.tmpl)、原版设计 resolver 中的必要段落。
 - 本地：[技能](skills/design-consultation/SKILL.md)、[必要段落与关联资源](skills/design-consultation/references/)、[预览/输出资源](skills/design-consultation/assets/)。
 - 保留原版产品理解、提案、预览、方向探索、反馈选择和 `DESIGN.md` 流程；仅将 browser/designer/宿主路径关联替换为本包工具关联。
-
-### design-review
-
-- 源：设计系统捕获、missing 校准与目标图约束来自 [design-review/SKILL.md.tmpl](https://github.com/wenlong66/gstack/blob/54efba6dd5a6dc7f04e62106b97079279ed53b41/design-review/SKILL.md.tmpl) 和 [design resolver](https://github.com/wenlong66/gstack/blob/54efba6dd5a6dc7f04e62106b97079279ed53b41/scripts/resolvers/design.ts)；未变的方法、规则、报告及相关模板保持 [1.91.45.0 design resolver](https://github.com/wenlong66/gstack/blob/92cfd07a79ed0f27fbcc57f2d61d00ec700eadb4/scripts/resolvers/design.ts) 来源。
-- 本地：[技能](skills/design-review/SKILL.md)、[必要方法与关联资源](skills/design-review/references/)、[报告资源](skills/design-review/assets/)。
-- 保留原版实际设计审计、修复、原子提交、复测、回归和失败处理；[测试 bootstrap](skills/design-review/references/test-framework.md) 随包保留安装/配置、首批真实测试、suite 验证与失败恢复，以及原版授权范围内的 CI/测试文档/提交步骤，来源为[testing resolver](https://github.com/wenlong66/gstack/blob/92cfd07a79ed0f27fbcc57f2d61d00ec700eadb4/scripts/resolvers/testing.ts)。权限、浏览器、比较工具、报告路径与外部模型作为关联适配，不减为只读审计。
-- [回归创建程序](skills/design-review/references/regression-tests.md) 保留 design-review 原版 `8e.5` 的修复后顺序，完整匹配程序来自 [qa/SKILL.md.tmpl 的原始创建阶段](https://github.com/wenlong66/gstack/blob/e7b2ef21e20e6f359ccdc1cf0394dacbe339ad09/qa/SKILL.md.tmpl)。仅改关联名称、报告路径、提交标识和执行/清理授权；不借用新版 QA 的修复前创建或仅记录步骤改写该技能。
 
 ### document-release
 
@@ -64,7 +51,7 @@ matt-plus 分发下列内容的独立适配版本，不是上游官方发行版�
 
 - [完整设计目录](references/design-catalog.md) 分发新快照 [lib/design-catalog.ts](https://github.com/wenlong66/gstack/blob/92cfd07a79ed0f27fbcc57f2d61d00ec700eadb4/lib/design-catalog.ts) 的全部规则、字体角色与判定元数据；不是只有旧十一条 blacklist，也不随包安装 detector engine。
 - [DESIGN.md 格式说明](references/design-md-format.md)、[模板](assets/design-system-spec-template.md)、[CLI](scripts/design-md.mjs) 和[纯模块](scripts/lib/design-md.mjs) 来源于新快照 [lib/design-md.ts](https://github.com/wenlong66/gstack/blob/92cfd07a79ed0f27fbcc57f2d61d00ec700eadb4/lib/design-md.ts)、[bin/gstack-design-md.ts](https://github.com/wenlong66/gstack/blob/92cfd07a79ed0f27fbcc57f2d61d00ec700eadb4/bin/gstack-design-md.ts) 与 Phase 6 模板；适配 Node、包内 YAML parser、独立授权、文件保留与错误处理，不依赖 Bun。
-- [Outside completion CLI](scripts/outside-review-result.mjs) 和[纯模块](scripts/lib/outside-review-result.mjs) 适配这四个技能所需的 review/structured/proposal gates；严重性标签解析同步至 [1.91.67.0 lib/outside-review-result.ts](https://github.com/wenlong66/gstack/blob/54efba6dd5a6dc7f04e62106b97079279ed53b41/lib/outside-review-result.ts)，未变的 CLI 接口和 gate 契约保持 [1.91.45.0 来源](https://github.com/wenlong66/gstack/blob/92cfd07a79ed0f27fbcc57f2d61d00ec700eadb4/lib/outside-review-result.ts)。保留执行证据与 severity/recommendation 判定；仅适配 Node、边界校验、不可读证据 fail-closed 和不输出原始诊断。没有移入 plan-review 模型档位、全局 config 或 provider wrapper。
+- [Outside completion CLI](scripts/outside-review-result.mjs) 和[纯模块](scripts/lib/outside-review-result.mjs) 适配现有技能所需的 review/structured/proposal gates；严重性标签解析同步至 [1.91.67.0 lib/outside-review-result.ts](https://github.com/wenlong66/gstack/blob/54efba6dd5a6dc7f04e62106b97079279ed53b41/lib/outside-review-result.ts)，未变的 CLI 接口和 gate 契约保持 [1.91.45.0 来源](https://github.com/wenlong66/gstack/blob/92cfd07a79ed0f27fbcc57f2d61d00ec700eadb4/lib/outside-review-result.ts)。保留执行证据与 severity/recommendation 判定；仅适配 Node、边界校验、不可读证据 fail-closed 和不输出原始诊断。没有移入 plan-review 模型档位、全局 config 或 provider wrapper。
 
 ## Apache-2.0 派生材料
 
@@ -74,7 +61,7 @@ matt-plus 分发下列内容的独立适配版本，不是上游官方发行版�
 
 来源：[pbakaus/impeccable](https://github.com/pbakaus/impeccable)。上游设计目录的规则 ID/名字源自 antipatterns registry；Persuade / Operate / Read / Experience 分类、craft-floor（browser surfaces、one authored motion、offset depth、tinted secondary text、heading spacing、use-scene mode）、three-looks calibration 和字体选择程序源自其设计指导，经 gstack 改写。
 
-本包对应派生内容：两个设计技能的相关正文/私有设计 references，以及 [design-catalog.md](references/design-catalog.md)。未分发 impeccable engine、安装器或规则 registry fixture；engine 不可用时不伪造 detector 覆盖。
+本包对应派生内容：`design-consultation`的相关正文/私有设计 references，以及 [design-catalog.md](references/design-catalog.md)。未分发 impeccable engine、安装器或规则 registry fixture；engine 不可用时不伪造 detector 覆盖。
 
 ### DESIGN.md specification — Copyright Google LLC — Apache License 2.0
 
@@ -89,3 +76,17 @@ matt-plus 分发下列内容的独立适配版本，不是上游官方发行版�
 推广、遥测、自动更新、全局记忆/状态、固定 home 目录和整套上游 bootstrap 不属于独立技能的运行依赖，已移除。必要原版模板宏不留作未展开占位符，领域段落本地分发。
 
 提交、推送、恢复、外部审查与图像能力没有因高权限而删除；通过 [动作授权](references/external-actions.md)、[浏览器](references/browser-tools.md)、[图像/模型](references/image-tools.md) 和 [内容检查](references/content-guard.md) 关联到当前实际可用工具与授权。工具不存在或能力未经执行验证时如实记录，不声称完全等价。
+
+## 原样复制的技能
+
+### security-audit
+
+- 源：本地 `security-audit-skill/skills/security-audit`，快照 `c1c8a8c1471069fb0e188eeaff69b8e8db6564a8`。
+- 本地：[完整技能目录](skills/security-audit/)。包含所有指南、schema、验证脚本和原版测试，逐文件原样复制，无逻辑修改。
+- 原作者：Copyright (c) 2025-2026 Cloudflare, Inc.；[原版 MIT 许可证](licenses/security-audit-MIT.txt)随包保留。
+
+### react-native-skills
+
+- 源：本地 `vercel-skills/skills/react-native-skills`，快照 `063bee94c3f4df8453406c830b0a7df0f2860278`。
+- 本地：[完整技能目录](skills/react-native-skills/)。原版声明名 `vercel-react-native-skills`、正文、编译指南、规则、README 和元数据逐文件原样保留，无逻辑修改。
+- 原版 frontmatter 声明作者 `vercel`、许可证 MIT；来源仓库 README 同样声明 MIT，源仓库未提供单独 LICENSE 文件。

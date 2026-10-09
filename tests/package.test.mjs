@@ -8,11 +8,11 @@ const root = fileURLToPath(new URL('../', import.meta.url));
 const rootRealPath = realpathSync(root);
 const EXPECTED_SKILLS = [
   'design-consultation',
-  'frontend-ui-engineering',
-  'design-review',
   'document-release',
   'document-generate',
-  'security-and-hardening',
+  'security-audit',
+  'react-native-skills',
+  'observability-and-instrumentation',
   'code-simplification',
 ];
 const TEXT_EXTENSIONS = new Set(['.html', '.js', '.json', '.md', '.mjs', '.sh']);
@@ -91,7 +91,7 @@ test('manifest and shipped directories contain exactly the seven skills', () => 
 test('every declared skill includes its original-name workflow, not a pointer stub', () => {
   for (const skill of plugin.skills) {
     const body = readText(`${skill}/SKILL.md`);
-    assert.equal(body.match(/^name:\s*(.+)$/m)?.[1], basename(skill));
+    assert.equal(body.match(/^name:\s*(.+)$/m)?.[1], basename(skill) === 'react-native-skills' ? 'vercel-react-native-skills' : basename(skill));
     assert.match(body, /^description:\s*\S/m);
     assert.ok(body.split('\n').length > 20, `${skill}: missing workflow`);
     assert.doesNotMatch(body, HOST_MACROS, `${skill}: unexpanded host macro`);
@@ -100,23 +100,9 @@ test('every declared skill includes its original-name workflow, not a pointer st
   }
 });
 
-test('original frontend tutorials and security domain controls are retained', () => {
-  const frontend = skillResources('frontend-ui-engineering');
-  for (const marker of [/Component Architecture/i, /State Management/i, /Optimistic/i, /Reference-Led/i, /Common Rationalizations/i]) {
-    assert.match(frontend, marker);
-  }
-  const security = skillResources('security-and-hardening');
-  for (const marker of [/Threat Model First/i, /STRIDE/, /abuse cases/i, /Dependencies and supply chain/i, /Personal data and privacy/i, /LLM output/i]) {
-    assert.match(security, marker);
-  }
-  assert.ok(existsSync(join(root, 'skills/security-and-hardening/references/hardening-patterns.md')));
-});
-
-test('design workflows retain proposals, visual evidence, fixes and recovery', () => {
+test('design consultation retains proposals and visual evidence', () => {
   const consultation = skillResources('design-consultation');
   for (const marker of [/DESIGN\.md/, /preview/i, /Comparison Board \+ Feedback Loop/i, /typography/i, /color/i]) assert.match(consultation, marker);
-  const review = skillResources('design-review');
-  for (const marker of [/audit/i, /fix/i, /atomic/i, /before/i, /after/i, /regression/i, /revert/i]) assert.match(review, marker);
   assert.ok(existsSync(join(root, 'skills/design-consultation/assets/design-preview.html')));
 });
 
@@ -149,7 +135,7 @@ test('skill resources have no unresolved host macro or private runtime associati
 
 test('shared adapters declare prerequisites, permission gates and exact-byte checking', () => {
   const actions = readText('references/external-actions.md');
-  for (const marker of [/approval/i, /unrelated/i, /UNVERIFIED/, /denied/i, /atomic/i]) assert.match(actions, marker);
+  for (const marker of [/approval/i, /unrelated/i, /UNVERIFIED/, /denied/i]) assert.match(actions, marker);
   const browser = readText('references/browser-tools.md');
   for (const marker of [/playwright-cli/, /help/, /UNVERIFIED/, /pixel.diff/i, /before\/after/i]) assert.match(browser, marker);
   const image = readText('references/image-tools.md');
