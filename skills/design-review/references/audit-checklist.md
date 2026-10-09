@@ -19,8 +19,10 @@ Apply these at each page. Each finding gets an impact rating (high/medium/polish
 - Measure: 45-75 chars per line (66 ideal)
 - Heading hierarchy: no skipped levels (h1→h3 without h2)
 - Weight contrast: >=2 weights used for hierarchy
-- No blacklisted fonts (Papyrus, Comic Sans, Lobster, Impact, Jokerman)
-- If primary font is Inter/Roboto/Open Sans/Poppins → flag as potentially generic
+- Assign display/body/label/mono roles before judging fonts. Read the complete role-scoped lists in [design catalog](../../../references/design-catalog.md); do not infer a display violation from an allowed body/UI role.
+- Banned in any role: Papyrus, Comic Sans, Lobster, Impact, Jokerman, Bleeding Cowboys, Permanent Marker, Bradley Hand, Brush Script, Hobo, Trajan, Raleway, Clash Display, Courier New.
+- Overused display faces follow the catalog's full list. DM Sans, Instrument Sans, IBM Plex Sans pass for body/UI on an Operate or Read surface when the proposal explicitly assigns that role. JetBrains Mono, IBM Plex Mono, Fira Code are mono options for data/code.
+- A user-named face or intentional DESIGN.md choice is respected; state the tradeoff once. Re-verify official family name, required weights, license and loading source before recommending a replacement; offline, inspect local files/licenses or mark selection pending rather than inventing a face or URL.
 - `text-wrap: balance` or `text-pretty` on headings (check via mapped computed-style inspection of heading `text-wrap`)
 - Curly quotes used, not straight quotes
 - Ellipsis character (`…`) not three dots (`...`)
@@ -67,6 +69,7 @@ Apply these at each page. Each finding gets an impact rating (high/medium/polish
 - Touch targets >= 44px on all interactive elements
 - `cursor: pointer` on all clickable elements
 - Mindless choice audit: every decision point (button, link, dropdown, modal choice) is a mindless click (obvious what happens). If a click requires thought about whether it's the right choice, flag as HIGH.
+- Browser surfaces themed from the palette: selection, caret, scrollbars, focus rings, underline offset, tabular numerals. Read computed values rather than judging only custom components.
 
 **6. Responsive Design** (8 items)
 - Mobile layout makes *design* sense (not just stacked desktop columns)
@@ -85,6 +88,7 @@ Apply these at each page. Each finding gets an impact rating (high/medium/polish
 - `prefers-reduced-motion` respected (check via mapped read-only evaluation: `matchMedia('(prefers-reduced-motion: reduce)').matches`)
 - No `transition: all` — properties listed explicitly
 - Only `transform` and `opacity` animated (not layout properties like width, height, top, left)
+- One authored motion moment at the moment that deserves attention, plus informative state transitions; start from a visible default, never hide content behind an animation that may not run.
 
 **8. Content & Microcopy** (8 items)
 - Empty states designed with warmth (message + action + illustration/icon)
@@ -99,7 +103,9 @@ Apply these at each page. Each finding gets an impact rating (high/medium/polish
 - Instructions detection: any visible instructions longer than one sentence. If users need to read instructions, the design has failed. Flag the instructions AND the interaction they're compensating for.
 - Happy talk word count: count total visible words on the page. Classify each text block as "useful content" vs "happy talk" (welcome paragraphs, self-congratulatory text, instructions nobody reads). Report: "This page has X words. Y (Z%) are happy talk."
 
-**9. AI Slop Detection** (10 anti-patterns — the blacklist)
+**9. AI Slop Detection** (11 legacy patterns plus the complete catalog)
+
+Read [the complete design catalog](../../../references/design-catalog.md) in full: apply every legacy pattern, detector-known slop rule and judgment tell, not only the examples below. Keep printed rule ids, impact, confidence, tier, role exclusions and heuristics. Quality entries also inform their matching checklist categories. One element flagged by the detector and manual judgment is one finding, credited to both; a rule's location list is not a finding per hit. Advisory rows do not count; polish findings do not affect grade. HIGH mechanical CSS suggestions may enter the authorized fix loop, not automatic edits during baseline; LOW-confidence patterns remain possible until visually confirmed. Intentional DESIGN.md tokens/decisions calibrate all rows. An unavailable detector does not skip manual catalog coverage.
 
 The test: would a human designer at a respected studio ever ship this?
 

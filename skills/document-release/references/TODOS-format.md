@@ -58,4 +58,11 @@ Each item is an H3 under its section:
 When an item is completed, move it to the `## Completed` section preserving its original content and appending:
 
 ```markdown
-**Completed:** vX.Y.Z (YYYY-MM-DD)
+**Completed:** YYYY-MM-DD
+```
+
+Step 7 initially records the completion date only. After Step 8 resolves the final
+project version, Step 9 may finalize it using the project's actual format, for example
+`**Completed:** vX.Y.Z (YYYY-MM-DD)` when that convention applies. No version source,
+automation-owned versioning or a broken configured source keeps the date only. Never
+invent a version or impose gstack's four-part scheme.

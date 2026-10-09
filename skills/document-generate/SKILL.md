@@ -77,8 +77,8 @@ any documentation. This prevents the "documentation that describes half the feat
 
 ## Step 1: Codebase Archaeology (Research Phase)
 
-**This is the most important step.** Do not skip or rush it. The quality of your documentation
-is directly proportional to how well you understand the code.
+The quality of the documentation depends on how well you understand the code, so this
+step carries the most weight.
 
 1. **Map the project structure:**
 

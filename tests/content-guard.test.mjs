@@ -21,7 +21,9 @@ const ENTROPY = "8Fk2pQ9vXz4wL7mN3rT6yB1cD5eG0hJq";
 const JWT = `eyJ${ENTROPY.slice(0, 20)}.eyJ${ENTROPY.slice(4, 24)}.${ENTROPY.slice(8, 28)}`;
 const HERE = dirname(fileURLToPath(import.meta.url));
 const CLI = fileURLToPath(new URL("../scripts/content-guard.mjs", import.meta.url));
-const UPSTREAM = fileURLToPath(new URL("../../gstack/lib/redact-patterns.ts", import.meta.url));
+const UPSTREAM = fileURLToPath(new URL("../../gstack/", import.meta.url));
+const UPSTREAM_SNAPSHOT = spawnSync("git", ["-C", UPSTREAM, "show", `${SOURCE_REVISION}:lib/redact-patterns.ts`],
+  { encoding: "utf8", env: { ...process.env, GIT_NO_LAZY_FETCH: "1", GIT_TERMINAL_PROMPT: "0" } });
 const ids = (input, options) => scan(input, options).findings.map((finding) => finding.id);
 
 const POSITIVES = [
@@ -101,7 +103,8 @@ test("optional pinned upstream snapshot parity: all IDs, regexes, tiers, categor
   skip: !existsSync(UPSTREAM) && "Source snapshot is optional, never a runtime dependency",
 }, () => {
   assert.equal(SOURCE_REVISION, "e7b2ef21e20e6f359ccdc1cf0394dacbe339ad09");
-  const source = readFileSync(UPSTREAM, "utf8");
+  assert.equal(UPSTREAM_SNAPSHOT.status, 0, "The declared source snapshot must be available locally; never substitute the current upstream worktree");
+  const source = UPSTREAM_SNAPSHOT.stdout;
   assert.equal(createHash("sha256").update(source).digest("hex"),
     "2f8f7314ad5ec78e436655b9c294ec2215ed7bd2780b5f5a82d9375f2b705e7b");
   const literal = (block, name) => {

@@ -4,10 +4,10 @@
 
 **Redaction scan before commit.** Generated docs frequently contain example
 credentials; scan the staged doc content and block on a HIGH credential (a
-live-format secret in committed docs is a leak). Example configs belong in
-` ```example ` fences won't excuse a live-format secret. The original host's
-placeholder-filter association now uses the shared guard's individually reviewed synthetic
-example handling (e.g. `AKIAIOSFODNN7EXAMPLE`), not an automatic CLI exemption:
+live-format secret in committed docs is a leak). A live-format secret blocks wherever it
+appears, fenced or not. The original host's per-span placeholder-filter association uses
+the shared guard's individually reviewed synthetic example handling
+(e.g. `AKIAIOSFODNN7EXAMPLE`), not an automatic CLI exemption:
 
 Read `../../../references/content-guard.md` and `runtime.md` for the local guard association.
 Extract the exact staged content and final commit message locally without displaying raw

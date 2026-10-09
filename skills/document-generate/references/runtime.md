@@ -1,7 +1,7 @@
 # Runtime Associations
 
 The domain text is ported from `gstack/document-generate/SKILL.md.tmpl` at
-`e7b2ef21e20e6f359ccdc1cf0394dacbe339ad09`. Steps 3-6 are moved unchanged into
+`92cfd07a79ed0f27fbcc57f2d61d00ec700eadb4` / `1.91.45.0`. Steps 3-6 are moved unchanged into
 `writing-quadrants.md`; Step 9 retains its original publication functions in `publishing.md`.
 No gstack installation, generator, private runtime or separate skill is required.
 

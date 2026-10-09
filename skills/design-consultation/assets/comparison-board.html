@@ -56,14 +56,18 @@
   </main>
   <script>
     const form = document.getElementById('feedback-form');
-    const variants = Object.freeze(['A', 'B', 'C']);
+    // Optional local adapter metadata, not an upstream feedback requirement.
+    const configText = document.getElementById('board-config')?.textContent;
+    const boardConfig = configText ? JSON.parse(configText) : null;
+    const variants = Object.freeze(boardConfig ? Object.keys(boardConfig.images) : ['A', 'B', 'C']);
     const valueOf = (data, key) => String(data.get(key) || '').trim();
     const collectFeedback = data => ({
       preferred: valueOf(data, 'preferred') || null,
       ratings: Object.fromEntries(variants.map(id => [id, valueOf(data, `rating-${id}`) ? Number(data.get(`rating-${id}`)) : null])),
       comments: Object.fromEntries(variants.map(id => [id, valueOf(data, `comment-${id}`)])),
       overall: valueOf(data, 'overall'),
-      regenerated: false
+      regenerated: false,
+      ...(boardConfig ? { boardRound: boardConfig.round } : {})
     });
     const downloadFeedback = (filename, feedback) => {
       const url = URL.createObjectURL(new Blob([JSON.stringify(feedback, null, 2)], { type: 'application/json' }));

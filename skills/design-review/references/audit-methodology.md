@@ -39,7 +39,7 @@ Run full audit, then load previous `design-baseline.json`. Compare: per-category
 
 The most uniquely designer-like output. Form a gut reaction before analyzing anything.
 
-1. Navigate to the target URL
+1. Navigate to the target URL. Inspect the current URL first: an authentication redirect is not the intended target design. Resolve it only with the approved isolated test-session association, then return to the intended page; blocked access remains `UNVERIFIED` rather than a grade of the login wall.
 2. Take a full-page desktop screenshot: `REPORT_DIR/screenshots/first-impression.png`
 3. Write the **First Impression** using this structured critique format:
    - "The site communicates **[what]**." (what it says at a glance — competence? playfulness? confusion?)
@@ -75,7 +75,7 @@ JSON.stringify([...document.querySelectorAll('h1,h2,h3,h4,h5,h6')].map(h => ({ta
 JSON.stringify([...document.querySelectorAll('a,button,input,[role=button]')].filter(e => {const r=e.getBoundingClientRect(); return r.width>0 && (r.width<44||r.height<44)}).map(e => ({tag:e.tagName, text:(e.textContent||'').trim().slice(0,30), w:Math.round(e.getBoundingClientRect().width), h:Math.round(e.getBoundingClientRect().height)})).slice(0,20))
 ```
 
-**Performance baseline:** Use the supported performance association in [tool/path mapping](tool-mapping.md); unsupported measurements are `UNVERIFIED`.
+**Performance baseline:** Use the supported performance association in [tool/path mapping](tool-mapping.md); unsupported measurements are `UNVERIFIED`. Serialize PerformanceEntry fields inside the page (for example, `JSON.stringify(performance.getEntriesByType('navigation').map(entry => entry.toJSON()))`); a browser tool may otherwise flatten them to `{}`. Navigation timings are not automatically LCP/CLS measurements: record the actual method and evidence for each metric.
 
 Structure findings as an **Inferred Design System**:
 - **Fonts:** list with usage counts. Flag if >3 distinct font families.
@@ -194,17 +194,9 @@ Compare screenshots and observations across pages for:
 
 **Local:** `REPORT_DIR/design-audit-{domain}.md` in the approved output directory.
 
-**Baseline:** Write `design-baseline.json` for regression mode using [the baseline template](../assets/design-baseline-template.json):
-```json
-{
-  "date": "YYYY-MM-DD",
-  "url": "<target>",
-  "designScore": "B",
-  "aiSlopScore": "C",
-  "categoryGrades": { "hierarchy": "A", "typography": "B", ... },
-  "findings": [{ "id": "FINDING-001", "title": "...", "impact": "high", "category": "typography" }]
-}
-```
+**Baseline:** Write `design-baseline.json` for regression mode using [the schemaVersion 2 baseline template](../assets/design-baseline-template.json). Save through a same-directory temporary file and atomic rename only under approved write scope, and retain a per-run `design-baseline.<runId>.json` copy. Preserve the previous evidence before replacing the current baseline. Populate all 10 grades, actual findings, date, URL and the unique run id established at Setup; template grades are illustrative, not observations.
+
+The `detector` object records actual `mode` (`dom`, `source` or `none`), `engine` identity/version (never a path), source-only base commit, target-set hash, counted total, `byRule` and DOM `byPage` counts. Follow [the detector evidence association](detector.md#baseline-evidence) for target hashing and coverage. Use `mode: "none"` and null unavailable fields when no detector completed; never turn missing/partial coverage into a zero-finding scan.
 
 ### Scoring System
 
@@ -240,9 +232,10 @@ AI Slop is 5% of Design Score but also graded independently as a headline metric
 ### Regression Output
 
 When previous `design-baseline.json` exists or `--regression` flag is used:
-- Load baseline grades
-- Compare: per-category deltas, new findings, resolved findings
-- Append regression table to report
+- Select the newest readable baseline older than this run within the approved local report/baseline scope, never search a global home/state directory. An unreadable previous baseline is "previous baseline unreadable (first scan)".
+- Load baseline grades; compare per-category deltas, new findings and resolved findings.
+- Detector delta only when both completed scans have matching `detector.mode` and `targetSet`: report rule ids appeared/disappeared, totals and per-page changes. Otherwise say "detector modes differ, no delta" or "target set changed, no delta". A different `engine` prints the comparable delta with "engine changed X → Y; rule set may differ". No previous `detector` field means "no detector baseline (first scan)", never `+N`; incomplete coverage or null target/count fields cannot establish comparability. Live pages jitter, so counts are advisory and id appear/disappear is the signal.
+- Append the regression table to the report.
 
 ---
 

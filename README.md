@@ -25,7 +25,8 @@
 - 所有必要正文、模板、检查表和本地脚本随包分发；来源链接仅用于追溯。
 - gstack 模板的必要领域段落在包内展开或关联，宿主的推广、遥测、更新检查和全局记忆/状态关联不迁入。
 - 网页测试优先调用已安装的 `playwright-cli`，可用时先加载同名技能并检查实际 help；未安装时使用当前宿主默认浏览器工具。缺失能力标记 `UNVERIFIED`，不自动安装、下载浏览器、导入个人 cookie 或启动服务器。
-- 可选 designer/外部模型关联到获授权且可用的工具。缺少 designer 时使用原版允许的 HTML 字体/颜色预览路径，不把静态预览当作实际 UI 验证。
+- 可选 designer/外部模型关联到获授权且可用的工具；outside provider 按实际宿主双向选择并禁止自调用，disabled 不触发替代复核。缺少 designer 时使用原版允许的 HTML 字体/颜色预览路径，不把静态预览当作实际 UI 验证。
+- 两个设计技能共用完整设计规则目录与新版 `DESIGN.md` 格式资源，随包提供 Node helper 和完整 YAML parser，不需要 Bun 或运行时安装依赖；格式转换、最终写入和 instruction-file 变更仍按各自批准范围执行。
 - 必需能力、权限或证据缺失时标记 `UNVERIFIED`，不宣称原版工具已经被完整等价验证。
 - 原版的修复、提交、推送、PR/MR 更新和恢复能力仍保留；实际执行需要相应的范围与动作授权。调用技能不是所有副作用的一揽子授权。
 
@@ -66,14 +67,14 @@ codex plugin add matt-plus@plugins
 Node.js 18+，无需安装 npm 依赖：
 
 ```bash
-node --test tests/package.test.mjs tests/content-guard.test.mjs tests/design-adaptation.test.mjs
+node --test tests/*.test.mjs
 claude plugin validate .claude-plugin/plugin.json --strict
 claude plugin validate .claude-plugin/marketplace.json --strict
 ```
 
 验收只检查原版保真与适配正确性：七技能清单、两端 manifest、源正文差异、包内引用、来源和模板关联。`code-simplification` 保持现有移植内容，不纳入本次修复的正文差异检查。内容检查工具用合成数据验证移植后的脚本接口与错误处理，不验证真实凭据。
 
-回归测试覆盖包结构、内容检查工具和比较板反馈协议；浏览器验证只在隔离合成样例中进行，不等于真实业务页面的完整审查。不做技能有效性、审美提升或模型增益评估，不自动执行外部审查或发布流程。检查范围见 [integration-plan.md](integration-plan.md)。
+回归测试覆盖包结构、内容检查工具、DESIGN.md 格式、比较板反馈协议和文档/外部复核的本地适配接口；浏览器验证只在隔离合成样例中进行，不等于真实业务页面的完整审查。不做技能有效性、审美提升或模型增益评估，不自动执行外部审查或发布流程。检查范围见 [integration-plan.md](integration-plan.md)。
 
 纯本地 HTML 测试可显式使用专用的隔离、离线浏览器配置，见[浏览器关联说明](references/browser-tools.md#opt-in-local-html-testing)。默认不启用 `file://` 访问，也不修改全局浏览器设置。
 
@@ -81,3 +82,5 @@ claude plugin validate .claude-plugin/marketplace.json --strict
 
 - [第三方来源、精确快照与适配范围](THIRD_PARTY_NOTICES.md)
 - [MIT 许可与原作者版权声明](LICENSE)
+- 四个 gstack 技能同步至 `1.91.45.0` / `92cfd07a`；agent-skills 来源与旧 39 项内容扫描规则不变。
+- [Apache-2.0 派生设计内容许可](licenses/Apache-2.0.txt)及随包 YAML parser 的许可见第三方来源说明。

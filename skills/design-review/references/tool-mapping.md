@@ -30,19 +30,36 @@ The DOM resource is a browser-context IIFE. Read/review it and embed its unchang
 
 Every screenshot must be shown with Read/the available viewer as the original requires. Before/after pairs must have comparable page/state/content, viewport, fonts, device scale and timing. Unsupported browser access prevents a completed live audit; static/source observations remain separate. Read source for Phase 8 fixes, diff-to-route association and approved outside source audits, not to substitute for the rendered baseline's evidence.
 
+## DESIGN.md read/export association
+
+Resolve `<actual-plugin-root>` from the actually loaded `skills/design-review/SKILL.md`, not the project cwd or an assumed Claude environment variable. Read [shared format/helper guidance](../../../references/design-md-format.md). The bundled Node 18+ helper uses local js-yaml, with no installation or service:
+
+```sh
+node "<actual-plugin-root>/scripts/design-md.mjs" check "<project-root>/DESIGN.md"
+node "<actual-plugin-root>/scripts/design-md.mjs" tokens "<project-root>/DESIGN.md"
+```
+
+Read `DESIGN_MD_FORMAT`, `DESIGN_MD_REASON` and `DESIGN_MD_MARKER`. Spec → calibrate on the flat token map; legitimate values are not findings and departures name the token. Legacy or unknown → preserve/read prose, disclose unknown reason and respect persisted format choice. Missing is only genuine ENOENT; I/O failure/exit 3 `DESIGN_MD_INTERNAL_ERROR` is not missing, report and stop this association. `tokens` JSON `errors` and stderr `DESIGN_MD_TOKEN_REF_INVALID` must be read even with exit 0: invalid references are omitted, never invented defaults. Review is read-only: never run `convert` or `mark` automatically, nor redirect a preview into a project file. Read-only check/tokens need no conversion consent; source-fix approval is not document-write permission.
+
+Approved new/fresh exports use [the spec template](../../../assets/design-system-spec-template.md) and full format guidance, with exact observed/approved tokens and pending data disclosed. Existing files keep their chosen format/content; any conversion, marker or instruction edit is a separate explicit document decision, not part of this audit. Validate only the approved export with check/tokens afterward.
+
+## Optional detector and private DOM
+
+Read [the complete detector association](detector.md) before readiness, Phase 3 scanning or Phase 9 cleanup. Its clone-based dump is a function expression, distinct from the observation IIFE above; neither is a raw project runner. Private artifacts, guard limits, actual installed scan interface, target-set hash, failure handling, re-scan and run-owned cleanup are one lifecycle. No gstack probe/install, global cache/config or hypothetical command. Missing detector coverage does not skip manual full-catalog review or allow Phases 1-6 source access.
+
 ## Fix/commit/recovery associations
 
-The workflow stays audit → fix → atomic commit → retest → regression → failure recovery. The original Setup clean-working-tree gate applies before any audit, including audit-only requests; do not move it into the fix loop, delete it, or bypass the original setup checks. An audit-only request stops before scoped source edits, not before setup. An approved fix does not automatically authorize stage/commit or stash/revert.
+The workflow stays rendered audit → before-repair JS regression (8a.6, CSS skips) → fix → atomic source-fix commit → retest → regression record/approved test commit → failure recovery. The original Setup clean-working-tree gate applies before any audit, including audit-only requests; do not move it into the fix loop, delete it, or bypass the original setup checks. An audit-only request stops before scoped source edits, not before setup. An approved fix does not automatically authorize stage/commit or stash/revert.
 
 - Dirty-tree options require exact approved files/hunks and recovery details. Never stage or stash unrelated user work to force a clean tree. If not authorized, stop the workflow before the audit and let the user preserve their work.
 - For each approved atomic commit, inspect the index and stage only the finding's approved changes. No unrelated staged work may enter it. Follow the shared working-branch rule and content guard.
 - If commit is withheld, keep each finding's scoped change/evidence separate and mark the commit stage deferred. Deferred commit does not waive the original clean-tree gate or other setup prerequisites. Do not invent a SHA or represent an uncommitted change as committed.
 - On regression, stop immediately. Execute the original `git revert HEAD` only if that exact fix commit is the actual safe target and recovery was approved. Otherwise request recovery approval; preserve user work and classify truthfully, not `reverted` before recovery happened.
-- Regression-test creation/removal/commit is scoped to the new test only. A failed test receives the original single retry, then deletion of that newly created file and deferral when authorized. No existing-test or CI weakening.
+- Regression-test creation/correction/commit is scoped to new test files only. Establish the JS-behavior regression before repair (8a.6), then re-run and record it in 8d/8e.5. Correct a proved fixture/import/test defect once; removal of an invalid newly owned test requires its own scope. Never silently delete a valid red regression: preserve the new test/evidence uncommitted and defer the unresolved bug. No existing-test or CI weakening.
 - TODOS.md, DESIGN.md export, and instruction-file changes use their separate file/decision scope. Writing a report does not authorize TODO/source/instruction edits or PR publication.
 
 ## Image and outside-model associations
 
-`DESIGN_READY` denotes an approved available generator, not a required binary. Use the source brief for target generation; unsupported/declined tools simply skip the optional target branch. `verify` means a supported approved target-vs-actual comparison, with actual result/evidence. If unavailable, mark target comparison `UNVERIFIED` while retaining live retest. Never treat a generated target as proof that the implementation passed.
+`DESIGN_READY` denotes an approved available generator, not a required binary. Use the source brief for target generation; unsupported/declined tools simply skip the optional target branch. Bind each finding to the actual returned existing `saved`/`outputPath`, not the requested filename; collision-free requested names do not prove a file was saved. `verify` means a supported approved target-vs-actual comparison on those actual paths, with actual result/evidence. A `pass: true` accompanied by skipped/unavailable checking is not verification. If unavailable, mark target comparison `UNVERIFIED` while retaining live retest. Never treat a generated target as proof that the implementation passed.
 
 Outside voices use only approved already-installed tools or available independent subagents. Retain the original prompts/scorecard, inspect the provider interface, bound the input to authorized paths/content, and scan outgoing text with the shared Node 18 guard. Automatic host-Codex launch/cached search flags, authentication, global logging and whole-repo access are removed associations. Missing optional voices are non-blocking and reported honestly.

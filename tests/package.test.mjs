@@ -172,6 +172,11 @@ test('each original skill has pinned source attribution and preserved licensing'
   const license = readText('LICENSE');
   assert.match(notices, /14873a11dfc2ac7ed5be19069e0d0828ef7f2fec/);
   assert.match(notices, /e7b2ef21e20e6f359ccdc1cf0394dacbe339ad09/);
+  assert.match(notices, /92cfd07a79ed0f27fbcc57f2d61d00ec700eadb4/);
+  assert.match(notices, /Paul Bakaus/);
+  assert.match(notices, /Google LLC/);
+  assert.match(readText('licenses/Apache-2.0.txt'), /Version 2\.0, January 2004/);
+  assert.match(readText('scripts/vendor/js-yaml/LICENSE'), /Permission is hereby granted/);
   assert.match(license, /MIT License/);
   assert.match(license, /Addy Osmani/);
   assert.match(license, /Garry Tan/);

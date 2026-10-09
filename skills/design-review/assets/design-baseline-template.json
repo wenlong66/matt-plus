@@ -1,11 +1,21 @@
 {
+  "schemaVersion": 2,
   "date": "YYYY-MM-DD",
+  "runId": "<RUN_ID>",
   "url": "<target>",
   "designScore": "B",
   "aiSlopScore": "C",
   "categoryGrades": {
     "hierarchy": "A",
-    "typography": "B"
+    "typography": "B",
+    "color": "B",
+    "spacing": "B",
+    "interaction": "B",
+    "responsive": "B",
+    "motion": "B",
+    "content": "B",
+    "aiSlop": "C",
+    "performance": "B"
   },
   "findings": [
     {
@@ -14,5 +24,14 @@
       "impact": "high",
       "category": "typography"
     }
-  ]
+  ],
+  "detector": {
+    "mode": "none",
+    "engine": null,
+    "base": null,
+    "targetSet": null,
+    "total": null,
+    "byRule": null,
+    "byPage": null
+  }
 }

@@ -1,10 +1,12 @@
 ## Design Outside Voices (parallel)
 
-**Host guard (original behavior):** If the current host is Codex, skip this entire outside-voices step and continue with the primary review; Codex must never invoke itself. Do not route a Codex self-call through a CLI alias, alternate tool association, or subagent wrapper as an outside voice. If the host identity is unknown, confirm it before dispatch.
+**Host guard:** Select a genuinely different harness using the shared [image/outside-model association](../../../references/image-tools.md): Codex host → Claude Code; Claude Code host → Codex. The harness identity, not a model overlay, selects the reviewer. Recheck immediately before dispatch; unknown or conflicting host identity stops the outside call. Never invoke the current host through an alias, alternate tool or subagent wrapper and call it external coverage. Tools being installed is not consent; run either voice only within its separately approved scope.
 
 The original automatic Codex command association is replaced by the approved available outside-model/subagent associations in [tool/path mapping](tool-mapping.md). Read that mapping and the shared external-action/image-model adapters before calling either voice. Keep the original domain prompts below; no automatic installation, authentication, network/search flag, or global review-log write.
 
-### 1. Codex design voice (approved available model association)
+Disabled/declined is terminal: skip both optional voices without a native replacement. When enabled, a non-ready outside provider retains its failure/repair notice and uses only the native voice, with missing outside coverage recorded. When ready, run both voices independently, overlap if supported, and await both results before synthesis. A failed outside attempt does not launch a second copy of an already-started native voice.
+
+### 1. Outside design voice (approved actual harness association)
 
 ```
 Review the frontend source code in this repo. Evaluate against these design hard rules:
@@ -13,10 +15,10 @@ Review the frontend source code in this repo. Evaluate against these design hard
 - Color: CSS variables with defined system, or hardcoded hex scattered?
 - Responsive: breakpoints defined? calc(100svh - header) for heroes? Mobile tested?
 - A11y: ARIA landmarks, alt text, contrast ratios, 44px touch targets?
-- Motion: 2-3 intentional animations, or zero / ornamental only?
+- Motion: one authored moment (an entrance or scroll-linked reveal, ease-out from a visible default) plus state transitions only where they carry information, or zero / ornamental only?
 - Cards: used only when card IS the interaction? No decorative card grids?
 
-First classify as MARKETING/LANDING PAGE vs APP UI vs HYBRID, then apply matching rules.
+First classify the visitor's win as PERSUADE (marketing), OPERATE (app UI), READ (docs/articles), EXPERIENCE (work/portfolio) or HYBRID per section, then apply the complete matching rules and craft reflexes supplied from design-hard-rules.md. Use the shared full catalog and role-aware fonts, and calibrate against the actual DESIGN.md flat tokens/intentional choices. Do not invent missing rendered evidence from source.
 
 LITMUS CHECKS — answer YES/NO:
 1. Brand/product unmistakable in first screen?
@@ -39,9 +41,17 @@ HARD REJECTION — flag if ANY apply:
 Be specific. Reference file:line for every finding.
 ```
 
-Use a 5-minute timeout (`timeout: 300000`). After the command completes, inspect the actual tool's sanitized error output through its supported interface.
+Supply the complete approved bounded frontend content, DESIGN.md constraints and hard-rule/catalog context with the prompt, not only paths. Append the completion request: severity-tag every finding (Critical/High/Medium/Low or P0–P3), or state `NO_FINDINGS`, and end with `Recommendation: <action> because <specific reason>`.
 
-### 2. Claude design subagent (approved independent subagent association)
+Use a 5-minute timeout (`timeout: 300000`). Follow the shared image/outside-model association to capture actual exit, response, provider stderr, supported Codex events and any wrapper's embedded provider failure separately from outer diagnostics. Resolve `<plugin-root>` from the loaded skill and classify the actual evidence:
+
+```sh
+node "<plugin-root>/scripts/outside-review-result.mjs" --verdict --exit <actual-provider-exit> --stderr "<provider-stderr-file>" --events "<codex-events-file>" review "<response-text-file>"
+```
+
+Omit `--events` only when the interface produces none. Gate exits 0/3 mean completed (3 retains P0/P1 findings); 1/4 or invalid/missing evidence means missing outside coverage, not a clean review. Refusal, timeout, empty output, sandbox/command failure or missing markers cannot fill a scorecard cell. Inspect and redact real diagnostics privately before reporting. Record actual host, provider, source/status, session and modelUsage when supplied; native-only success remains outside unavailable and no primary model is invented for multi-model usage.
+
+### 2. Native design subagent (approved independent in-host association)
 
 Dispatch a subagent with this prompt:
 
