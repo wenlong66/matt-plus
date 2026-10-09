@@ -49,7 +49,7 @@ between calls. The original discovery blocks can be resolved through installed f
 tools. `AskUserQuestion` means the host question tool, or a normal chat question and wait if
 that tool is unavailable. Missing required checks are UNVERIFIED, not a passed smoke test.
 For webpage, URL-navigation or rendered-result verification, read [Browser Testing](../../../references/browser-tools.md):
-prefer installed `playwright-cli`, or the host's default browser tool if the CLI is absent.
+prefer installed `playwright-cli`; if absent, offer installation and use an available testing method if the user does not install it.
 Non-browser examples and contributor smoke tests retain their native commands.
 Upstream skill associations and local namespaced entries are listed in [Upstream Skill Calls](../../../integration-plan.md#上游技能调用).
 

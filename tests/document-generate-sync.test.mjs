@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import test from 'node:test';
 
-const read = (file) => readFileSync(new URL(`../skills/document-generate/${file}`, import.meta.url), 'utf8');
+const read = (file) => readFileSync(new URL(`../skills/document-generate/${file}`, import.meta.url), 'utf8').replace(/\r\n/g, '\n');
 
 test('document-generate retains all Diataxis stages and the updated archaeology emphasis', () => {
   const body = read('SKILL.md');

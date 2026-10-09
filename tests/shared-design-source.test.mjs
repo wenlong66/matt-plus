@@ -8,7 +8,7 @@ import test from 'node:test';
 
 const REVISION = '92cfd07a79ed0f27fbcc57f2d61d00ec700eadb4';
 const sourceRoot = fileURLToPath(new URL('../../gstack/', import.meta.url));
-const read = (path) => readFileSync(new URL(`../${path}`, import.meta.url), 'utf8');
+const read = (path) => readFileSync(new URL(`../${path}`, import.meta.url), 'utf8').replace(/\r\n/g, '\n');
 const snapshot = (path) => {
   const result = spawnSync('git', ['-C', sourceRoot, 'show', `${REVISION}:${path}`], {
     encoding: 'utf8', env: { ...process.env, GIT_NO_LAZY_FETCH: '1', GIT_TERMINAL_PROMPT: '0' },

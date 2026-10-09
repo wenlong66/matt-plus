@@ -1,6 +1,5 @@
 ---
 name: design-review
-version: 2.0.0
 description: |
   Designer's eye QA: finds visual inconsistency, spacing issues, hierarchy problems,
   AI slop patterns, and slow interactions — then fixes them. Iteratively fixes issues
@@ -18,16 +17,18 @@ allowed-tools:
   - Grep
   - AskUserQuestion
   - WebSearch
-triggers:
-  - visual design audit
-  - design qa
-  - fix design issues
-compatibility: Approved playwright-cli preferred for live audit with the host default browser tool as fallback; local project files and git for authorized fixes/atomic commits. Optional approved image generator/outside model. Read the association mapping first.
+metadata:
+  version: "2.0.0"
+  triggers: |
+    visual design audit
+    design qa
+    fix design issues
+  compatibility: Playwright-cli preferred for live audit with an available testing-method fallback; local project files and git for authorized fixes/atomic commits. Optional approved image generator/outside model. Read the association mapping first.
 ---
 
 ## Local associations (read first)
 
-Read [external actions](../../references/external-actions.md), [browser tools](../../references/browser-tools.md), [image tools](../../references/image-tools.md), and [local tool/path mapping](references/tool-mapping.md). The original audit → fix → atomic commit → retest → regression → failure recovery workflow is retained below. Source editing, stage/commit, stash/revert, account/business writes, installations, and external-model calls each require the corresponding scope/approval; invocation is not blanket authorization. Missing live/tool evidence is `UNVERIFIED`. No gstack binaries, Bun, home/global state, or mandatory image/model service.
+Read [Codex tool associations](../../references/codex-tools.md), [external actions](../../references/external-actions.md), [browser tools](../../references/browser-tools.md), [image tools](../../references/image-tools.md), and [local tool/path mapping](references/tool-mapping.md). The original audit → fix → atomic commit → retest → regression → failure recovery workflow is retained below. Source editing, stage/commit, stash/revert, account/business writes, installations, and external-model calls each require the corresponding scope/approval; invocation is not blanket authorization. Missing live/tool evidence is `UNVERIFIED`. No gstack binaries, Bun, home/global state, or mandatory image/model service.
 
 # /design-review: Design Audit → Fix → Verify
 
@@ -76,7 +77,7 @@ After the user chooses, execute their choice (commit or stash), then continue wi
 
 **Find the browser tool:**
 
-Read the shared browser adapter and inspect actual help/capabilities. Prefer the approved installed `playwright-cli`; if absent, use the host's default browser tool.
+Read the shared browser adapter and inspect actual help/capabilities. Prefer the approved installed `playwright-cli`; if absent, offer installation and use an available testing method if the user does not install it.
 
 **Check test framework (bootstrap if needed):**
 
@@ -173,10 +174,6 @@ Show the user: "Here's the current state (screenshot) and here's what it should 
 
 This step is optional — skip for trivial CSS fixes (wrong hex color, missing padding value). Use it for findings where the intended design isn't obvious from the description alone.
 
-### 8a.6. Regression Test Before Repair
-
-For a JavaScript-behavior finding, read and execute [the complete local regression procedure](references/regression-tests.md) before changing production code: study native conventions, trace the exact bug/adjacent edges, record the value card, create a collision-free new test file and obtain real defect-specific red. Pure CSS skips this branch. Only separately approved test execution; no existing-test or CI edits, no production-only-for-testing seam. Invalid setup is not red proof. Preserve a valid red test/evidence uncommitted if the bug stays unresolved; 8e.5 records, not creates. No framework/declined testing → disclose deferred coverage and retain the rendered workflow.
-
 ### 8b. Fix
 
 - Read the source code, understand the context
@@ -206,7 +203,7 @@ Console → errors
 Snapshot/DOM diff → changes since the before state
 ```
 
-Take **before/after screenshot pair** for every fix, with the same viewport/content/state/fonts/timing. Check for new console errors against the pre-fix baseline, not an expectation of an empty console. For the 8a.6 behavior branch, re-run its regression, the original failing probe and adjacent happy path as [the local procedure](references/regression-tests.md) specifies. Missing rechecks stay `UNVERIFIED`.
+Take **before/after screenshot pair** for every fix, with the same viewport/content/state/fonts/timing. Check for new console errors against the pre-fix baseline, not an expectation of an empty console. Missing rechecks stay `UNVERIFIED`.
 
 ### 8e. Classify
 
@@ -214,11 +211,17 @@ Take **before/after screenshot pair** for every fix, with the same viewport/cont
 - **best-effort**: fix applied but couldn't fully verify (e.g., needs specific browser state)
 - **reverted**: regression detected → `git revert HEAD` → mark finding as "deferred"
 
-### 8e.5. Regression Test Record (design-review variant)
+### 8e.5. Regression Test (design-review variant)
 
-Design fixes are typically CSS-only: skip test creation entirely for those; CSS regressions are caught by re-running /design-review. JavaScript behavior (broken dropdowns, animation failures, conditional rendering, interactive state issues) uses the new file established before repair in 8a.6, not another test created here.
+Design fixes are typically CSS-only. Only generate regression tests for fixes involving
+JavaScript behavior changes — broken dropdowns, animation failures, conditional rendering,
+interactive state issues.
 
-Follow [the complete local regression procedure's record/commit stage](references/regression-tests.md#8e5-regression-test-record-and-commit). Record file/command, attribution, value card and actual red/green evidence. Verified fix and passing new test → commit only its approved new file(s), format `test(design): regression test for FINDING-NNN`. An unresolved valid red stays uncommitted with evidence and deferred coverage; never silently delete it or weaken existing tests/CI. Test commits do not count toward the design-fix risk heuristic.
+For CSS-only fixes: skip entirely. CSS regressions are caught by re-running /design-review.
+
+If the fix involved JS behavior: follow [the bundled regression procedure](references/regression-tests.md) (study existing
+test patterns, write a regression test encoding the exact bug condition, run it, commit if
+passes or defer if fails). Commit format: `test(design): regression test for FINDING-NNN`.
 
 ### 8f. Self-Regulation (STOP AND EVALUATE)
 
@@ -292,7 +295,7 @@ If the repo has a `TODOS.md`:
 
 11. **Clean working tree required.** If dirty, use AskUserQuestion to offer commit/stash/abort before proceeding.
 12. **One commit per fix.** Never bundle multiple design fixes into one commit.
-13. **Only create/correct approved new regression test files in Phase 8a.6 and record/commit them in 8e.5.** Never modify CI configuration. Never modify existing tests — only create new test files. Preserve valid red evidence; do not repair test failures by weakening coverage.
+13. **Only create regression test files in Phase 8e.5.** Never modify CI configuration. Never modify existing tests — only create new test files.
 14. **Revert on regression.** If a fix makes things worse, `git revert HEAD` immediately.
 15. **Self-regulate.** Follow the design-fix risk heuristic. When in doubt, stop and ask.
 16. **CSS-first.** Prefer CSS/styling changes over structural component changes. CSS-only changes are safer and more reversible.

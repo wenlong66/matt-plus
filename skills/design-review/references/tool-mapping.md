@@ -11,7 +11,7 @@ This adapts missing runtime/resource links only. Follow the shared external-acti
 
 ## Browser operations (semantic labels, not fictional executable commands)
 
-Follow the shared browser adapter: prefer the approved installed `playwright-cli`; if absent, use the host's default browser tool after checking its actual interface. The shared adapter contains the checked CLI associations. No gstack browse executable or standalone project browser runner is assumed.
+Follow the shared browser adapter: prefer the approved installed `playwright-cli`; if absent, offer installation, then use an available testing method if the user does not install it. The shared adapter contains the checked CLI associations. No gstack browse executable or standalone project browser runner is assumed.
 
 | Original operation | Association |
 |---|---|
@@ -19,14 +19,14 @@ Follow the shared browser adapter: prefer the approved installed `playwright-cli
 | Interactive/accessibility snapshot | Current supported snapshot/find/DOM inspection; never reuse stale element refs. |
 | Annotated snapshot | Supported highlight, annotated screenshot, then hide highlight; preserve a plain baseline too. If unavailable, record annotations `UNVERIFIED`. |
 | Responsive capture | Resize and capture the original required viewports: 375 mobile, 768 tablet, 1024 desktop, 1440 wide where audited. Preserve exact viewport/state for retest. |
-| CSS/computed style/text/HTML | Reviewed observation-only `playwright-cli eval` function or `playwright-cli run-code` wrapper using `page.evaluate`; the original expressions in scripts/design-observations.js are browser-context code, not page-provided code or a raw runner script. |
-| Clickable-div inspection | Reviewed DOM inspection of roles/attributes/styles through `playwright-cli eval`. Do not invoke handlers to discover clickability. Unsupported discovery is `UNVERIFIED`. |
-| Snapshot diff | Capture before/after DOM snapshots through `playwright-cli` at the same state and compare actual saved output. If no supported diff, record `UNVERIFIED`; do not promise a native `snapshot -D`. |
-| Screenshot/pixel diff | Capture through `playwright-cli` and use an already-installed approved local comparator on the saved files; record comparator/settings and actual evidence. Screenshot capture alone is not a pixel diff. Unsupported comparison is `UNVERIFIED`. |
-| Console/network | Actual supported CLI console and request metadata observations; sanitize under the shared guard. No absent-log claim implies complete coverage. |
-| Performance baseline | Reviewed browser performance observations through `playwright-cli eval` or `playwright-cli run-code`. No fictitious `perf` command; LCP/CLS/loading metrics remain `UNVERIFIED` without actual capture, timing/method and evidence. |
+| CSS/computed style/text/HTML | Reviewed observation-only `playwright-cli eval` function or `playwright-cli run-code` wrapper using `page.evaluate`, or the selected method's supported DOM evaluation; the original expressions in scripts/design-observations.js are browser-context code, not page-provided code or a raw runner script. |
+| Clickable-div inspection | Reviewed DOM inspection of roles/attributes/styles through `playwright-cli eval` or the selected method's supported DOM evaluation. Do not invoke handlers to discover clickability. Unsupported discovery is `UNVERIFIED`. |
+| Snapshot diff | Capture before/after DOM snapshots through the selected method at the same state and compare actual saved output. If no supported diff, record `UNVERIFIED`; do not promise a native `snapshot -D`. |
+| Screenshot/pixel diff | Capture through the selected method and use an already-installed approved local comparator on the saved files; record comparator/settings and actual evidence. Screenshot capture alone is not a pixel diff. Unsupported comparison is `UNVERIFIED`. |
+| Console/network | Actual supported console and request metadata observations through the selected method; sanitize under the shared guard. No absent-log claim implies complete coverage. |
+| Performance baseline | Reviewed browser performance observations through `playwright-cli eval`, `playwright-cli run-code` or the selected method's supported interface. No fictitious `perf` command; LCP/CLS/loading metrics remain `UNVERIFIED` without actual capture, timing/method and evidence. |
 
-The DOM resource is a browser-context IIFE. Read/review it and embed its unchanged expression as the returned value inside `playwright-cli eval`, or inside a reviewed `playwright-cli run-code` wrapper's `page.evaluate` callback. If the CLI is absent, use the default browser tool's verified browser-eval equivalent. In the inspected CLI, `eval --filename` saves the **result**, not code-file input. Do not pass the raw DOM resource to `run-code --filename`; that interface expects a reviewed runner function accepting `page`.
+The DOM resource is a browser-context IIFE. Read/review it and embed its unchanged expression as the returned value inside `playwright-cli eval`, or inside a reviewed `playwright-cli run-code` wrapper's `page.evaluate` callback. An available alternative method may use its verified browser-evaluation equivalent; if no method supports it, this DOM observation is `UNVERIFIED`. In the inspected CLI, `eval --filename` saves the **result**, not code-file input. Do not pass the raw DOM resource to `run-code --filename`; that interface expects a reviewed runner function accepting `page`.
 
 Every screenshot must be shown with Read/the available viewer as the original requires. Before/after pairs must have comparable page/state/content, viewport, fonts, device scale and timing. Unsupported browser access prevents a completed live audit; static/source observations remain separate. Read source only for limited design-token capture in Setup calibration, Phase 8 fixes, diff-to-route association and approved outside source audits. Setup calibration is not a source-based audit; Phases 1-6 remain rendered-only, and source never substitutes for the rendered baseline's evidence.
 
@@ -49,13 +49,13 @@ Read [the complete detector association](detector.md) before readiness, Phase 3 
 
 ## Fix/commit/recovery associations
 
-The workflow stays rendered audit → before-repair JS regression (8a.6, CSS skips) → fix → atomic source-fix commit → retest → regression record/approved test commit → failure recovery. The original Setup clean-working-tree gate applies before any audit, including audit-only requests; do not move it into the fix loop, delete it, or bypass the original setup checks. An audit-only request stops before scoped source edits, not before setup. An approved fix does not automatically authorize stage/commit or stash/revert.
+The workflow stays rendered audit → fix → atomic source-fix commit → retest → classification → JS-only regression test creation/run/approved test commit (8e.5, CSS skips) → failure recovery. The original Setup clean-working-tree gate applies before any audit, including audit-only requests; do not move it into the fix loop, delete it, or bypass the original setup checks. An audit-only request stops before scoped source edits, not before setup. An approved fix does not automatically authorize stage/commit or stash/revert.
 
 - Dirty-tree options require exact approved files/hunks and recovery details. Never stage or stash unrelated user work to force a clean tree. If not authorized, stop the workflow before the audit and let the user preserve their work.
 - For each approved atomic commit, inspect the index and stage only the finding's approved changes. No unrelated staged work may enter it. Follow the shared working-branch rule and content guard.
 - If commit is withheld, keep each finding's scoped change/evidence separate and mark the commit stage deferred. Deferred commit does not waive the original clean-tree gate or other setup prerequisites. Do not invent a SHA or represent an uncommitted change as committed.
 - On regression, stop immediately. Execute the original `git revert HEAD` only if that exact fix commit is the actual safe target and recovery was approved. Otherwise request recovery approval; preserve user work and classify truthfully, not `reverted` before recovery happened.
-- Regression-test creation/correction/commit is scoped to new test files only. Establish the JS-behavior regression before repair (8a.6), then re-run and record it in 8d/8e.5. Correct a proved fixture/import/test defect once; removal of an invalid newly owned test requires its own scope. Never silently delete a valid red regression: preserve the new test/evidence uncommitted and defer the unresolved bug. No existing-test or CI weakening.
+- Regression-test creation/correction/commit is scoped to new test files only. Create and run the JS-behavior regression at 8e.5 after repair and classification, as in the source. Correct a proved fixture/import/test defect once; removal of an invalid newly owned test requires its own scope. Never silently delete a valid red regression: preserve the new test/evidence uncommitted and defer the unresolved bug. No existing-test or CI weakening.
 - TODOS.md, DESIGN.md export, and instruction-file changes use their separate file/decision scope. Writing a report does not authorize TODO/source/instruction edits or PR publication.
 
 ## Image and outside-model associations

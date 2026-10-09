@@ -27,7 +27,7 @@ unrelated user changes and read existing files in full before editing.
   shell examples describe the same queries, not permission to install or bootstrap tools.
 - Example/link/smoke-test execution follows the approved command/network scope. For webpage,
   URL-navigation or rendered-result verification, read [Browser Testing](../../../references/browser-tools.md)
-  and prefer installed `playwright-cli`, falling back to the host's default browser tool if absent.
+  and prefer installed `playwright-cli`; if absent, offer installation and use an available testing method if the user does not install it.
   Non-browser examples retain their native commands.
   A required check that cannot run is `UNVERIFIED`, not PASS. Source inspection is not execution
   evidence. Instruction files and navigation changes need their own approved scope.

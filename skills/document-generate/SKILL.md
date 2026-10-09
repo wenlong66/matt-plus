@@ -1,6 +1,5 @@
 ---
 name: document-generate
-version: 1.0.0
 description: |
   Generate missing documentation from scratch for a feature, module, or entire project.
   Uses the Diataxis framework (tutorial / how-to / reference / explanation) to produce
@@ -16,17 +15,19 @@ allowed-tools:
   - Grep
   - Glob
   - AskUserQuestion
-triggers:
-  - write docs for this
-  - generate documentation
-  - document this feature
-  - create a tutorial
-  - write a how-to
-  - explain this module
-  - docs for this project
+metadata:
+  version: "1.0.0"
+  triggers: |
+    write docs for this
+    generate documentation
+    document this feature
+    create a tutorial
+    write a how-to
+    explain this module
+    docs for this project
 ---
 
-Read `../../references/external-actions.md`, `../../references/content-guard.md` and
+Read [Codex tool associations](../../references/codex-tools.md), `../../references/external-actions.md`, `../../references/content-guard.md` and
 `references/runtime.md` before the workflow. These resolve authorization, publication,
 project/tool/revision associations without changing the documentation phases below.
 

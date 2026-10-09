@@ -90,7 +90,7 @@ Before routing any file, verify its origin against the **current** `board-images
 2. Update the brief file, preserving unrelated constraints. Archive/retain this old round's feedback so **old Submit cannot approve new images**.
 3. Generate new `variants` with the updated brief **without a session**; use the same capture, budget and requested/saved/failures/recovery accounting. **Variants cannot iterate.** Only a supported `generate` result that actually returned a `sessionFile` permits session-based `iterate`; use its actual returned `outputPath`.
 4. Recheck and self-gate each actual new saved image, then create a fresh round board and rewrite its board-images.json from those paths.
-5. Open/reload that board through the approved isolated browser session (`playwright-cli` preferred, host default browser tool if absent). If generation or board fails, offer the fallback/skip, not a wait on an old board.
+5. Open/reload that board through the approved isolated browser session (prefer `playwright-cli`; if absent, offer installation and use an available testing method if the user does not install it). If generation or board fails, offer the fallback/skip, not a wait on an old board.
 6. **AskUserQuestion again** with the actual new board path/approved URL. Continue until a confirmed final choice, skip or stop; do not poll.
 
 **If `NO_FEEDBACK_FILE`:** The user typed their preferences directly in the

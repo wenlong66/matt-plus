@@ -6,13 +6,15 @@ import test from 'node:test';
 const read = (path) => readFileSync(new URL(`../skills/design-review/${path}`, import.meta.url), 'utf8').replace(/\r\n/g, '\n');
 
 // These are package prompt/resource contracts, not an executed live design audit.
-test('clean-tree setup precedes every audit and the new regression stage precedes repair', () => {
+test('clean-tree setup precedes every audit and regression creation retains the original post-fix stage', () => {
   const skill = read('SKILL.md');
   assert.equal(skill.match(/^name: (.+)$/m)?.[1], 'design-review');
   assert.ok(skill.indexOf('**Check for clean working tree:**') < skill.indexOf('## Phases 1-6'));
-  const regressionStage = skill.indexOf('### 8a.6. Regression Test Before Repair');
+  const regressionStage = skill.indexOf('### 8e.5. Regression Test (design-review variant)');
   assert.ok(regressionStage >= 0);
-  assert.ok(regressionStage < skill.indexOf('### 8b. Fix'));
+  assert.ok(regressionStage > skill.indexOf('### 8e. Classify'));
+  assert.ok(regressionStage < skill.indexOf('### 8f. Self-Regulation'));
+  assert.doesNotMatch(skill, /8a\.6/);
   assert.match(skill, /Never modify existing tests — only create new test files/);
   assert.match(skill, /Never modify CI configuration/);
   assert.match(skill, /Hard cap: 30 fixes/);
@@ -84,20 +86,20 @@ test('native test evidence prevents a second framework and candidate commands ar
   assert.match(framework, /unrelated staged/);
 });
 
-test('JS-only regressions keep the exact bug procedure and valid red evidence', () => {
+test('JS-only regressions keep the exact bug procedure, original evaluation and scoped cleanup', () => {
   const regression = read('references/regression-tests.md');
-  assert.match(regression, /before repair/i);
-  assert.match(regression, /JavaScript behavior/);
+  assert.match(regression, /after repair\/classification/);
   assert.match(regression, /Pure CSS/);
-  for (const field of ['protects', 'fails_when', 'why_new', 'seam']) assert.ok(regression.includes(field));
   assert.match(regression, /precondition/);
   assert.match(regression, /null input, empty array, boundary value/);
   assert.match(regression, /max number \+ 1/);
   assert.match(regression, /Found by \/design-review/);
-  assert.match(regression, /valid red.*uncommitted/s);
-  assert.doesNotMatch(regression, /Still failing → delete test/);
-  assert.match(regression, /does not create another test/);
-  assert.match(regression, /original failing probe and adjacent happy path/);
+  assert.match(regression, /Run only the new test file/);
+  assert.match(regression, /Passes → commit/);
+  assert.match(regression, /Fails → fix test once/);
+  assert.match(regression, /delete only this newly created test under the approved cleanup scope, defer/);
+  assert.match(regression, /Taking >2 min exploration → skip and defer/);
+  assert.doesNotMatch(regression, /before repair|before-red/);
 });
 
 test('baseline schema covers all categories and represents missing detector coverage honestly', () => {

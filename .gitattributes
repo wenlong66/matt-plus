@@ -1,1 +1,3 @@
 skills/document-release/scripts/pr-title-rewrite.sh text eol=lf
+scripts/vendor/js-yaml/** text eol=lf
+licenses/Apache-2.0.txt text eol=lf

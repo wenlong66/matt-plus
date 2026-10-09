@@ -1,6 +1,5 @@
 ---
 name: design-consultation
-version: 1.0.0
 description: |
   Design consultation: understands your product, researches the landscape, proposes a
   complete design system (aesthetic, typography, color, layout, spacing, motion), and
@@ -18,16 +17,18 @@ allowed-tools:
   - Grep
   - AskUserQuestion
   - WebSearch
-triggers:
-  - design system
-  - create a brand
-  - design from scratch
-compatibility: Local project files; optional approved search, playwright-cli preferred for browser checks with the host default browser tool as fallback, and approved available image generator. Read the tool/path mapping before using source command examples.
+metadata:
+  version: "1.0.0"
+  triggers: |
+    design system
+    create a brand
+    design from scratch
+  compatibility: Local project files; optional approved search, playwright-cli preferred for browser checks with an available testing-method fallback, and approved available image generator. Read the tool/path mapping before using source command examples.
 ---
 
 ## Local associations (read first)
 
-Read [external actions](../../references/external-actions.md), [browser tools](../../references/browser-tools.md), [image tools](../../references/image-tools.md), and [local tool/path mapping](references/tool-mapping.md). These contracts govern the original workflow below: invocation is not blanket permission for network/model calls, installations, account access, source edits, instruction-file changes, or git operations. Unsupported tool actions are `UNVERIFIED`. No gstack binaries, Bun, home/global state, or required image/model service. Read [DESIGN.md format](../../references/design-md-format.md) at the Update-only gate and before Phase 6; read the full [design catalog](../../references/design-catalog.md) before Phase 3.
+Read [Codex tool associations](../../references/codex-tools.md), [external actions](../../references/external-actions.md), [browser tools](../../references/browser-tools.md), [image tools](../../references/image-tools.md), and [local tool/path mapping](references/tool-mapping.md). These contracts govern the original workflow below: invocation is not blanket permission for network/model calls, installations, account access, source edits, instruction-file changes, or git operations. Unsupported tool actions are `UNVERIFIED`. No gstack binaries, Bun, home/global state, or required image/model service. Read [DESIGN.md format](../../references/design-md-format.md) at the Update-only gate and before Phase 6; read the full [design catalog](../../references/design-catalog.md) before Phase 3.
 
 # /design-consultation: Your Design System, Built Together
 

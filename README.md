@@ -24,7 +24,7 @@
 
 - 所有必要正文、模板、检查表和本地脚本随包分发；来源链接仅用于追溯。
 - gstack 模板的必要领域段落在包内展开或关联，宿主的推广、遥测、更新检查和全局记忆/状态关联不迁入。
-- 网页测试优先调用已安装的 `playwright-cli`，可用时先加载同名技能并检查实际 help；未安装时使用当前宿主默认浏览器工具。缺失能力标记 `UNVERIFIED`，不自动安装、下载浏览器、导入个人 cookie 或启动服务器。
+- 网页测试优先使用已安装的 `playwright-cli`，可用时先加载同名技能并检查实际 help；缺失时提示安装，若用户不安装则使用当前可用的测试方法。缺失能力标记 `UNVERIFIED`，不自动安装、下载浏览器、导入个人 cookie 或启动服务器。
 - 可选 designer/外部模型关联到获授权且可用的工具；outside provider 按实际宿主双向选择并禁止自调用，disabled 不触发替代复核。缺少 designer 时使用原版允许的 HTML 字体/颜色预览路径，不把静态预览当作实际 UI 验证。
 - 两个设计技能共用完整设计规则目录与新版 `DESIGN.md` 格式资源，随包提供 Node helper 和完整 YAML parser，不需要 Bun 或运行时安装依赖；格式转换、最终写入和 instruction-file 变更仍按各自批准范围执行。
 - 必需能力、权限或证据缺失时标记 `UNVERIFIED`，不宣称原版工具已经被完整等价验证。
@@ -53,7 +53,7 @@ claude --plugin-dir /absolute/path/to/matt-plus
 
 ## Codex
 
-Codex 与 Claude Code 共用唯一的 [skills/](skills/)；[Codex manifest](.codex-plugin/plugin.json) 直接指向 `./skills/`，不复制第二套正文。本仓库现有 Codex marketplace 已关联 matt-plus，可由用户主动选择安装：
+Codex 与 Claude Code 共用唯一的 [skills/](skills/)；[Codex manifest](.codex-plugin/plugin.json) 直接指向 `./skills/`，不复制第二套正文。四个 gstack 技能的工具名、提问和 `AGENTS.md` 指针遵循 [Codex 关联说明](references/codex-tools.md)。本仓库现有 Codex marketplace 已关联 matt-plus，可由用户主动选择安装：
 
 ```bash
 codex plugin list

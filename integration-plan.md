@@ -25,7 +25,7 @@
 
 共用资源：
 - [动作授权](references/external-actions.md)
-- [浏览器工具](references/browser-tools.md)：优先 `playwright-cli`，未安装时使用当前宿主默认浏览器工具；实际能力缺失标记 `UNVERIFIED`。
+- [浏览器工具](references/browser-tools.md)：优先使用已安装的 `playwright-cli`，缺失时提示安装；若用户不安装则使用当前可用的测试方法，无法执行的检查标记 `UNVERIFIED`。
 - [图像与外部模型](references/image-tools.md)：双向 harness 路由、执行证据、disabled/failure 分支；[completion gate](scripts/outside-review-result.mjs) 仅验证本地实际结果，不派发模型。
 - [完整设计目录](references/design-catalog.md)：保留原版规则、字体角色与判断元数据，不随包安装 detector。
 - [DESIGN.md 格式](references/design-md-format.md)：[Node helper](scripts/design-md.mjs)、[spec 模板](assets/design-system-spec-template.md) 与随包 YAML parser；只读 check/tokens，convert 默认预览，写入仍需批准。
@@ -44,8 +44,9 @@ Claude Code 中，包内同名技能的入口为 `/matt-plus:<技能名>`。下�
 | `design-consultation`、`design-review` | `/plan-design-review` | 原版现有网站/计划模式转介，正文保留名称并明确未迁入；不是实际设计审查流程的必要前置。不能默认为会修复和提交的 `design-review` 与其等价。 |
 | `design-consultation` | `/design-html` | 可选的交付后 HTML/Pretext 建议，随无关推广移除；未迁入，不影响设计系统交付。 |
 | `design-review` | `/setup-browser-cookies` | 原版登录态设置关联，改用已授权的隔离测试账号/session；未迁入，不导入个人 cookie。 |
-| `design-review` | `/qa` 回归测试程序 | 新源 design-review 仍引用旧 8e.5，但新版 QA 将测试创建移到 8a.5、8e.5 仅记录结果。包内 [regression-tests.md](skills/design-review/references/regression-tests.md) 独立承接完整 JS-only 修复前 red → 修复后 green/记录，保留新测试文件限制，不需要整个 QA 技能。 |
+| `design-review` | `/qa` 回归测试程序 | design-review 的原版 8e.5 仍在修复、复测和分类之后创建 JS-only 回归测试；新版 QA 的同编号仅记录结果，不能据此改写设计审查流程。包内 [regression-tests.md](skills/design-review/references/regression-tests.md) 保留匹配的完整创建/运行/提交或 defer 程序和新测试文件限制，不需要整个 QA 技能。 |
 | `design-review` | `/plan-design-review` litmus scorecard | 属于资源引用，必要 scorecard 已展开到 [outside-voices.md](skills/design-review/references/outside-voices.md)，不需要新增技能。 |
+| `design-review` | `/impeccable` 的 `polish`、`normalize`、`simplify`、`clarify`、`adapt`、`optimize`、`typeset`、`colorize`、`arrange` | detector 的可选 handoff 建议，不是审查前置；未迁入。调用前核实实际已安装技能和授权，缺失时仅报告建议；完整规则目录已随包迁入。 |
 | `document-release` | `/ship` | 执行时机、已有 CHANGELOG、TODO 二次清理和标题惯例的来源关联，不要求再次执行 ship；由明确 release range、项目约定和包内标题脚本承接，未迁入。 |
 | `document-release` | `/document-generate` | 覆盖缺口的可选后续建议。本包已有 `/matt-plus:document-generate`，不自动生成全部缺失文档。 |
 | `document-generate` | `/document-release` | 可选覆盖地图输入，本包已有 `/matt-plus:document-release`；也可以独立运行或接受用户提供的地图。 |

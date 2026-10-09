@@ -1,6 +1,5 @@
 ---
 name: document-release
-version: 1.0.0
 description: |
   Release documentation audit. Reads relevant project docs, cross-references the
   diff, builds a Diataxis coverage map (reference/how-to/tutorial/explanation),
@@ -17,13 +16,15 @@ allowed-tools:
   - Grep
   - Glob
   - AskUserQuestion
-triggers:
-  - update docs after ship
-  - document what changed
-  - post-ship docs
+metadata:
+  version: "1.0.0"
+  triggers: |
+    update docs after ship
+    document what changed
+    post-ship docs
 ---
 
-Read `../../references/external-actions.md`, `../../references/content-guard.md` and
+Read [Codex tool associations](../../references/codex-tools.md), `../../references/external-actions.md`, `../../references/content-guard.md` and
 `references/runtime.md` before the workflow. They resolve authorization and the original
 host/tool/path/revision associations; the documentation domain phases below are preserved.
 

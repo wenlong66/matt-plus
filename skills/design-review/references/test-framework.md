@@ -1,6 +1,6 @@
 ## Test Framework Association
 
-The original TEST_BOOTSTRAP domain workflow is retained below; only host-global discovery/opt-out state and execution associations are adapted. Setup, installation, project tests, CI/instruction-file changes, recovery and commits remain subject to the shared external-actions contract. The browser portion follows the shared adapter: `playwright-cli` preferred, host default browser tool if absent, not a separate project browser runner. Deferred setup is not an automatic prerequisite for visual fixes.
+The original TEST_BOOTSTRAP domain workflow is retained below; only host-global discovery/opt-out state and execution associations are adapted. Setup, installation, project tests, CI/instruction-file changes, recovery and commits remain subject to the shared external-actions contract. The browser portion follows the shared adapter: prefer installed `playwright-cli`; if absent, offer installation and use an available testing method if the user does not install it. Deferred setup is not an automatic prerequisite for visual fixes.
 
 **Read CLAUDE.md and TESTING.md FIRST.** A documented test command means the project already told you: skip detection/bootstrap, inspect the command's actual behavior and use it only within the approved execution scope. Read 2-3 existing tests for conventions.
 
@@ -24,7 +24,7 @@ Every marker is evidence for a question, never a command to run blind. OFFER the
 | package test script | Node | That script with the package manager named by the lockfile |
 | Makefile test target | Any | `make test` |
 
-**If ANY existing-test evidence appears:** Print "Existing tests detected: {evidence}." Do NOT bootstrap or install a second framework beside working tests. Use the documented command, otherwise AskUserQuestion offering the applicable native candidates plus **Other**. Persist the answer to CLAUDE.md's `## Testing` only with instruction-file approval. Read 2-3 test files for naming, imports, assertions and setup; retain the conventions for the local before-repair regression procedure and 8e.5 record. **Skip the rest of bootstrap.**
+**If ANY existing-test evidence appears:** Print "Existing tests detected: {evidence}." Do NOT bootstrap or install a second framework beside working tests. Use the documented command, otherwise AskUserQuestion offering the applicable native candidates plus **Other**. Persist the answer to CLAUDE.md's `## Testing` only with instruction-file approval. Read 2-3 test files for naming, imports, assertions and setup; retain the conventions for the local 8e.5 regression creation/run procedure. **Skip the rest of bootstrap.**
 
 **If NO runtime detected** (no config files found): Use AskUserQuestion:
 "I couldn't detect your project's language. What runtime are you using?"
@@ -60,7 +60,7 @@ The research clause is conditional on actual approved research. If multiple runt
 
 Choosing a framework is not blanket approval to download packages, change project tests, modify CI/TESTING.md/CLAUDE.md, commit bootstrap changes, or restore manifests via git. Establish the setup's exact scope under the shared external-actions contract, then execute the approved steps below. Otherwise defer setup and the unavailable regression-test branch while keeping the original visual audit/fix/retest workflow.
 
-The framework table retains upstream recommendations. Browser/E2E entries such as Playwright, Cypress and Capybara are source context, not alternate web-testing backends or automatic package-install requests. Webpage checks use the shared [browser adapter](../../../references/browser-tools.md): prefer `playwright-cli`, falling back to the host's default browser tool if absent. Keep applicable native unit/integration tests and existing framework discovery.
+The framework table retains upstream recommendations. Browser/E2E entries such as Playwright, Cypress and Capybara retain source context; an existing project browser test runner may provide an available fallback after its interface is verified. They are not automatic package-install requests. Webpage checks use the shared [browser adapter](../../../references/browser-tools.md): prefer installed `playwright-cli`; if absent, offer installation and use an available testing method if the user does not install it. Keep applicable native unit/integration tests and existing framework discovery.
 
 ### B4. Install and configure
 

@@ -40,6 +40,7 @@ matt-plus 分发下列内容的独立适配版本，不是上游官方发行版�
 - 源：设计系统捕获、missing 校准与目标图约束来自 [design-review/SKILL.md.tmpl](https://github.com/wenlong66/gstack/blob/54efba6dd5a6dc7f04e62106b97079279ed53b41/design-review/SKILL.md.tmpl) 和 [design resolver](https://github.com/wenlong66/gstack/blob/54efba6dd5a6dc7f04e62106b97079279ed53b41/scripts/resolvers/design.ts)；未变的方法、规则、报告及相关模板保持 [1.91.45.0 design resolver](https://github.com/wenlong66/gstack/blob/92cfd07a79ed0f27fbcc57f2d61d00ec700eadb4/scripts/resolvers/design.ts) 来源。
 - 本地：[技能](skills/design-review/SKILL.md)、[必要方法与关联资源](skills/design-review/references/)、[报告资源](skills/design-review/assets/)。
 - 保留原版实际设计审计、修复、原子提交、复测、回归和失败处理；[测试 bootstrap](skills/design-review/references/test-framework.md) 随包保留安装/配置、首批真实测试、suite 验证与失败恢复，以及原版授权范围内的 CI/测试文档/提交步骤，来源为[testing resolver](https://github.com/wenlong66/gstack/blob/92cfd07a79ed0f27fbcc57f2d61d00ec700eadb4/scripts/resolvers/testing.ts)。权限、浏览器、比较工具、报告路径与外部模型作为关联适配，不减为只读审计。
+- [回归创建程序](skills/design-review/references/regression-tests.md) 保留 design-review 原版 `8e.5` 的修复后顺序，完整匹配程序来自 [qa/SKILL.md.tmpl 的原始创建阶段](https://github.com/wenlong66/gstack/blob/e7b2ef21e20e6f359ccdc1cf0394dacbe339ad09/qa/SKILL.md.tmpl)。仅改关联名称、报告路径、提交标识和执行/清理授权；不借用新版 QA 的修复前创建或仅记录步骤改写该技能。
 
 ### document-release
 
