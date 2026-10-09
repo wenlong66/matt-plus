@@ -1,6 +1,6 @@
 # matt-plus
 
-**面向 Matt Pocock Skills 的七个原版技能移植：设计咨询、文档生成与同步、安全审计、React Native、可观测性及代码简化。**
+**面向 Matt Pocock Skills 的八个原版技能移植：设计咨询、文档生成与同步、安全与测试审计、React Native、可观测性及代码简化。**
 
 从 `agent-skills`、`gstack`、`security-audit-skill` 和 `vercel-skills` 移植，不沿用旧版 matt-plus 的技能组合。保留原名、原版正文、必要功能与工作流；只适配缺失的工具、资源和路径关联，删除无用的宿主关联。不改写、合并或精简原版领域内容。
 
@@ -8,7 +8,7 @@
 
 本包分发实际技能及其必要资源，运行时不需要安装完整上游插件。与 Matt 的通用需求、规格、TDD、实现和 code review 流程配合使用，不强制安装 Matt，也不把专项技能的原有修复/验证阶段转交给它。
 
-## 七个入口
+## 八个入口
 
 | 来源 | 技能 | 职责 |
 | --- | --- | --- |
@@ -18,9 +18,12 @@
 | security-audit-skill | `/matt-plus:security-audit` | 安全指导、漏洞调查与完整代码库安全审计，保留原版工作流及验证工具。 |
 | vercel-skills | `/matt-plus:vercel-react-native-skills` | React Native 与 Expo 性能、动画、原生 UI 和工程实践。 |
 | agent-skills | `/matt-plus:observability-and-instrumentation` | 结构化日志、指标、追踪、告警与遥测验证，配套原版可观测性检查表。 |
+| gstack | `/matt-plus:test-audit` | 测试价值审计、完整证据卡和报告；仅交互会话批准的批次可编辑，子代理和无交互会话始终只报告。 |
 | agent-skills | `/matt-plus:code-simplification` | 保持行为不变，简化代码并提升清晰度。 |
 
 不收录通用功能 QA 或部署技能。文档的 `document-release` 不等于生产部署。
+
+`test-audit` 保留原版六阶段、完整测试价值判断标准、预算与批准规则。全局状态路径和宿主会话/工具关联适配见 [test-audit runtime](skills/test-audit/references/runtime.md)；上游 `/review`、`/qa`、`/plan-eng-review`、`/ship` 的用途与未收录状态见下述调用清单。
 
 ## 独立适配与工具要求
 
@@ -57,7 +60,7 @@ claude --plugin-dir /absolute/path/to/matt-plus
 
 ## Codex
 
-Codex 与 Claude Code 共用唯一的 [skills/](skills/)；[Codex manifest](.codex-plugin/plugin.json) 直接指向 `./skills/`，不复制第二套正文。三个 gstack 技能的工具名、提问和 `AGENTS.md` 指针遵循 [Codex 关联说明](references/codex-tools.md)。本仓库现有 Codex marketplace 已关联 matt-plus，可由用户主动选择安装：
+Codex 与 Claude Code 共用唯一的 [skills/](skills/)；[Codex manifest](.codex-plugin/plugin.json) 直接指向 `./skills/`，不复制第二套正文。四个 gstack 技能的工具名、提问和 `AGENTS.md` 指针遵循 [Codex 关联说明](references/codex-tools.md)。本仓库现有 Codex marketplace 已关联 matt-plus，可由用户主动选择安装：
 
 ```bash
 codex plugin list
@@ -77,7 +80,7 @@ claude plugin validate .claude-plugin/plugin.json --strict
 claude plugin validate .claude-plugin/marketplace.json --strict
 ```
 
-验收只检查原版保真与适配正确性：七技能清单、两端 manifest、源正文差异、包内引用、来源和模板关联。`code-simplification` 保持现有移植内容，不纳入本次修复的正文差异检查。新增技能逐文件字节保真测试在相邻源目录存在时执行。原版 security-audit 的 CLI 文件保护依赖 OS no-follow/nonblocking 能力，当前 Windows 环境下部分原版测试会失败；移植未修改该行为。内容检查工具用合成数据验证移植后的脚本接口与错误处理，不验证真实凭据。
+验收只检查原版保真与适配正确性：八技能清单、两端 manifest、源正文差异、包内引用、来源和模板关联。`code-simplification` 保持现有移植内容，不纳入本次修复的正文差异检查。新增技能逐文件字节保真测试在相邻源目录存在时执行。原版 security-audit 的 CLI 文件保护依赖 OS no-follow/nonblocking 能力，当前 Windows 环境下部分原版测试会失败；移植未修改该行为。内容检查工具用合成数据验证移植后的脚本接口与错误处理，不验证真实凭据。
 
 回归测试覆盖包结构、内容检查工具、DESIGN.md 格式、比较板反馈协议和文档/外部复核的本地适配接口；浏览器验证只在隔离合成样例中进行，不等于真实业务页面的完整审查。不做技能有效性、审美提升或模型增益评估，不自动执行外部审查或发布流程。检查范围见 [integration-plan.md](integration-plan.md)。
 
@@ -87,5 +90,5 @@ claude plugin validate .claude-plugin/marketplace.json --strict
 
 - [第三方来源、精确快照与适配范围](THIRD_PARTY_NOTICES.md)
 - [MIT 许可与原作者版权声明](LICENSE)
-- 共享 outside completion 同步至 `1.91.67.0` / `54efba6d`；三个 gstack 技能和未变资源保持 `1.91.45.0` / `92cfd07a`。agent-skills 各技能来源见第三方说明，旧 39 项内容扫描规则不变。
+- `test-audit` 与共享 outside completion 来自 `1.91.67.0` / `54efba6d`；此前三个 gstack 技能和未变资源保持 `1.91.45.0` / `92cfd07a`。agent-skills 各技能来源见第三方说明，旧 39 项内容扫描规则不变。
 - [Apache-2.0 派生设计内容许可](licenses/Apache-2.0.txt)及随包 YAML parser 的许可见第三方来源说明。

@@ -5,7 +5,7 @@ matt-plus 分发下列内容的独立适配版本，不是上游官方发行版�
 | 实际来源仓库 | 原作者 | 适用范围与源快照 |
 | --- | --- | --- |
 | [wenlong66/agent-skills](https://github.com/wenlong66/agent-skills)，源自 Addy Osmani 的 agent-skills | Copyright (c) 2025 Addy Osmani | `code-simplification` 保持 `14873a11dfc2ac7ed5be19069e0d0828ef7f2fec`；`observability-and-instrumentation` 与配套检查表来自 `4ff2791a8bb39787e35c659cba04a4ec5216e1fe` |
-| [wenlong66/gstack](https://github.com/wenlong66/gstack)，源自 Garry Tan 的 gstack | Copyright (c) 2026 Garry Tan | 共享 outside completion 同步至 `54efba6dd5a6dc7f04e62106b97079279ed53b41`（1.91.67.0）；三个技能与未变资源保持 `92cfd07a79ed0f27fbcc57f2d61d00ec700eadb4`（1.91.45.0）；共享内容检查保持旧 `e7b2ef21e20e6f359ccdc1cf0394dacbe339ad09`（1.58.5.0） |
+| [wenlong66/gstack](https://github.com/wenlong66/gstack)，源自 Garry Tan 的 gstack | Copyright (c) 2026 Garry Tan | 共享 outside completion 同步至 `54efba6dd5a6dc7f04e62106b97079279ed53b41`（1.91.67.0）；`test-audit` 来自该 `54efba6d` 快照；此前三个技能与未变资源保持 `92cfd07a79ed0f27fbcc57f2d61d00ec700eadb4`（1.91.45.0）；共享内容检查保持旧 `e7b2ef21e20e6f359ccdc1cf0394dacbe339ad09`（1.58.5.0） |
 
 ## agent-skills
 
@@ -13,7 +13,7 @@ matt-plus 分发下列内容的独立适配版本，不是上游官方发行版�
 
 - 源：[skills/code-simplification/SKILL.md](https://github.com/wenlong66/agent-skills/blob/14873a11dfc2ac7ed5be19069e0d0828ef7f2fec/skills/code-simplification/SKILL.md)。
 - 本地：[技能](skills/code-simplification/SKILL.md)。
-- 保留现有移植正文；本次仅同步七技能分发清单及来源说明。
+- 保留现有移植正文；本次仅同步八技能分发清单及来源说明。
 
 ### observability-and-instrumentation
 
@@ -40,6 +40,13 @@ matt-plus 分发下列内容的独立适配版本，不是上游官方发行版�
 - 源：[document-generate/SKILL.md.tmpl](https://github.com/wenlong66/gstack/blob/92cfd07a79ed0f27fbcc57f2d61d00ec700eadb4/document-generate/SKILL.md.tmpl)、原版 Diataxis 模板及必要段落。
 - 本地：[技能](skills/document-generate/SKILL.md)、[模板与关联资源](skills/document-generate/references/)。
 - 保留原版范围、考古、概念地图、按需象限、写作/链接/质量检查和原有提交/发布阶段；不改为短版知识提纲。
+
+### test-audit
+
+- 源：[test-audit/SKILL.md.tmpl](https://github.com/wenlong66/gstack/blob/54efba6dd5a6dc7f04e62106b97079279ed53b41/test-audit/SKILL.md.tmpl)，skill version 1.0.0；必要 `TEST_VALUE_BAR:audit` 取自同快照生成的 `test-audit/SKILL.md`，来源为 `scripts/resolvers/test-value.ts`。
+- 本地：[技能](skills/test-audit/SKILL.md)、[完整测试价值判断标准](skills/test-audit/references/test-value-bar.md)、[独立运行关联](skills/test-audit/references/runtime.md)。宏展开资源原文完整保留；六阶段、预算、证据卡、抑制标记、report/sidecar、保留规则和批准后验证均不改逻辑。
+- 仅适配 frontmatter 版本/trigger 元数据、会话身份、问题工具、项目报告/可选计划目录与项目 instruction file；移除公共 preamble 的推广、遥测、自动更新、偏好/记忆数据库、同步和宿主维护。没有迁入 `/ship` 等完整工作流；来源调用见 [调用清单](integration-plan.md#上游技能调用)。
+- Garry Tan 的 MIT 版权声明见 [LICENSE](LICENSE)。上游 resolver 注记说明测试价值标准改编自 `openclaw/openclaw@a214e76` 的 `.agents/skills/test-audit/SKILL.md`，保留该来源追溯。
 
 ### 共享内容检查工具
 

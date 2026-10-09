@@ -6,3 +6,4 @@ skills/react-native-skills/** -text
 licenses/security-audit-MIT.txt -text
 skills/observability-and-instrumentation/** -text
 references/observability-checklist.md -text
+skills/test-audit/** text eol=lf

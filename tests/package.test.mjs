@@ -13,6 +13,7 @@ const EXPECTED_SKILLS = [
   'security-audit',
   'react-native-skills',
   'observability-and-instrumentation',
+  'test-audit',
   'code-simplification',
 ];
 const TEXT_EXTENSIONS = new Set(['.html', '.js', '.json', '.md', '.mjs', '.sh']);
@@ -81,7 +82,7 @@ test('Codex plugin shares the canonical skill tree and metadata', () => {
   assert.equal(realpathSync(join(root, codexPlugin.skills)), realpathSync(join(root, 'skills')));
 });
 
-test('manifest and shipped directories contain exactly the seven skills', () => {
+test('manifest and shipped directories contain exactly the eight skills', () => {
   assert.deepEqual(plugin.skills.map((path) => basename(path)), EXPECTED_SKILLS);
   const shipped = readdirSync(join(root, 'skills'), { withFileTypes: true })
     .filter((entry) => entry.isDirectory()).map((entry) => entry.name);

@@ -2,7 +2,7 @@
 
 ## 收录范围
 
-分发以下七个移植技能，`code-simplification` 保持现有内容，不纳入本次修复范围。不增加通用 QA、部署或另一套计划审查入口。
+分发以下八个移植技能，`code-simplification` 保持现有内容，不纳入本次修复范围。不增加通用 QA、部署或另一套计划审查入口。
 
 | 技能 | 来源 | 必要领域资源 |
 | --- | --- | --- |
@@ -12,6 +12,7 @@
 | `security-audit` | security-audit-skill | 完整审计指南、攻击分类、报告 schema、验证脚本与原版测试 |
 | `react-native-skills` | vercel-skills | 原版 SKILL.md、AGENTS.md、README.md、metadata.json 与完整 rules 目录；声明名为 `vercel-react-native-skills` |
 | `observability-and-instrumentation` | agent-skills | 原版正文及根 references 下的 observability-checklist.md |
+| `test-audit` | gstack | 完整 audit-mode 测试价值判断标准、独立 runtime、原版六阶段与报告/sidecar |
 | `code-simplification` | agent-skills | 保持现有移植内容 |
 
 保留原名、领域正文、例子、判断标准、阶段和输出。只适配资源、工具、路径、运行环境与上游关联；不把修复/提交/复测流程改成只读审计。精确源快照与版权见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。
@@ -47,6 +48,9 @@ Claude Code 中，包内同名技能的入口为 `/matt-plus:<技能名>`。下�
 | `document-release` | `/document-generate` | 覆盖缺口的可选后续建议。本包已有 `/matt-plus:document-generate`，不自动生成全部缺失文档。 |
 | `document-generate` | `/document-release` | 可选覆盖地图输入，本包已有 `/matt-plus:document-release`；也可以独立运行或接受用户提供的地图。 |
 | `document-release` | `review/TODOS-format.md` | 资源引用，不是 `/review` 调用；格式已随包迁入。格式说明中提到的 `/ship`、`/plan-ceo-review` 不构成新增依赖。 |
+| `test-audit` | `/review`、`/qa` | 原版职责对比，不是当前审计流程的调用或前置。 |
+| `test-audit` | `/plan-eng-review` | 可选种子计划生产者；独立目录或用户提供的 `## Tests to Retire` 可承接，不需要该技能。 |
+| `test-audit` | `/ship` | 批准并验证后的落地交接，一批一个 PR；未迁入。审计自身永不提交、推送或开 PR，不调用不可用技能，不自动扩大到发布。 |
 | `observability-and-instrumentation` | `debugging-and-error-recovery`、`performance-optimization`、`shipping-and-launch`、`security-and-hardening` | 原版职责转介和安全规则归属说明，保留原句；这些技能未收录，不新增或恢复入口。 |
 
 两个使用 outside review 的 gstack 技能通过当前实际可用 CLI/tool 关联，不需要新增 `/codex` 或 `/claude-code` 技能：按真实宿主双向选择外部 provider，派发前复查、不自调用、不猜替代 provider；disabled/declined 不 fallback，enabled provider failure 才按原技能进行 native 回退。`document-release` 保留默认独立复核及 informational findings 的一次 apply 决策；native 不算 outside coverage，外部内容发送仍需授权。
@@ -54,6 +58,8 @@ Claude Code 中，包内同名技能的入口为 `/matt-plus:<技能名>`。下�
 `document-release` 的 caller-owned 文档审计必须有实际调度身份、调用方所有的候选快照与 freshness 证据；自称 spawned 的 prompt/文件不能开启该模式。Standalone pinned-revision 写入保护不受此模式放宽。候选快照是本次调用的必要证据，不是全局状态或整个 `/ship` 的替代。
 
 `DESIGN_SHOTGUN_LOOP`、`TEST_BOOTSTRAP` 等是源模板宏，不等于调用同名上游技能。必要宏内容已展开或链接到包内资源。公共 preamble 的推广、遥测、自动更新、全局记忆/状态、宿主维护和全技能路由不属于上述技能的领域依赖，未迁入。
+
+`test-audit` 的 `TEST_VALUE_BAR:audit` 必要宏完整展开到技能私有资源；`PREAMBLE` 只保留必要的会话和提问关联，`SLUG_SETUP`/全局 state-root 改为项目报告目录和可选种子目录。`spawned`/`headless` 的硬性只报告规则优先于任何通用自动决定或编辑授权。不会迁入宿主推广、遥测、自动更新、偏好数据库、全局记忆和维护说明。
 
 ## 执行与验证边界
 

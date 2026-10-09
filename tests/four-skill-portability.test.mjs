@@ -8,9 +8,9 @@ import test from 'node:test';
 import { load } from '../scripts/vendor/js-yaml/dist/js-yaml.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
-const skills = ['design-consultation', 'document-release', 'document-generate'];
+const skills = ['design-consultation', 'document-release', 'document-generate', 'test-audit'];
 
-test('three skill instructions resolve their resources inside the package', () => {
+test('four skill instructions resolve their resources inside the package', () => {
   const files = directory => readdirSync(directory, { withFileTypes: true }).flatMap(entry => {
     const file = join(directory, entry.name);
     return entry.isDirectory() ? files(file) : file.endsWith('.md') ? [file] : [];
@@ -35,7 +35,7 @@ test('three skill instructions resolve their resources inside the package', () =
   }
 });
 
-test('three skills retain their discovery text and source metadata in supported frontmatter', () => {
+test('four skills retain their discovery text and source metadata in supported frontmatter', () => {
   for (const skill of skills) {
     const body = readFileSync(join(root, 'skills', skill, 'SKILL.md'), 'utf8');
     const front = load(body.match(/^---\r?\n([\s\S]*?)\r?\n---/)[1]);
@@ -49,8 +49,8 @@ test('three skills retain their discovery text and source metadata in supported 
   }
 });
 
-test('three-skill resources and helpers work after relocation without gstack, npm or another skill', t => {
-  const directory = mkdtempSync(join(tmpdir(), 'three skill portability '));
+test('four-skill resources and helpers work after relocation without gstack, npm or another skill', t => {
+  const directory = mkdtempSync(join(tmpdir(), 'four skill portability '));
   t.after(() => rmSync(directory, { recursive: true, force: true }));
   const bundle = join(directory, 'relocated plugin');
   const cwd = join(directory, 'unrelated project');
