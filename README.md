@@ -82,5 +82,5 @@ claude plugin validate .claude-plugin/marketplace.json --strict
 
 - [第三方来源、精确快照与适配范围](THIRD_PARTY_NOTICES.md)
 - [MIT 许可与原作者版权声明](LICENSE)
-- 四个 gstack 技能同步至 `1.91.45.0` / `92cfd07a`；agent-skills 来源与旧 39 项内容扫描规则不变。
+- `design-review` 的设计系统捕获/目标图约束及共享 outside completion 同步至 `1.91.67.0` / `54efba6d`；其余三个 gstack 技能和未变资源保持 `1.91.45.0` / `92cfd07a`。agent-skills 来源与旧 39 项内容扫描规则不变。
 - [Apache-2.0 派生设计内容许可](licenses/Apache-2.0.txt)及随包 YAML parser 的许可见第三方来源说明。

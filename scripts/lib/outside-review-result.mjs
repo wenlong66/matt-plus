@@ -1,4 +1,4 @@
-// Adapted from gstack lib/outside-review-result.ts at 92cfd07a79ed0f27fbcc57f2d61d00ec700eadb4 (MIT).
+// Adapted from gstack lib/outside-review-result.ts at 54efba6dd5a6dc7f04e62106b97079279ed53b41 (MIT).
 // Node-only completion evidence; provider transport, consent and invocation belong to callers.
 export const GATES = Object.freeze(['review', 'structured', 'proposal']);
 export const VERDICT_EXIT = Object.freeze({ clean: 0, findings: 3, unverified: 4, unavailable: 1 });
@@ -16,6 +16,8 @@ const SEVERITY_LABELS = Object.freeze([
   new RegExp(`^[\\t ]*(?:>[\\t ]*)?(?:#{1,6}[\\t ]+|[-+*][\\t ]+|\\(?\\d{1,3}[.)][\\t ]+)?(?:\\*\\*|__)?\\[?${WORD}\\]?(?:\\*\\*|__)?[\\t ]*(?::|—|–|-[\\t ]|\\]|\\(|\\*\\*[\\t ]*(?:—|–|-[\\t ]))`, 'gim'),
   new RegExp(`(?:\\*\\*|__)\\[?${WORD}\\]?:?(?:\\*\\*|__)`, 'gi'),
   new RegExp(`\\|[\\t ]*(?:\\*\\*)?${WORD}(?:\\*\\*)?[\\t ]*(?=\\|)`, 'gi'),
+  new RegExp(`[\\t ](?:—|–|-)[\\t ]+(?:\\*\\*|__)?${WORD}(?:\\*\\*|__)?[\\t ]*[.;]?[\\t ]*$`, 'gim'),
+  new RegExp(`\\((?:severity:[\\t ]*)?${WORD}\\)[\\t ]*[.;]?[\\t ]*$`, 'gim'),
 ]);
 const NO_FINDINGS = /\bNO_FINDINGS\b|\bno (?:actionable |significant |new |concrete )?(?:bugs?|issues?|findings?|problems?)\b|\b(?:did not|didn't|cannot|can't|could not|couldn't) (?:find|identify) any (?:actionable |new |concrete )?(?:bugs|issues|findings|problems)\b/i;
 

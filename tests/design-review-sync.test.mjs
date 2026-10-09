@@ -55,6 +55,25 @@ test('spec reading is read-only and export retains the persisted format choice',
   assert.match(mapping, /TOKEN_REF_INVALID/);
 });
 
+test('Setup captures shipped tokens without opening source-based rendered audits or redesigning mockups', () => {
+  const skill = read('SKILL.md');
+  const mapping = read('references/tool-mapping.md');
+  const capture = skill.indexOf("**Capture the project's design system:**");
+  assert.ok(capture >= 0 && capture < skill.indexOf('## Phases 1-6'));
+  for (const fragment of [':root', 'tailwind.config.*', 'theme or tokens files',
+    'Phase 2 adds what the page renders', 'neither a design doc nor code tokens',
+    'deviations from it are higher severity']) assert.ok(skill.includes(fragment), fragment);
+  assert.match(skill, /Missing files calibrate against the code tokens captured above/);
+  assert.match(skill, /Setup token calibration.*remain distinct/s);
+  assert.match(skill, /never read application source code: judge the rendered pages/);
+  assert.match(skill, /same colors, fonts, radii and spacing scale/);
+  assert.match(skill, /changes layout or structure only/);
+  assert.match(skill, /never introduce a new palette or typeface/);
+  assert.match(mapping, /missing.*code tokens captured in Setup/s);
+  assert.match(mapping, /Setup calibration.*not.*source-based audit/s);
+  assert.match(mapping, /same colors, fonts, radii and spacing scale/);
+});
+
 test('native test evidence prevents a second framework and candidate commands are not probes', () => {
   const framework = read('references/test-framework.md');
   for (const evidence of ['CLAUDE.md', 'TESTING.md', 'manage.py', 'tests.py', '*_test.go', '#[test]', 'pom.xml', 'build.gradle', 'Makefile']) assert.ok(framework.includes(evidence), evidence);

@@ -50,9 +50,11 @@ You are a senior product designer AND a frontend engineer. Review live sites wit
 
 **Browser session association:** Use only the approved isolated session/identity in the shared browser adapter. Personal-browser attachment and cookie import are not used.
 
-**Check for DESIGN.md:**
+**Capture the project's design system:**
 
-Look for `DESIGN.md`, `design-system.md`, or similar in the repo root. If found, read it — all design decisions must be calibrated against it; DESIGN.md is authoritative when both exist. Read [DESIGN.md format association](../../references/design-md-format.md) and the read-only `check`/`tokens` mapping in [tool/path mapping](references/tool-mapping.md). Spec front matter is normative: values present in the flat token map are not findings; a departure names its token. Legacy/unknown remains prose with its persisted format choice, never an automatic conversion or marker write. Missing files use universal design principles and the Phase 2 inferred-system offer; parse/I/O/ref errors are disclosed, not mistaken for no constraints.
+Look for `DESIGN.md`, `design-system.md`, or similar in the repo root, then for the tokens the code ships: `:root` CSS custom properties, `tailwind.config.*`, and theme or tokens files. Read what exists; Phase 2 adds what the page renders. All design decisions are calibrated against this system, and deviations from it are higher severity. Use universal design principles only when the project has neither a design doc nor code tokens, and offer to create a DESIGN.md from the inferred system.
+
+DESIGN.md is authoritative when both design documents exist. Setup source reads are limited to design-token declarations for calibration, not an application-source audit. Read [DESIGN.md format association](../../references/design-md-format.md) and the read-only `check`/`tokens` mapping in [tool/path mapping](references/tool-mapping.md). Spec front matter is normative: values present in the flat token map are not findings; a departure names its token. Legacy/unknown remains prose with its persisted format choice, never an automatic conversion or marker write. Missing files calibrate against the code tokens captured above, or universal principles when there are none; parse/I/O/ref errors are disclosed, not mistaken for no constraints.
 
 **Check for clean working tree:**
 
@@ -100,7 +102,7 @@ Read [UX Principles: How Users Actually Behave](references/ux-principles.md).
 
 ## Phases 1-6: Design Audit Baseline
 
-Read [Design Methodology](references/audit-methodology.md), [Design Audit Checklist](references/audit-checklist.md), [Design Hard Rules](references/design-hard-rules.md), [the complete design catalog](../../references/design-catalog.md), and [Compile Report and Scoring](references/audit-methodology.md#phase-6-compile-report) at the indicated phases. Execute the original phases in full, not from a summary. For the Phases 1-6 audit only, never read application source code: judge the rendered pages. DESIGN.md calibration and observation-only rendered DOM are allowed; catalog source-grep hints do not authorize source access. Diff-to-route mapping, the separately approved mechanical preflight, Phase 8 repairs and approved outside source audits remain distinct, never substitutes for pixel evidence.
+Read [Design Methodology](references/audit-methodology.md), [Design Audit Checklist](references/audit-checklist.md), [Design Hard Rules](references/design-hard-rules.md), [the complete design catalog](../../references/design-catalog.md), and [Compile Report and Scoring](references/audit-methodology.md#phase-6-compile-report) at the indicated phases. Execute the original phases in full, not from a summary. For the Phases 1-6 audit only, never read application source code: judge the rendered pages. DESIGN.md calibration and observation-only rendered DOM are allowed; catalog source-grep hints do not authorize source access. Setup token calibration, diff-to-route mapping, the separately approved mechanical preflight, Phase 8 repairs and approved outside source audits remain distinct, never substitutes for pixel evidence.
 
 Record baseline design score and AI slop score at end of Phase 6.
 
@@ -157,11 +159,11 @@ For each fixable finding, in impact order:
 
 ### 8a.5. Target Mockup (if DESIGN_READY)
 
-If the approved image generator is available and the finding involves visual layout, hierarchy, or spacing (not just a CSS value fix like wrong color or font-size), generate a target mockup showing what the corrected version should look like:
+If the approved image generator is available and the finding involves visual layout, hierarchy, or spacing (not just a CSS value fix like wrong color or font-size), generate a target mockup showing what the corrected version should look like. The brief reuses the captured system verbatim (the same colors, fonts, radii and spacing scale) and changes layout or structure only; never introduce a new palette or typeface for a product that already has one:
 
 ```
 Operation: generate
-Brief: description of the page/component with the finding fixed, referencing DESIGN.md constraints
+Brief: description of the page/component with the finding fixed, reusing the captured design system verbatim and respecting DESIGN.md constraints
 Output: REPORT_DIR/screenshots/finding-NNN-target.png
 ```
 

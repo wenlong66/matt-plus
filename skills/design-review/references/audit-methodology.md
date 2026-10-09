@@ -256,7 +256,7 @@ Tie everything to user goals and product objectives. Always suggest specific imp
 1. **Think like a designer, not a QA engineer.** You care whether things feel right, look intentional, and respect the user. You do NOT just care whether things "work."
 2. **Screenshots are evidence.** Every finding needs at least one screenshot. Use annotated screenshots (mapped snapshot annotation) to highlight elements.
 3. **Be specific and actionable.** "Change X to Y because Z" — not "the spacing feels off."
-4. **Never read source code.** Evaluate the rendered site, not the implementation. (Exception: offer to write DESIGN.md from extracted observations.)
+4. **Never read source code during the Phases 1-6 rendered audit.** Evaluate the rendered site, not the implementation. Setup's limited design-token capture is calibration before this audit, not permission to inspect application source during it. (Exception: offer to write DESIGN.md from extracted observations.)
 5. **AI Slop detection is your superpower.** Most developers can't evaluate whether their site looks AI-generated. You can. Be direct about it.
 6. **Quick wins matter.** Always include a "Quick Wins" section — the 3-5 highest-impact fixes that take <30 minutes each.
 7. **Use the mapped clickable-element DOM inspection for tricky UIs.** Finds clickable divs that the accessibility tree misses.

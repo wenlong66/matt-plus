@@ -48,6 +48,33 @@ test('severity is a label, not a descriptive word, and advisory findings remain 
   assert.equal(classify({ text: `[P1] Public argument mismatch.\n${CLEAN}` }).findings.highest, 'P1');
 });
 
+test('line-ending severity labels preserve blocking, advisory and proposal semantics', () => {
+  for (const [text, highest, verdict] of [
+    ['1. The guard trusts the payload without a flush check — High.', 'P1', 'findings'],
+    ['2. The docs lag the new flag – Medium.', 'P2', 'clean'],
+    ['- The retry loop never stops (high)', 'P1', 'findings'],
+    ['The required boundary check is absent - Critical;', 'P0', 'findings'],
+    ['A spelling correction remains — **Low**.', 'P3', 'clean'],
+    ['The argument is dropped (severity: high).', 'P1', 'findings'],
+  ]) {
+    const response = `${text}\nRecommendation: revise the finding because the supplied source supports it.`;
+    for (const gate of ['review', 'structured']) {
+      const result = classify({ text: response, gate });
+      assert.equal(result.findings.highest, highest);
+      assert.equal(result.verdict, verdict);
+    }
+    const proposal = classify({ text: response, gate: 'proposal' });
+    assert.equal(proposal.findings.highest, null);
+    assert.equal(proposal.verdict, 'clean');
+  }
+  for (const text of ['A high-level plan.', 'Highly consistent.', 'This is low-risk.',
+    'A medium-term follow-up.', 'There are no critical findings.', 'High availability: kept.',
+    'The high number of retries is fine.', 'Lower the limit.', 'Latency stays low.',
+    'The cost is high-ish - acceptable.', 'Keep the trade-off low.']) {
+    assert.equal(classify({ text: `${text}\n${CLEAN}` }).findings.highest, null);
+  }
+});
+
 test('proposal and structured gates keep their own completion markers', () => {
   assert.equal(classify({ gate: 'proposal', text: 'Recommendation: an archive-room direction because the audience browses primary records.' }).verdict, 'clean');
   assert.equal(classify({ gate: 'structured', text: 'NO_FINDINGS' }).verdict, 'clean');

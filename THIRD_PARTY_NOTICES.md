@@ -5,7 +5,7 @@ matt-plus 分发下列内容的独立适配版本，不是上游官方发行版�
 | 实际来源仓库 | 原作者 | 适用范围与源快照 |
 | --- | --- | --- |
 | [wenlong66/agent-skills](https://github.com/wenlong66/agent-skills)，源自 Addy Osmani 的 agent-skills | Copyright (c) 2025 Addy Osmani | 三个 agent-skills 技能保持 `14873a11dfc2ac7ed5be19069e0d0828ef7f2fec` |
-| [wenlong66/gstack](https://github.com/wenlong66/gstack)，源自 Garry Tan 的 gstack | Copyright (c) 2026 Garry Tan | 四个设计/文档技能与必要关联同步至 `92cfd07a79ed0f27fbcc57f2d61d00ec700eadb4`（1.91.45.0）；共享内容检查保持旧 `e7b2ef21e20e6f359ccdc1cf0394dacbe339ad09`（1.58.5.0） |
+| [wenlong66/gstack](https://github.com/wenlong66/gstack)，源自 Garry Tan 的 gstack | Copyright (c) 2026 Garry Tan | `design-review` 的设计系统捕获/目标图约束及共享 outside completion 同步至 `54efba6dd5a6dc7f04e62106b97079279ed53b41`（1.91.67.0）；其余三个技能与未变资源保持 `92cfd07a79ed0f27fbcc57f2d61d00ec700eadb4`（1.91.45.0）；共享内容检查保持旧 `e7b2ef21e20e6f359ccdc1cf0394dacbe339ad09`（1.58.5.0） |
 
 ## agent-skills
 
@@ -37,7 +37,7 @@ matt-plus 分发下列内容的独立适配版本，不是上游官方发行版�
 
 ### design-review
 
-- 源：[design-review/SKILL.md.tmpl](https://github.com/wenlong66/gstack/blob/92cfd07a79ed0f27fbcc57f2d61d00ec700eadb4/design-review/SKILL.md.tmpl)、[design resolver](https://github.com/wenlong66/gstack/blob/92cfd07a79ed0f27fbcc57f2d61d00ec700eadb4/scripts/resolvers/design.ts) 的方法、规则、报告及相关模板。
+- 源：设计系统捕获、missing 校准与目标图约束来自 [design-review/SKILL.md.tmpl](https://github.com/wenlong66/gstack/blob/54efba6dd5a6dc7f04e62106b97079279ed53b41/design-review/SKILL.md.tmpl) 和 [design resolver](https://github.com/wenlong66/gstack/blob/54efba6dd5a6dc7f04e62106b97079279ed53b41/scripts/resolvers/design.ts)；未变的方法、规则、报告及相关模板保持 [1.91.45.0 design resolver](https://github.com/wenlong66/gstack/blob/92cfd07a79ed0f27fbcc57f2d61d00ec700eadb4/scripts/resolvers/design.ts) 来源。
 - 本地：[技能](skills/design-review/SKILL.md)、[必要方法与关联资源](skills/design-review/references/)、[报告资源](skills/design-review/assets/)。
 - 保留原版实际设计审计、修复、原子提交、复测、回归和失败处理；[测试 bootstrap](skills/design-review/references/test-framework.md) 随包保留安装/配置、首批真实测试、suite 验证与失败恢复，以及原版授权范围内的 CI/测试文档/提交步骤，来源为[testing resolver](https://github.com/wenlong66/gstack/blob/92cfd07a79ed0f27fbcc57f2d61d00ec700eadb4/scripts/resolvers/testing.ts)。权限、浏览器、比较工具、报告路径与外部模型作为关联适配，不减为只读审计。
 
@@ -63,7 +63,7 @@ matt-plus 分发下列内容的独立适配版本，不是上游官方发行版�
 
 - [完整设计目录](references/design-catalog.md) 分发新快照 [lib/design-catalog.ts](https://github.com/wenlong66/gstack/blob/92cfd07a79ed0f27fbcc57f2d61d00ec700eadb4/lib/design-catalog.ts) 的全部规则、字体角色与判定元数据；不是只有旧十一条 blacklist，也不随包安装 detector engine。
 - [DESIGN.md 格式说明](references/design-md-format.md)、[模板](assets/design-system-spec-template.md)、[CLI](scripts/design-md.mjs) 和[纯模块](scripts/lib/design-md.mjs) 来源于新快照 [lib/design-md.ts](https://github.com/wenlong66/gstack/blob/92cfd07a79ed0f27fbcc57f2d61d00ec700eadb4/lib/design-md.ts)、[bin/gstack-design-md.ts](https://github.com/wenlong66/gstack/blob/92cfd07a79ed0f27fbcc57f2d61d00ec700eadb4/bin/gstack-design-md.ts) 与 Phase 6 模板；适配 Node、包内 YAML parser、独立授权、文件保留与错误处理，不依赖 Bun。
-- [Outside completion CLI](scripts/outside-review-result.mjs) 和[纯模块](scripts/lib/outside-review-result.mjs) 来源于新快照 [lib/outside-review-result.ts](https://github.com/wenlong66/gstack/blob/92cfd07a79ed0f27fbcc57f2d61d00ec700eadb4/lib/outside-review-result.ts) 中这四个技能所需的 review/structured/proposal gates。保留执行证据与 severity/recommendation 判定；仅适配 Node、边界校验、不可读证据 fail-closed 和不输出原始诊断。没有移入 plan-review 模型档位、全局 config 或 provider wrapper。
+- [Outside completion CLI](scripts/outside-review-result.mjs) 和[纯模块](scripts/lib/outside-review-result.mjs) 适配这四个技能所需的 review/structured/proposal gates；严重性标签解析同步至 [1.91.67.0 lib/outside-review-result.ts](https://github.com/wenlong66/gstack/blob/54efba6dd5a6dc7f04e62106b97079279ed53b41/lib/outside-review-result.ts)，未变的 CLI 接口和 gate 契约保持 [1.91.45.0 来源](https://github.com/wenlong66/gstack/blob/92cfd07a79ed0f27fbcc57f2d61d00ec700eadb4/lib/outside-review-result.ts)。保留执行证据与 severity/recommendation 判定；仅适配 Node、边界校验、不可读证据 fail-closed 和不输出原始诊断。没有移入 plan-review 模型档位、全局 config 或 provider wrapper。
 
 ## Apache-2.0 派生材料
 
