@@ -8,14 +8,5 @@
   "homepage": "https://github.com/wenlong66/matt-plus",
   "repository": "https://github.com/wenlong66/matt-plus",
   "license": "MIT",
-  "skills": [
-    "./skills/design-consultation",
-    "./skills/document-release",
-    "./skills/document-generate",
-    "./skills/security-audit",
-    "./skills/react-native-skills",
-    "./skills/observability-and-instrumentation",
-    "./skills/test-audit",
-    "./skills/code-simplification"
-  ]
+  "skills": "./skills/"
 }
