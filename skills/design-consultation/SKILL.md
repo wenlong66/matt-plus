@@ -77,7 +77,7 @@ A `PRODUCT.md` already answers the product questions below: treat it as the user
 
 Look for prior product-discovery material:
 
-Use the user-provided product-discovery artifact path or Glob for project-local `.context/*office-hours*` and `.context/attachments/*office-hours*` (legacy artifact filenames, not skill calls).
+Use the user-provided product-discovery artifact path, if supplied.
 
 If discovery material exists, read it — the product context is pre-filled; preserve prior product decisions and confirm or clarify missing facts within Q1 rather than restarting discovery.
 

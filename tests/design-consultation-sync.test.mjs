@@ -237,7 +237,8 @@ test('consultation keeps discovery context and user-designated review referrals 
   assert.match(skill, /For existing plans, use their chosen design-plan review capability/);
   assert.match(skill, /instead of a new-product design consultation/);
   assert.match(skill, /## Phase 0: Pre-checks\r?\n\r?\n\*\*Check for existing DESIGN.md:\*\*/);
-  for (const fragment of ['prior product-discovery material', '.context/*office-hours*', '.context/attachments/*office-hours*', 'preserve prior product decisions', 'confirm or clarify missing facts within Q1']) assert.ok(skill.includes(fragment), fragment);
+  for (const fragment of ['prior product-discovery material', 'user-provided product-discovery artifact path', 'preserve prior product decisions', 'confirm or clarify missing facts within Q1']) assert.ok(skill.includes(fragment), fragment);
+  for (const path of ['.context/*office-hours*', '.context/attachments/*office-hours*']) assert.ok(!skill.includes(path), `Legacy discovery path remains: ${path}`);
   assert.match(mapping, /No separate product-discovery skill is required or implied/);
 });
 
