@@ -37,20 +37,24 @@
 
 ## 上游技能调用
 
-Claude Code 中，包内同名技能的入口为 `/matt-plus:<技能名>`。下面列出原版的领域关联；未迁入的名字不是本插件新增的命令，不自动安装或调用完整上游插件。
+Claude Code 中，包内同名技能的入口为 `/matt-plus:<技能名>`；Codex 使用实际加载的技能显示名，不能照搬 Claude 插件斜杠语法。
+
+运行正文仅保留可用的关联：包内同名技能使用真实入口；未收录的说明性命令名移除，必要前置/转介/交接改为能力描述。保留原版可选性、停止点、验证和授权，不凭名称近似替换为 Matt 技能，不增加强制依赖。批次编辑批准不等于提交、推送或 PR 授权。
+
+下面保留上游原名用于来源追溯，不是运行命令清单。未迁入的名字不是本插件新增的命令，不自动安装或调用完整上游插件。
 
 | 使用方 | 上游关联 | 性质与本包处置 |
 | --- | --- | --- |
 | `design-consultation` | `/office-hours` | 可选产品发现前置。使用用户提供的产品发现记录或同目的的产品澄清对话；未迁入，不是必要安装依赖。 |
-| `design-consultation` | `/plan-design-review` | 原版现有网站/计划模式转介，正文保留名称并明确未迁入；不是设计咨询流程的必要前置。 |
+| `design-consultation` | `/plan-design-review` | 原版现有网站/计划转介；运行正文关联用户指定的视觉或设计计划审查能力，不以新产品咨询替代；未迁入，不新增前置或阶段。 |
 | `design-consultation` | `/design-html` | 可选的交付后 HTML/Pretext 建议，随无关推广移除；未迁入，不影响设计系统交付。 |
 | `document-release` | `/ship` | 执行时机、已有 CHANGELOG、TODO 二次清理和标题惯例的来源关联，不要求再次执行 ship；由明确 release range、项目约定和包内标题脚本承接，未迁入。 |
 | `document-release` | `/document-generate` | 覆盖缺口的可选后续建议。本包已有 `/matt-plus:document-generate`，不自动生成全部缺失文档。 |
 | `document-generate` | `/document-release` | 可选覆盖地图输入，本包已有 `/matt-plus:document-release`；也可以独立运行或接受用户提供的地图。 |
-| `document-release` | `review/TODOS-format.md` | 资源引用，不是 `/review` 调用；格式已随包迁入。格式说明中提到的 `/ship`、`/plan-ceo-review` 不构成新增依赖。 |
+| `document-release` | `review/TODOS-format.md` | 资源引用，不是 `/review` 调用；格式已随包迁入，原版提到的 `/ship`、`/plan-ceo-review` 已改为职责描述，不构成新增依赖。 |
 | `test-audit` | `/review`、`/qa` | 原版职责对比，不是当前审计流程的调用或前置。 |
 | `test-audit` | `/plan-eng-review` | 可选种子计划生产者；独立目录或用户提供的 `## Tests to Retire` 可承接，不需要该技能。 |
-| `test-audit` | `/ship` | 批准并验证后的落地交接，一批一个 PR；未迁入。审计自身永不提交、推送或开 PR，不调用不可用技能，不自动扩大到发布。 |
+| `test-audit` | `/ship` | 批准并验证后的落地交接，一批一个 PR；运行正文改为用户指定且另行授权的提交/PR流程。审计自身永不暂存、提交、推送或开 PR，不调用不可用技能，不自动扩大到发布；确认落地后再开始下一轮。 |
 | `observability-and-instrumentation` | `debugging-and-error-recovery`、`performance-optimization`、`shipping-and-launch`、`security-and-hardening` | 原版职责转介和安全规则归属说明，保留原句；这些技能未收录，不新增或恢复入口。 |
 
 两个使用 outside review 的 gstack 技能通过当前实际可用 CLI/tool 关联，不需要新增 `/codex` 或 `/claude-code` 技能：按真实宿主双向选择外部 provider，派发前复查、不自调用、不猜替代 provider；disabled/declined 不 fallback，enabled provider failure 才按原技能进行 native 回退。`document-release` 保留默认独立复核及 informational findings 的一次 apply 决策；native 不算 outside coverage，外部内容发送仍需授权。
@@ -59,7 +63,7 @@ Claude Code 中，包内同名技能的入口为 `/matt-plus:<技能名>`。下�
 
 `DESIGN_SHOTGUN_LOOP`、`TEST_BOOTSTRAP` 等是源模板宏，不等于调用同名上游技能。必要宏内容已展开或链接到包内资源。公共 preamble 的推广、遥测、自动更新、全局记忆/状态、宿主维护和全技能路由不属于上述技能的领域依赖，未迁入。
 
-`test-audit` 的 `TEST_VALUE_BAR:audit` 必要宏完整展开到技能私有资源；`PREAMBLE` 只保留必要的会话和提问关联，`SLUG_SETUP`/全局 state-root 改为项目报告目录和可选种子目录。`spawned`/`headless` 的硬性只报告规则优先于任何通用自动决定或编辑授权。不会迁入宿主推广、遥测、自动更新、偏好数据库、全局记忆和维护说明。
+`test-audit` 的 `TEST_VALUE_BAR:audit` 必要宏完整展开到技能私有资源；`PREAMBLE` 保留必要的会话、提问和计划模式关联，`SLUG_SETUP`/全局 state-root 改为项目报告目录和可选种子目录。[共享宿主关联](references/codex-tools.md#question-and-plan-mode-boundaries)保留破坏性文字确认的准确选项、模糊回复重问和宿主只读/STOP限制；不是将无关 preamble 整体迁回。`spawned`/`headless` 的硬性只报告规则优先于任何通用自动决定或编辑授权。不会迁入宿主推广、遥测、自动更新、偏好数据库、全局记忆和维护说明。
 
 ## 执行与验证边界
 

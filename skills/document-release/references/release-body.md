@@ -128,7 +128,7 @@ After auditing each file individually, do a cross-doc consistency pass:
 
 In caller-owned mode, protected metadata/manifests stay untouched even for factual
 inconsistencies, and narrative contradictions return as blockers. This is the last
-ship-child step: output the doc-health summary and `audit-scope.md`'s JSON result, then
+caller-owned child step: output the doc-health summary and `audit-scope.md`'s JSON result, then
 STOP. A partial audit or unresolved required correction is `blocked`, never `current`.
 
 ---
@@ -318,7 +318,7 @@ node "<skill-dir>/scripts/pr-body.mjs" splice "<run-dir>/body-original.md" "<run
 3. The Documentation section should include:
 
    a. **Doc diff preview** — for each file modified, describe what specifically changed (e.g.,
-      "README.md: added /document-release to skills table, updated skill count from 9 to 10").
+      "README.md: added /matt-plus:document-release to skills table, updated skill count from 9 to 10" in Claude Code).
 
    b. **Documentation debt** — if the coverage map from Step 1.5 found gaps, append a
       `### Documentation Debt` subsection listing:

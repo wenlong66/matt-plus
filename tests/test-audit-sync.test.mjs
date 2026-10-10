@@ -29,6 +29,12 @@ test('test-audit preserves the pinned domain workflow with only declared runtime
   const expected = template.slice(template.indexOf('# /test-audit:'))
     .replace('{{TEST_VALUE_BAR:audit}}', () => bar);
   const actual = skill.slice(skill.indexOf('# /test-audit:'))
+    .replace('This skill is the whole-repo sweep for tests that already exist; reviewing\nnew tests in a diff is a separate workflow.',
+      '`/review`, `/ship`, `/qa` and `/plan-eng-review` apply the same bar to new\ntests in a diff; this skill is the whole-repo sweep for tests that already exist.')
+    .replace("hand verified edits to the user's\n  separately authorized landing workflow, one owner batch per PR.",
+      'landing goes through `/ship`, one owner\n  batch per PR.')
+    .replace("Hand landing to the user's separately authorized commit/PR workflow, one owner\n   batch per PR. After landing is confirmed, rerun discovery for the next batch.",
+      'Hand landing to `/ship`. After it lands, rerun discovery for the next batch.')
     .replace('When runtime session resolution identifies `spawned` or `headless`',
       'When the preamble echoed `SESSION_KIND: spawned` or `headless`')
     .replace(/Read \[the complete test value bar\][\s\S]*?retirement-card requirements\./, () => bar)
@@ -44,12 +50,27 @@ test('session and landing associations retain report-only child runs and interac
   const runtime = read('references/runtime.md');
   assert.match(runtime, /Spawned and headless sessions[\s\S]*?ask nothing, edit nothing/);
   assert.match(runtime, /never\s+auto-approve/);
-  assert.match(runtime, /present the same decision in chat and wait/);
+  assert.match(runtime, /present the same decision\s+in chat and wait/);
   assert.match(runtime, /never stages\/commits, pushes or creates a PR/);
   assert.doesNotMatch(skill + bar, /\{\{[A-Z_]|\$GSTACK_|~\/\.claude\/skills\/gstack/);
 });
 
-test('scope setup runs with independent report and seed directories, including paths with spaces', t => {
+test('question failures distinguish an undelivered error from a possibly displayed pending decision', () => {
+  const host = readFileSync(join(root, 'references/codex-tools.md'), 'utf8');
+  assert.match(host, /no question could have reached the user[\s\S]*retry the same call once/);
+  assert.match(host, /may have reached the user[\s\S]*pending[\s\S]*Do not retry or re-prompt/);
+  assert.match(host, /denied call is not a transport failure/);
+});
+
+test('runtime instructions omit upstream branding and maintenance but retain suppression compatibility', () => {
+  const runtime = read('references/runtime.md');
+  assert.doesNotMatch(skill, /\(gstack\)/);
+  assert.doesNotMatch(runtime, /gstack|telemetry|question-preference|artifact sync|host maintenance/i);
+  assert.match(skill, /grep -l -F 'gstack:test-value keep'/);
+  assert.match(bar, /gstack:test-value keep reason="<why>"/);
+});
+
+test('scope setup uses independent directories, spaced paths and the sanitized seed branch key', t => {
   const probe = spawnSync('bash', ['--version'], { encoding: 'utf8', timeout: 10000 });
   if (probe.status !== 0) return t.skip('Installed Bash is optional on this host');
   const directory = mkdtempSync(join(tmpdir(), 'test-audit standalone '));
@@ -63,7 +84,7 @@ test('scope setup runs with independent report and seed directories, including p
     const result = spawnSync('git', args, { cwd: project, encoding: 'utf8', timeout: 10000 });
     assert.equal(result.status, 0, result.stderr);
   };
-  git(['init', '-b', 'audit-branch']);
+  git(['init', '-b', 'audit/branch']);
   git(['symbolic-ref', 'refs/remotes/origin/HEAD', 'refs/remotes/origin/trunk']);
   writeFileSync(join(project, 'tests/owner.test.js'), 'assert.equal(1, 1);\n');
   git(['add', 'tests/owner.test.js']);

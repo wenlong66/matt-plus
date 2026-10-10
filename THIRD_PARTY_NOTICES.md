@@ -45,7 +45,7 @@ matt-plus 分发下列内容的独立适配版本，不是上游官方发行版�
 
 - 源：[test-audit/SKILL.md.tmpl](https://github.com/wenlong66/gstack/blob/54efba6dd5a6dc7f04e62106b97079279ed53b41/test-audit/SKILL.md.tmpl)，skill version 1.0.0；必要 `TEST_VALUE_BAR:audit` 取自同快照生成的 `test-audit/SKILL.md`，来源为 `scripts/resolvers/test-value.ts`。
 - 本地：[技能](skills/test-audit/SKILL.md)、[完整测试价值判断标准](skills/test-audit/references/test-value-bar.md)、[独立运行关联](skills/test-audit/references/runtime.md)。宏展开资源原文完整保留；六阶段、预算、证据卡、抑制标记、report/sidecar、保留规则和批准后验证均不改逻辑。
-- 仅适配 frontmatter 版本/trigger 元数据、会话身份、问题工具、项目报告/可选计划目录与项目 instruction file；移除公共 preamble 的推广、遥测、自动更新、偏好/记忆数据库、同步和宿主维护。没有迁入 `/ship` 等完整工作流；来源调用见 [调用清单](integration-plan.md#上游技能调用)。
+- 仅适配 frontmatter 版本/trigger 元数据、会话身份、问题工具、项目报告/可选计划目录与项目 instruction file；计划文件的分支键保留上游 `/`→`-`、ASCII 过滤及空值 `unknown` 规则，问题工具保留未送达错误的一次重试与可能已展示问题的 pending 分支。移除公共 preamble 的推广、遥测、自动更新、偏好/记忆数据库、同步和宿主维护。没有迁入 `/ship` 等完整工作流；来源调用见 [调用清单](integration-plan.md#上游技能调用)。
 - Garry Tan 的 MIT 版权声明见 [LICENSE](LICENSE)。上游 resolver 注记说明测试价值标准改编自 `openclaw/openclaw@a214e76` 的 `.agents/skills/test-audit/SKILL.md`，保留该来源追溯。
 
 ### 共享内容检查工具
@@ -83,6 +83,8 @@ matt-plus 分发下列内容的独立适配版本，不是上游官方发行版�
 推广、遥测、自动更新、全局记忆/状态、固定 home 目录和整套上游 bootstrap 不属于独立技能的运行依赖，已移除。必要原版模板宏不留作未展开占位符，领域段落本地分发。
 
 提交、推送、恢复、外部审查与图像能力没有因高权限而删除；通过 [动作授权](references/external-actions.md)、[浏览器](references/browser-tools.md)、[图像/模型](references/image-tools.md) 和 [内容检查](references/content-guard.md) 关联到当前实际可用工具与授权。工具不存在或能力未经执行验证时如实记录，不声称完全等价。
+
+四个 gstack 技能的运行正文移除未收录的说明性命令名，必要转介和落地阶段改为能力型交接，包内文档技能使用真实入口；上游原名保留于本说明及来源调用清单。不改变领域判断、阶段、输出或可选性，不把名称相近的 Matt 技能宣称为等价替代。必要的文字破坏性确认与计划模式边界保留在 [宿主关联](references/codex-tools.md#question-and-plan-mode-boundaries)，对应固定 `54efba6d` preamble 的 [question rules](https://github.com/wenlong66/gstack/blob/54efba6dd5a6dc7f04e62106b97079279ed53b41/scripts/resolvers/preamble/generate-ask-user-format.ts) 和 [plan-mode rules](https://github.com/wenlong66/gstack/blob/54efba6dd5a6dc7f04e62106b97079279ed53b41/scripts/resolvers/preamble/generate-completion-status.ts)，不是推广或宿主维护内容。
 
 ## 原样复制的技能
 

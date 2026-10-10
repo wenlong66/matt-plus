@@ -3,7 +3,7 @@
 ## Ship-owned documentation mode (caller-owned audit)
 
 This subsection applies only to an actually dispatched caller-owned audit request.
-`ship-owned` is the upstream mode name, not a dependency on a `/ship` skill. Standalone
+`ship-owned` is the caller-owned protocol name, not a dependency on a separate release skill. Standalone
 invocations continue to Discovery and Steps 1–9 with their existing approval and
 pinned-revision writing gates. A candidate never grants standalone write authority.
 
@@ -95,7 +95,7 @@ invalidate unchanged content. Missing output, failed/partial audits, unknown wri
 ownership violations or freshness failures are blocked, never reconstructed as current.
 Confirm the child stopped before any repair or other writer; a stop request is not proof
 of termination. The caller owns its repair/re-audit budget and user risk decisions; this
-skill never self-launches retries or migrates the rest of ship.
+skill never self-launches retries or takes over the rest of the caller's release workflow.
 
 ## Discovery (both modes)
 

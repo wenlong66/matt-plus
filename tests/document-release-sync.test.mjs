@@ -305,6 +305,20 @@ test('candidate blocks symlinks escaping the repository and outside-file freshne
   assert.match(result.stderr, /symlink leaves repository/);
 });
 
+test('document-release uses real package entries without obsolete upstream command dependencies', () => {
+  const files = ['SKILL.md', 'references/runtime.md', 'references/audit-scope.md',
+    'references/release-body.md', 'references/cross-model-review.md', 'references/TODOS-format.md'];
+  for (const file of files) {
+    assert.doesNotMatch(text(file), /(^|[\s`])\/(?:ship|review|plan-ceo-review|document-release|document-generate)\b/m, file);
+  }
+  const body = text('SKILL.md');
+  assert.match(body, /\/matt-plus:document-release/);
+  assert.match(body, /suggest[^\n]*\/matt-plus:document-generate/);
+  assert.match(body, /Claude Code[\s\S]*Codex[\s\S]*loaded[\s\S]*name/);
+  assert.match(body, /do not auto-generate missing/i);
+  assert.match(text('references/audit-scope.md'), /`ship-owned`/);
+});
+
 test('audit contract preserves restricted steps, full result schema and honest blocked outcomes', () => {
   const audit = text('references/audit-scope.md');
   for (const field of ['schema_version', 'audit_id', 'status', 'files_updated', 'files_reviewed',

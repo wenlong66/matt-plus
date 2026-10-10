@@ -55,7 +55,7 @@ Upstream skill associations and local namespaced entries are listed in [Upstream
 
 ## Former Host Associations
 
-- The workflow does not require `/ship`. Existing release entries remain the source of truth;
+- The workflow does not require another release workflow. Existing release entries remain the source of truth;
   neither the old shipping association nor a version decision overrides CHANGELOG protection.
 - TODO-format lookup resolves to the project's own format, or local `TODOS-format.md` when
   applicable; no private reference from a different skill is needed.

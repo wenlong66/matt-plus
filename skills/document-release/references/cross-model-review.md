@@ -2,7 +2,7 @@
 
 After Step 8's documentation/version decisions and before Step 9's commit, run an
 independent cross-model pass checking docs against what shipped. This is a standard
-part of `/document-release`, not an opt-in, but default-on never bypasses outgoing
+part of `document-release`, not an opt-in, but default-on never bypasses outgoing
 content/provider/cost authorization. Skip when the user explicitly disables it for the run.
 All approved fixes from this pass belong in the following commit, push and health report.
 

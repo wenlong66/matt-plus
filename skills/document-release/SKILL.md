@@ -31,15 +31,19 @@ host/tool/path/revision associations; the documentation domain phases below are 
 ## Step 0: Detect platform and base branch
 
 Follow `references/runtime.md` to resolve the explicit project, base/head, comparison method
-and hosting convention. There is no silent default base, `/ship` invocation or feature-branch
-prerequisite. Use the recorded `<diff-base>` and `<head>` in subsequent Git examples.
+and hosting convention. There is no silent default base, separate release-workflow invocation
+or feature-branch prerequisite. Use the recorded `<diff-base>` and `<head>` in subsequent Git examples.
 
 # Document Release: Documentation Audit and Update
 
-Keep relevant docs accurate and user-forward. Standalone `/document-release` runs after
+Keep relevant docs accurate and user-forward. Standalone `document-release` runs after
 commit, before merge, or for an explicitly pinned merged-release interval. An authorized
 caller may dispatch a narrowed pre-commit audit of selected uncommitted content without
 requiring another shipping skill.
+
+In Claude Code, the package entries are `/matt-plus:document-release` and
+`/matt-plus:document-generate`; in Codex, use the actually loaded skill's displayed
+name per the shared Codex tool associations, not the Claude slash syntax.
 
 Make factual updates directly within approved scope; ask about risky or subjective decisions
 in standalone mode. Read `references/audit-scope.md` in full before discovery or a caller-owned
@@ -179,7 +183,7 @@ Use these definitions:
 The coverage map feeds Steps 2-3 (what to audit and fix) and the debt report
 (Step 9's PR body, or caller-owned `documentation_section`). Do NOT auto-generate missing
 documentation pages — flag gaps only.
-When significant gaps are found, suggest running `/document-generate` to fill them.
+When significant gaps are found, suggest running `/matt-plus:document-generate` to fill them.
 
 ---
 
@@ -197,7 +201,7 @@ Read `references/release-body.md` in full for Steps 2-9.
 - **Discoverability matters.** Every doc file should be reachable from README or CLAUDE.md.
 - **Coverage map informs, never generates.** The Diataxis coverage map flags gaps for the PR body
   and future work. It does NOT auto-generate missing documentation pages or sections. When gaps
-  are found, suggest `/document-generate` as the follow-up skill.
+  are found, suggest `/matt-plus:document-generate` as the follow-up skill.
 - **Diagram drift is advisory.** Flag stale architecture diagrams in the PR body but do not
   auto-edit ASCII art or Mermaid blocks — they require human judgment to update correctly.
 - **Voice: friendly, user-forward, not obscure.** Write like you're explaining to a smart person

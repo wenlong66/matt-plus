@@ -2,7 +2,7 @@
 name: test-audit
 description: |
   Find low-value or duplicate tests and the test-only code they keep alive.
-  Report-only unless you approve a batch. Use for /test-audit. (gstack)
+  Report-only unless you approve a batch. Use for /test-audit.
 allowed-tools:
   - Bash
   - Read
@@ -28,8 +28,8 @@ kind, report directory and optional seed directory before Step 1.
 Find existing tests that cost more than they protect, prove it with evidence, and
 retire them only in approved batches. Optimize for confidence, not deletion count;
 a few well-evidenced candidates beat a large speculative list, and none is a valid
-result. `/review`, `/ship`, `/qa` and `/plan-eng-review` apply the same bar to new
-tests in a diff; this skill is the whole-repo sweep for tests that already exist.
+result. This skill is the whole-repo sweep for tests that already exist; reviewing
+new tests in a diff is a separate workflow.
 
 Usage: `/test-audit [path ...] [--since <ref>] [--max-candidates N]` (default: whole
 repo, 10 candidates).
@@ -37,8 +37,8 @@ repo, 10 candidates).
 ## Boundaries
 
 - Discovery and the report are read-only. Edit only a batch the user approved in
-  Step 5. Never commit, push or open a PR; landing goes through `/ship`, one owner
-  batch per PR.
+  Step 5. Never commit, push or open a PR; hand verified edits to the user's
+  separately authorized landing workflow, one owner batch per PR.
 - When runtime session resolution identifies `spawned` or `headless`, this run is hard
   report-only: write the report, ask nothing, edit nothing, and treat every batch as
   C) stop.
@@ -54,7 +54,7 @@ catalog, retention bar, suppression pragma and retirement-card requirements.
 ```bash
 : "${REPORT_DIR:?resolve the report directory through references/runtime.md}"
 : "${SEED_PLAN_DIR:?resolve the seed directory through references/runtime.md}"
-BRANCH=$(git branch --show-current)
+BRANCH=$(git branch --show-current | tr '/' '-' | tr -cd 'a-zA-Z0-9._-')
 mkdir -p "$REPORT_DIR"
 DATETIME=$(date +%Y%m%d-%H%M%S)
 REPORT="$REPORT_DIR/test-audit-$DATETIME.md"
@@ -62,7 +62,7 @@ DEFAULT_BRANCH=$(git symbolic-ref --short refs/remotes/origin/HEAD 2>/dev/null |
 echo "REPORT: $REPORT"
 echo "DEFAULT_BRANCH: ${DEFAULT_BRANCH:-unknown}"
 git ls-files | grep -cE '(^|/)(tests?|spec|__tests__)/|(^|/)test_[^/]+\.py$|_test\.(go|py|rb|ts|js|exs)$|\.(test|spec)\.[jt]sx?$|_spec\.rb$|Test\.(java|kt)$' | sed 's/^/TESTFILES:/'
-ls -t "$SEED_PLAN_DIR"/*-"$BRANCH"-eng-review-test-plan-*.md 2>/dev/null | head -1 | sed 's/^/SEED_PLAN:/'
+ls -t "$SEED_PLAN_DIR"/*-"${BRANCH:-unknown}"-eng-review-test-plan-*.md 2>/dev/null | head -1 | sed 's/^/SEED_PLAN:/'
 ```
 
 - Scope is the paths given, else the whole repository. With more than 300 test files
@@ -145,7 +145,8 @@ otherwise recommend B. Report-only unless a batch is approved.
    passes with it removed in a scratch worktree; grep evidence alone is not enough.
 3. Run the owner and sibling tests with the detected runner, then `git diff --check`.
 4. Report `git diff --numstat` with production and test LOC separately.
-5. Hand landing to `/ship`. After it lands, rerun discovery for the next batch.
+5. Hand landing to the user's separately authorized commit/PR workflow, one owner
+   batch per PR. After landing is confirmed, rerun discovery for the next batch.
 
 ## Handoff
 

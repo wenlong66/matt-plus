@@ -17,6 +17,20 @@ test('document-generate retains all Diataxis stages and the updated archaeology 
   }
 });
 
+test('document-generate uses real package entries and keeps release coverage optional', () => {
+  const body = read('SKILL.md');
+  const runtime = read('references/runtime.md');
+  for (const file of ['SKILL.md', 'references/runtime.md', 'references/publishing.md', 'references/writing-quadrants.md']) {
+    assert.doesNotMatch(read(file), /(^|[\s`])\/(?:ship|review|plan-ceo-review|document-release|document-generate)\b/m, file);
+  }
+  assert.match(body, /\/matt-plus:document-generate/);
+  assert.match(body, /\/matt-plus:document-release/);
+  assert.match(body, /Claude Code[\s\S]*Codex[\s\S]*loaded[\s\S]*name/);
+  assert.match(runtime, /\/matt-plus:document-release/);
+  assert.match(runtime, /optional source of a coverage map, not a required invocation/);
+  assert.match(runtime, /user-provided map works independently/);
+});
+
 test('document-generate live-format secrets remain blocked in or outside fences', () => {
   const publishing = read('references/publishing.md');
   assert.match(publishing, /live-format secret blocks wherever it\nappears, fenced or not/);

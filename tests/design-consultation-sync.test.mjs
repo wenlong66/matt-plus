@@ -227,6 +227,20 @@ test('Phase 0 routes cancellation before product/tool probes and records format 
   assert.ok(!skill.includes('best websites 2025'));
 });
 
+test('consultation keeps discovery context and user-designated review referrals without unbundled skill calls', () => {
+  const skill = read('SKILL.md');
+  const mapping = read('references/tool-mapping.md');
+  for (const file of ['SKILL.md', 'references/tool-mapping.md', 'references/proposal-and-coherence.md', 'references/outside-voices.md', 'references/preview-and-feedback.md', 'references/write-design-md.md']) {
+    assert.doesNotMatch(read(file), /(?:^|[\s`])\/(?:office-hours|plan-design-review|design-review)(?=[\s`.,;!?]|$)/m, file);
+  }
+  assert.match(skill, /For existing sites, use the user's chosen visual-review capability to infer/);
+  assert.match(skill, /For existing plans, use their chosen design-plan review capability/);
+  assert.match(skill, /instead of a new-product design consultation/);
+  assert.match(skill, /## Phase 0: Pre-checks\r?\n\r?\n\*\*Check for existing DESIGN.md:\*\*/);
+  for (const fragment of ['prior product-discovery material', '.context/*office-hours*', '.context/attachments/*office-hours*', 'preserve prior product decisions', 'confirm or clarify missing facts within Q1']) assert.ok(skill.includes(fragment), fragment);
+  assert.match(mapping, /No separate product-discovery skill is required or implied/);
+});
+
 test('proposal retains all ten fixed-source aesthetic examples and full font/risk/independence method', () => {
   const proposal = read('references/proposal-and-coherence.md');
   for (const direction of ['Brutally Minimal', 'Maximalist Chaos', 'Retro-Futuristic', 'Luxury/Refined', 'Playful/Toy-like', 'Editorial/Magazine', 'Brutalist/Raw', 'Art Deco', 'Organic/Natural', 'Industrial/Utilitarian']) assert.match(proposal, new RegExp(`^- ${direction.replace('/', '\\/')} —`, 'm'));

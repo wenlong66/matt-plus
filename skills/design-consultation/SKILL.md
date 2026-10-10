@@ -4,7 +4,9 @@ description: |
   Design consultation: understands your product, researches the landscape, proposes a
   complete design system (aesthetic, typography, color, layout, spacing, motion), and
   generates font+color preview pages. Creates DESIGN.md as your project's design source
-  of truth. For existing sites, use /plan-design-review to infer the system instead.
+  of truth. For existing sites, use the user's chosen visual-review capability to infer
+  the system instead. For existing plans, use their chosen design-plan review capability
+  instead of a new-product design consultation.
   Use when asked to "design system", "brand guidelines", or "create DESIGN.md".
   Proactively suggest when starting a new project's UI with no existing
   design system or DESIGN.md.
@@ -73,13 +75,13 @@ Use Read/Glob for the relevant parts of `PRODUCT.md`, `README.md`, `package.json
 
 A `PRODUCT.md` already answers the product questions below: treat it as the user's prior answers, confirm them within Q1, and do not re-ask them separately. Never open `.claude/skills/impeccable/**` or any other skill's files; PRODUCT.md and DESIGN.md are the shared surface. No impeccable skill dependency is required.
 
-Look for office-hours output:
+Look for prior product-discovery material:
 
-Use Glob for project-local `.context/*office-hours*` and `.context/attachments/*office-hours*`, or the user-provided office-hours artifact path.
+Use the user-provided product-discovery artifact path or Glob for project-local `.context/*office-hours*` and `.context/attachments/*office-hours*` (legacy artifact filenames, not skill calls).
 
-If office-hours output exists, read it — the product context is pre-filled.
+If discovery material exists, read it — the product context is pre-filled; preserve prior product decisions and confirm or clarify missing facts within Q1 rather than restarting discovery.
 
-If the codebase is empty and purpose is unclear, say: *"I don't have a clear picture of what you're building yet. Want to explore first with your project's product-discovery workflow (or a product-clarification conversation here)? Once we know the product direction, we can set up the design system."*
+If the codebase is empty and purpose is unclear, say: *"I don't have a clear picture of what you're building yet. Have product-discovery notes we can use, or shall we clarify the product here first? Once we know the product direction, we can set up the design system."*
 
 **Find the browser tool (optional — enables visual competitive research):**
 
@@ -112,7 +114,7 @@ If `DESIGN_NOT_AVAILABLE`: Phase 5 falls back to the HTML preview page (still go
 
 ## Phase 1: Product Context
 
-**AskUserQuestion Q1 — one brief that confirms context AND decides research.** Never ask a confirm-only question first. In plain language, state your pre-filled read (from README, PRODUCT.md or office-hours output): what the product is, who it's for, its space and project type (web app, dashboard, marketing site, editorial, internal tool, etc.). For Update, include preserved constraints and ask what should change. Options:
+**AskUserQuestion Q1 — one brief that confirms context AND decides research.** Never ask a confirm-only question first. In plain language, state your pre-filled read (from README, PRODUCT.md or prior product-discovery material): what the product is, who it's for, its space and project type (web app, dashboard, marketing site, editorial, internal tool, etc.). For Update, include preserved constraints and ask what should change. Options:
 - A) Context right — research what top products in this space do for design first
 - B) Context right — work from design knowledge only
 - C) Context wrong or incomplete — I'll correct it

@@ -1,10 +1,8 @@
 # Runtime associations
 
-The source is `gstack/test-audit/SKILL.md.tmpl` at
-`54efba6dd5a6dc7f04e62106b97079279ed53b41` (skill version 1.0.0).
-The complete rendered audit-mode value bar is bundled in
+The complete audit-mode value bar is bundled in
 [test-value-bar.md](test-value-bar.md). Read it where the skill requires it.
-No gstack installation, generator, global state directory or configuration is needed.
+Use the bundled resources; no upstream installation or global configuration is needed.
 
 ## Target and tools
 
@@ -40,11 +38,14 @@ treat every batch as C) stop, even when a parent prompt asks for edits. They nev
 auto-approve the recommended option. This is test-audit's original stricter rule.
 
 In interactive sessions, Step 5 presents the original A/B/C batch decision and
-complete evidence. Use a host question tool when it supports an approval decision;
-otherwise present the same decision in chat and wait. A missing answer or elapsed
-time is not approval. Execute only the approved owner-boundary batch; the original
-scratch-worktree proof and owner/sibling tests remain required. Do not edit while
-a test runner is running in the checkout.
+complete evidence. Use a host question tool when it supports an approval decision.
+Follow the [shared host boundaries](../../../references/codex-tools.md#question-and-plan-mode-boundaries)
+for failure retries, possibly displayed pending questions, strict destructive confirmation
+and plan-mode limits. Only if the tool is unavailable or definitively fails before
+presenting a question, present the same decision in chat and wait.
+A missing answer or elapsed time is not approval. Execute only the approved
+owner-boundary batch; the original scratch-worktree proof and owner/sibling tests
+remain required. Do not edit while a test runner is running in the checkout.
 
 ## Reports and optional plan seeds
 
@@ -57,10 +58,13 @@ source and tests remain read-only through Step 4.
 
 Set `SEED_PLAN_DIR` explicitly to a user-provided directory of existing engineering
 review test plans, or to `REPORT_DIR` when none was supplied. Step 1 keeps the newest
-`*-<current-branch>-eng-review-test-plan-*.md` selection. The optional input is the
+`*-<sanitized-branch>-eng-review-test-plan-*.md` selection. For the plan filename,
+replace `/` with `-`, keep only ASCII letters, digits, `.`, `_` and `-`, and use
+`unknown` if the result is empty. This preserves the existing plan producer's branch
+key without its global helper. The optional input is the
 plan's `## Tests to Retire` section; an explicitly supplied plan can be read directly
 and recorded as `SEED_PLAN`. Without a plan, perform full discovery. Do not scan a
-home directory or the installed gstack state store. A detached HEAD needs the
+home directory or an upstream global state store. A detached HEAD needs the
 user's plan/branch association to use branch-matched seeds.
 
 The original >300-file fallback uses the locally recorded `origin/HEAD` default
@@ -68,20 +72,16 @@ branch and its merge base. If that local ref is unavailable, obtain an explicit
 base/ref before applying that fallback; do not guess `main` or fetch implicitly.
 Explicit paths or an explicit `--since` ref keep their original precedence.
 
-## Upstream associations and landing
+## Related workflows and landing
 
-| Upstream skill | Role here |
-| --- | --- |
-| `/review`, `/qa` | Related workflows applying the same bar to new tests; no invocation is required for this sweep. |
-| `/plan-eng-review` | Optional producer of `## Tests to Retire` seeds; supplied artifacts work without installing it. |
-| `/ship` | Post-approval landing handoff, one owner batch per PR; not an audit prerequisite. |
+Reviewing new tests in a diff is separate from this existing-test sweep; no other
+review or QA workflow is a prerequisite. Existing engineering-review plans may
+supply optional `## Tests to Retire` seeds; supplied artifacts work without their
+producer. Without a plan, run discovery as specified above.
 
-These skills are not bundled. List the required landing handoff in the completion
-report. Invoke `/ship` only if it is actually available and separately authorized;
-otherwise leave the verified edits for the user's landing workflow. test-audit
+List the required landing handoff in the completion report. Hand the verified
+batch to the user's separately authorized commit/PR workflow, one owner batch per
+PR. Batch-edit approval is not staging, commit, push or PR authorization; do not
+invoke an unavailable workflow or silently substitute another skill. test-audit
 itself never stages/commits, pushes or creates a PR. After landing is confirmed,
 the next discovery sweep can begin as the original Step 6 specifies.
-
-The upstream public preamble's promotion, telemetry, updates, global learning,
-question-preference database, artifact sync and host maintenance are omitted.
-Their removal does not relax any domain gate or authorize extra side effects.

@@ -23,7 +23,7 @@
 
 不收录通用功能 QA 或部署技能。文档的 `document-release` 不等于生产部署。
 
-`test-audit` 保留原版六阶段、完整测试价值判断标准、预算与批准规则。全局状态路径和宿主会话/工具关联适配见 [test-audit runtime](skills/test-audit/references/runtime.md)；上游 `/review`、`/qa`、`/plan-eng-review`、`/ship` 的用途与未收录状态见下述调用清单。
+`test-audit` 保留原版六阶段、完整测试价值判断标准、预算与批准规则。全局状态路径和宿主会话/工具关联适配见 [test-audit runtime](skills/test-audit/references/runtime.md)。四个 gstack 技能的运行正文不把未收录的上游命令当作可调用入口：无用名称移除，必要阶段改为能力或另行授权的交接，包内文档技能关联到真实入口；上游原名留在来源调用清单中追溯，不强制依赖 Matt 技能。
 
 ## 独立适配与工具要求
 

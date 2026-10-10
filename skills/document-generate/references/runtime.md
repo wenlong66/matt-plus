@@ -20,7 +20,8 @@ unrelated user changes and read existing files in full before editing.
   relevant local changes. When supplied with release gaps, use the explicit base/head and
   comparison method from that coverage map, verifying the revisions locally. If the range
   is missing or ambiguous, ask; do not silently default to a branch or tag.
-- `/document-release` is an optional source of a coverage map, not a required invocation or
+- `document-release` (Claude Code: `/matt-plus:document-release`; Codex: the actually loaded
+  skill name per the shared Codex tool associations) is an optional source of a coverage map, not a required invocation or
   runtime dependency. A user-provided map works independently.
 - `AskUserQuestion` resolves to the host's question tool; if unavailable, ask in chat and wait
   for the same decision. Use installed local file/search tools for the discovery queries;
