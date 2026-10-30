@@ -2,7 +2,7 @@
 
 ## 收录范围
 
-分发以下八个移植技能，`code-simplification` 保持现有内容，不纳入本次修复范围。不增加通用 QA、部署或另一套计划审查入口。
+分发以下九个移植技能，`code-simplification` 保持现有内容，不纳入本次修复范围。不增加通用 QA、部署或另一套计划审查入口。
 
 | 技能 | 来源 | 必要领域资源 |
 | --- | --- | --- |
@@ -14,6 +14,7 @@
 | `observability-and-instrumentation` | agent-skills | 原版正文及根 references 下的 observability-checklist.md |
 | `test-audit` | gstack | 完整 audit-mode 测试价值判断标准、独立 runtime、原版六阶段与报告/sidecar |
 | `code-simplification` | agent-skills | 保持现有移植内容 |
+| `api-and-interface-design` | agent-skills | 原版 SKILL.md；仅将未收录的弃用迁移技能关联改为能力描述，无额外运行资源 |
 
 保留原名、领域正文、例子、判断标准、阶段和输出。只适配资源、工具、路径、运行环境与上游关联；不把修复/提交/复测流程改成只读审计。精确源快照与版权见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。
 
@@ -56,6 +57,7 @@ Claude Code 中，包内同名技能的入口为 `/matt-plus:<技能名>`；Code
 | `test-audit` | `/plan-eng-review` | 可选种子计划生产者；独立目录或用户提供的 `## Tests to Retire` 可承接，不需要该技能。 |
 | `test-audit` | `/ship` | 批准并验证后的落地交接，一批一个 PR；运行正文改为用户指定且另行授权的提交/PR流程。审计自身永不暂存、提交、推送或开 PR，不调用不可用技能，不自动扩大到发布；确认落地后再开始下一轮。 |
 | `observability-and-instrumentation` | `debugging-and-error-recovery`、`performance-optimization`、`shipping-and-launch`、`security-and-hardening` | 原版职责转介和安全规则归属说明，保留原句；这些技能未收录，不新增或恢复入口。 |
+| `api-and-interface-design` | `deprecation-and-migration` | 设计时考虑弃用的说明性转介；运行正文改为弃用与迁移计划的能力描述，保留安全移除消费者依赖行为的要求，未迁入该技能，不新增调用或安装依赖。 |
 
 两个使用 outside review 的 gstack 技能通过当前实际可用 CLI/tool 关联，不需要新增 `/codex` 或 `/claude-code` 技能：按真实宿主双向选择外部 provider，派发前复查、不自调用、不猜替代 provider；disabled/declined 不 fallback，enabled provider failure 才按原技能进行 native 回退。`document-release` 保留默认独立复核及 informational findings 的一次 apply 决策；native 不算 outside coverage，外部内容发送仍需授权。
 

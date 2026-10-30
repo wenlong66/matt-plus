@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { existsSync, readFileSync, readdirSync, realpathSync } from 'node:fs';
-import { basename, dirname, isAbsolute, join, relative, resolve, sep } from 'node:path';
+import { dirname, isAbsolute, join, relative, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import test from 'node:test';
 
@@ -15,6 +15,7 @@ const EXPECTED_SKILLS = [
   'observability-and-instrumentation',
   'test-audit',
   'code-simplification',
+  'api-and-interface-design',
 ];
 const TEXT_EXTENSIONS = new Set(['.html', '.js', '.json', '.md', '.mjs', '.sh']);
 const HOST_MACROS = /\{\{[A-Z][A-Z0-9_:.-]*\}\}/;
@@ -82,17 +83,17 @@ test('Codex plugin shares the canonical skill tree and metadata', () => {
   assert.equal(realpathSync(join(root, codexPlugin.skills)), realpathSync(join(root, 'skills')));
 });
 
-test('manifest and shipped directories contain exactly the eight skills', () => {
-  assert.deepEqual(plugin.skills.map((path) => basename(path)), EXPECTED_SKILLS);
+test('manifest and shipped directories contain exactly the nine skills', () => {
+  assert.equal(plugin.skills, './skills/');
   const shipped = readdirSync(join(root, 'skills'), { withFileTypes: true })
     .filter((entry) => entry.isDirectory()).map((entry) => entry.name);
   assert.deepEqual([...shipped].sort(), [...EXPECTED_SKILLS].sort());
 });
 
 test('every declared skill includes its original-name workflow, not a pointer stub', () => {
-  for (const skill of plugin.skills) {
-    const body = readText(`${skill}/SKILL.md`);
-    assert.equal(body.match(/^name:\s*(.+)$/m)?.[1], basename(skill) === 'react-native-skills' ? 'vercel-react-native-skills' : basename(skill));
+  for (const skill of EXPECTED_SKILLS) {
+    const body = readText(`skills/${skill}/SKILL.md`);
+    assert.equal(body.match(/^name:\s*(.+)$/m)?.[1], skill === 'react-native-skills' ? 'vercel-react-native-skills' : skill);
     assert.match(body, /^description:\s*\S/m);
     assert.ok(body.split('\n').length > 20, `${skill}: missing workflow`);
     assert.doesNotMatch(body, HOST_MACROS, `${skill}: unexpanded host macro`);

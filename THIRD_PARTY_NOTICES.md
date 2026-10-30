@@ -4,7 +4,7 @@ matt-plus 分发下列内容的独立适配版本，不是上游官方发行版�
 
 | 实际来源仓库 | 原作者 | 适用范围与源快照 |
 | --- | --- | --- |
-| [wenlong66/agent-skills](https://github.com/wenlong66/agent-skills)，源自 Addy Osmani 的 agent-skills | Copyright (c) 2025 Addy Osmani | `code-simplification` 保持 `14873a11dfc2ac7ed5be19069e0d0828ef7f2fec`；`observability-and-instrumentation` 与配套检查表来自 `4ff2791a8bb39787e35c659cba04a4ec5216e1fe` |
+| [wenlong66/agent-skills](https://github.com/wenlong66/agent-skills)，源自 Addy Osmani 的 agent-skills | Copyright (c) 2025 Addy Osmani | `code-simplification` 保持 `14873a11dfc2ac7ed5be19069e0d0828ef7f2fec`；`observability-and-instrumentation` 与配套检查表来自 `4ff2791a8bb39787e35c659cba04a4ec5216e1fe`；`api-and-interface-design` 来自 `1f61bbc0749affdf89f3951b9e232b42e984ebd0` |
 | [wenlong66/gstack](https://github.com/wenlong66/gstack)，源自 Garry Tan 的 gstack | Copyright (c) 2026 Garry Tan | 共享 outside completion 同步至 `54efba6dd5a6dc7f04e62106b97079279ed53b41`（1.91.67.0）；`test-audit` 来自该 `54efba6d` 快照；此前三个技能与未变资源保持 `92cfd07a79ed0f27fbcc57f2d61d00ec700eadb4`（1.91.45.0）；共享内容检查保持旧 `e7b2ef21e20e6f359ccdc1cf0394dacbe339ad09`（1.58.5.0） |
 
 ## agent-skills
@@ -13,12 +13,19 @@ matt-plus 分发下列内容的独立适配版本，不是上游官方发行版�
 
 - 源：[skills/code-simplification/SKILL.md](https://github.com/wenlong66/agent-skills/blob/14873a11dfc2ac7ed5be19069e0d0828ef7f2fec/skills/code-simplification/SKILL.md)。
 - 本地：[技能](skills/code-simplification/SKILL.md)。
-- 保留现有移植正文；本次仅同步八技能分发清单及来源说明。
+- 保留现有移植正文；仅同步分发清单及来源说明。
 
 ### observability-and-instrumentation
 
 - 源：本地 `agent-skills/skills/observability-and-instrumentation` 和 `agent-skills/references/observability-checklist.md`，快照 `4ff2791a8bb39787e35c659cba04a4ec5216e1fe`。
 - 本地：[完整技能目录](skills/observability-and-instrumentation/)、[原版检查表](references/observability-checklist.md)。正文、frontmatter、示例、验证阶段与检查表逐字节原样复制，无逻辑修改；保留原版相对引用及其他技能的说明性关联。
+- 原作者 Copyright (c) 2025 Addy Osmani，MIT 许可与版权声明已保留在 [LICENSE](LICENSE)。
+
+### api-and-interface-design
+
+- 源：[skills/api-and-interface-design/SKILL.md](https://github.com/wenlong66/agent-skills/blob/1f61bbc0749affdf89f3951b9e232b42e984ebd0/skills/api-and-interface-design/SKILL.md)，快照 `1f61bbc0749affdf89f3951b9e232b42e984ebd0`。
+- 本地：[技能](skills/api-and-interface-design/SKILL.md)。保留原名、frontmatter、接口契约、Hyrum's Law、兼容性、边界验证、幂等处理、所有示例和验证清单；源目录仅此文件，无配套脚本或资源。
+- 唯一适配：将 `See deprecation-and-migration for how to safely remove things users depend on.` 的技能名转介改为 `Use a deprecation and migration plan to safely remove things users depend on.` 的能力描述，保留设计时规划弃用的要求，不新增该技能依赖；其余内容逐字节保留。
 - 原作者 Copyright (c) 2025 Addy Osmani，MIT 许可与版权声明已保留在 [LICENSE](LICENSE)。
 
 ## gstack
